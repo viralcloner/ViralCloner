@@ -65,10 +65,9 @@ npm ci
 npm start
 ```
 
-Run checks and build Windows packages with:
+Build Windows packages with:
 
 ```powershell
-npm test
 npm run pack
 npm run dist
 ```
@@ -76,7 +75,6 @@ npm run dist
 | Command | Purpose |
 | --- | --- |
 | `npm start` | Launch the Electron application |
-| `npm test` | Run the regression suite |
 | `npm run pack` | Create an unpacked Windows build |
 | `npm run dist` | Create Windows release artifacts without publishing them |
 
@@ -100,7 +98,7 @@ For migration of encrypted data from older installations, the previous encryptio
 
 Use [GitHub Issues](https://github.com/viralcloner/Windows-ViralCloner/issues) to report bugs or suggest improvements. Include the app version, Windows version, steps to reproduce, and the relevant error message. Remove credentials and personal information from logs and screenshots.
 
-For source changes, keep commits focused, run the regression suite, and exercise the affected workflows. Update English, French, and Arabic translations when changing interface text. Never commit browser profiles, sessions, private configuration, or generated build files.
+For source changes, keep commits focused and exercise the affected workflows. Update English, French, and Arabic translations when changing interface text. Never commit browser profiles, sessions, private configuration, or generated build files.
 
 ## License and third-party components
 

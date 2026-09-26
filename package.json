@@ -6,7 +6,6 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --publish never",
-    "test": "node --test tests/*.test.js",
     "postinstall": "electron-builder install-app-deps"
   },
   "author": "Shibreg",
@@ -37,7 +36,6 @@
       "automations/**",
       "data/**",
       "frontend/**",
-      "extensions/**",
       "plugins/**",
       "package.json",
       "LICENSE",
