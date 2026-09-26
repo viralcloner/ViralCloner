@@ -56,12 +56,12 @@ Internet access is still required for GitHub downloads and online integrations. 
 
 Use Windows, Node.js 22 or newer, and npm. Native dependencies may require Python and Visual Studio C++ Build Tools.
 
-Clone this repository and install the locked dependencies:
+Clone this repository and install the dependencies:
 
 ```powershell
 git clone https://github.com/viralcloner/Windows-ViralCloner.git
 cd Windows-ViralCloner
-npm ci
+npm install
 npm start
 ```
 
