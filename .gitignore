@@ -1,0 +1,28 @@
+node_modules/
+dist/
+.vscode/
+
+# Legacy private service and generated/personal data are not part of this desktop project.
+.work/
+.env
+.env.*
+!.env.example
+*.ses
+*.log
+userData/
+*.pem
+*.key
+
+# Generated archives and local databases
+*.zip
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Local-only folders
+/tests/
+/extensions/
+
+/package-lock.json
