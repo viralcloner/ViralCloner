@@ -1,0 +1,979 @@
+/* ============================================
+   ViralCloner - Lux Template
+   ============================================
+   
+   FULL visual identity override inspired by
+   Bootswatch "Lux" — a touch of class.
+   
+   Design language: sharp, flat, corporate.
+   Font: Nunito Sans (clean, geometric).
+   Accent: black primary, clean grays.
+   Shapes: sharp corners (2-4px radii),
+           flat surfaces, no gradients on BG,
+           uppercase tracking on labels/buttons.
+   
+   ============================================ */
+
+/* Load Nunito Sans — clean, geometric, professional */
+
+
+/* ============================================
+   1. COLOR PALETTE
+   ============================================ */
+:root {
+  /* --- Brand / Accent → Black & Charcoal --- */
+  --vc-brand-primary: #1a1a2e;
+  --vc-brand-primary-hover: #16213e;
+  --vc-brand-primary-dark: #0f0f1a;
+  --vc-brand-primary-light: #2d2d44;
+  --vc-brand-primary-bg: rgba(26, 26, 46, 0.06);
+  --vc-brand-primary-bg-hover: rgba(26, 26, 46, 0.12);
+  --vc-brand-secondary: #343a40;
+  --vc-brand-secondary-hover: #23272b;
+  --vc-brand-secondary-light: #495057;
+  --vc-brand-secondary-bg: rgba(52, 58, 64, 0.08);
+
+  /* --- Sidebar → Dark Slate --- */
+  --vc-sidebar-active: #1a1a2e;
+  --vc-sidebar-active-hover: rgba(26, 26, 46, 0.75);
+  --vc-sidebar-active-subtle: rgba(26, 26, 46, 0.06);
+
+  /* --- Backgrounds (pure white, minimal tint) --- */
+  --vc-bg-primary: #ffffff;
+  --vc-bg-secondary: #f8f9fa;
+  --vc-bg-tertiary: #e9ecef;
+  --vc-bg-surface: #ffffff;
+  --vc-bg-surface-alt: #f8f9fa;
+  --vc-bg-elevated: #ffffff;
+
+  /* --- Borders (stronger, defined lines) --- */
+  --vc-border-color: #dee2e6;
+  --vc-border-color-light: #e9ecef;
+  --vc-border-color-lighter: #f1f3f5;
+  --vc-border-color-card: #dee2e6;
+  --vc-border-color-brand-focus: #1a1a2e;
+
+  /* --- Semantic accents --- */
+  --vc-confirm-accent: #1a1a2e;
+  --vc-confirm-accent-hover: #0f0f1a;
+  --vc-confirm-accent-dark: #0a0a12;
+  --vc-prompt-accent: #1a1a2e;
+  --vc-prompt-accent-hover: #0f0f1a;
+  --vc-prompt-accent-dark: #0a0a12;
+  --vc-prompt-bar: linear-gradient(90deg, #1a1a2e, #343a40, #1a1a2e);
+
+  /* --- Semantic: Info → Lux Info Blue --- */
+  --vc-info: #1ab0e8;
+  --vc-info-hover: #128fb8;
+  --vc-info-light: #5bc5ee;
+  --vc-info-bg: #e8f7fc;
+  --vc-info-bg-alt: #d1f0fa;
+
+  /* --- Semantic: Success → Lux Green --- */
+  --vc-success: #4bbf73;
+  --vc-success-hover: #3da863;
+  --vc-success-dark: #339254;
+  --vc-success-light: #6dd191;
+
+  /* --- Extended palette --- */
+  --vc-indigo-200: #c8c9d6;
+  --vc-indigo-dark-hover: rgba(26, 26, 46, 0.25);
+  --vc-indigo-dark-bg: rgba(26, 26, 46, 0.05);
+
+  /* --- Focus rings (subtle, dark) --- */
+  --vc-focus-ring: 0 0 0 2px rgba(26, 26, 46, 0.2);
+  --vc-focus-ring-brand: 0 0 0 2px rgba(26, 26, 46, 0.15);
+  --vc-focus-ring-blue: 0 0 0 2px rgba(26, 26, 46, 0.10);
+}
+
+/* ============================================
+   2. TYPOGRAPHY
+   ============================================ */
+:root {
+  --vc-font-sans: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Slightly tighter size scale for corporate feel */
+  --vc-text-2xs: 9px;
+  --vc-text-xs: 10px;
+  --vc-text-sm: 11px;
+  --vc-text-base: 13px;
+  --vc-text-md: 14px;
+  --vc-text-lg: 16px;
+  --vc-text-xl: 18px;
+  --vc-text-2xl: 22px;
+  --vc-text-3xl: 26px;
+  --vc-text-4xl: 30px;
+  --vc-text-5xl: 36px;
+
+  /* Heavier headings — Lux uses bold/black weights */
+  --vc-weight-bold: 700;
+  --vc-weight-semibold: 600;
+
+  /* Tighter line-height for sharp feel */
+  --vc-leading-tight: 1.2;
+  --vc-leading-normal: 1.5;
+  --vc-leading-relaxed: 1.65;
+
+  /* Wide letter-spacing for labels (Lux hallmark) */
+  --vc-tracking-wide: 0.5px;
+  --vc-tracking-widest: 1.2px;
+}
+
+/* ============================================
+   3. SPACING
+   ============================================ */
+:root {
+  --vc-page-padding: 28px;
+}
+
+/* ============================================
+   4. BORDER RADIUS — sharp/minimal everywhere
+   ============================================ */
+:root {
+  --vc-radius-xs: 1px;
+  --vc-radius-sm: 2px;
+  --vc-radius-base: 2px;
+  --vc-radius-md: 3px;
+  --vc-radius-lg: 4px;
+  --vc-radius-xl: 4px;
+  --vc-radius-2xl: 4px;
+  --vc-radius-3xl: 4px;
+  --vc-radius-pill: 2px;
+  --vc-radius-button: 2px;
+  --vc-radius-circle: 50%;
+
+  /* Component-specific radii — all sharp */
+  --vc-radius-card: 4px;
+  --vc-radius-modal: 4px;
+  --vc-radius-input: 2px;
+  --vc-radius-dropdown: 2px;
+  --vc-radius-badge: 2px;
+  --vc-radius-avatar: 4px;
+  --vc-radius-sidebar-item: 2px;
+  --vc-radius-icon-tile: 4px;
+  --vc-radius-notification: 2px;
+}
+
+/* ============================================
+   5. SHADOWS — very minimal, flat
+   ============================================ */
+:root {
+  --vc-shadow-xs: none;
+  --vc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --vc-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --vc-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --vc-shadow-xl: 0 6px 16px rgba(0, 0, 0, 0.10);
+  --vc-shadow-2xl: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --vc-shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  --vc-shadow-brand: 0 2px 6px rgba(26, 26, 46, 0.12);
+  --vc-shadow-brand-lg: 0 4px 12px rgba(26, 26, 46, 0.16);
+
+  --vc-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --vc-shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --vc-shadow-dropdown: 0 4px 16px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --vc-shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --vc-shadow-tooltip: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --vc-shadow-notification: 0 2px 8px rgba(0, 0, 0, 0.10);
+  --vc-shadow-settings-sidebar: 2px 0 12px rgba(0, 0, 0, 0.03);
+  --vc-shadow-table: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================
+   6. GRADIENTS — flat / no-gradient overrides
+      (Lux uses flat solid colors, not gradients)
+   ============================================ */
+:root {
+  --vc-grad-brand: #1a1a2e;
+  --vc-grad-brand-hover: #0f0f1a;
+  --vc-grad-brand-dark: #0a0a12;
+  --vc-grad-brand-vertical: #1a1a2e;
+  --vc-grad-indigo: #343a40;
+  --vc-grad-indigo-deep: linear-gradient(135deg, #1a1a2e 0%, #343a40 100%);
+  --vc-grad-confirm: #1a1a2e;
+  --vc-grad-confirm-hover: #0f0f1a;
+
+  --vc-grad-blue: #1ab0e8;
+  --vc-grad-blue-deep: #128fb8;
+  --vc-grad-blue-bar: #1ab0e8;
+  --vc-grad-blue-action: #1a1a2e;
+
+  --vc-grad-light-purple: #f8f9fa;
+  --vc-grad-light-purple-faint: #f8f9fa;
+  --vc-grad-light-purple-fill: #e9ecef;
+  --vc-grad-light-surface: #ffffff;
+  --vc-grad-light-surface-vertical: #ffffff;
+  --vc-grad-dark-surface: #1a1a2e;
+  --vc-grad-modal-bg: #ffffff;
+  --vc-grad-sidebar-light: #ffffff;
+  --vc-grad-settings-group-header: #f8f9fa;
+}
+
+/* ============================================
+   7. TRANSITIONS — snappy, minimal
+   ============================================ */
+:root {
+  --vc-duration-fast: 0.12s;
+  --vc-duration-base: 0.15s;
+  --vc-duration-moderate: 0.2s;
+  --vc-ease-default: ease;
+  --vc-transition-fast: all 0.12s ease;
+  --vc-transition-base: all 0.15s ease;
+  --vc-transition-moderate: all 0.2s ease;
+
+  /* Subtle hover lifts */
+  --vc-hover-lift-sm: -1px;
+  --vc-hover-lift-md: -2px;
+}
+
+/* ============================================
+   9. SCROLLBAR — thin, neutral
+   ============================================ */
+:root {
+  --vc-scrollbar-width: 5px;
+  --vc-scrollbar-width-thin: 3px;
+  --vc-scrollbar-track: transparent;
+  --vc-scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --vc-scrollbar-thumb-hover: rgba(0, 0, 0, 0.28);
+}
+
+/* ============================================
+   10. DARK THEME TOKEN OVERRIDES
+   ============================================ */
+html[data-theme="dark"] {
+  /* Backgrounds (true dark, not navy) */
+  --vc-bg-primary: #0d0d12;
+  --vc-bg-secondary: #141419;
+  --vc-bg-tertiary: #1c1c24;
+  --vc-bg-surface: #18181f;
+  --vc-bg-surface-alt: rgba(255, 255, 255, 0.03);
+  --vc-bg-elevated: #1c1c24;
+
+  /* Borders (neutral dark) */
+  --vc-border-color: #2a2a35;
+  --vc-border-color-light: #222230;
+  --vc-border-color-lighter: #2a2a35;
+  --vc-border-color-card: #2a2a35;
+
+  /* Accent */
+  --vc-confirm-accent: #e9ecef;
+
+  /* Shadows */
+  --vc-shadow-xs: none;
+  --vc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --vc-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --vc-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.45);
+  --vc-shadow-xl: 0 6px 16px rgba(0, 0, 0, 0.5);
+  --vc-shadow-2xl: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --vc-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --vc-shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --vc-shadow-dropdown: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --vc-shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --vc-shadow-tooltip: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --vc-shadow-notification: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --vc-shadow-settings-sidebar: 2px 0 12px rgba(0, 0, 0, 0.35);
+  --vc-shadow-table: 0 1px 4px rgba(0, 0, 0, 0.3);
+
+  /* Scrollbar */
+  --vc-scrollbar-thumb: rgba(255, 255, 255, 0.12);
+  --vc-scrollbar-thumb-hover: rgba(255, 255, 255, 0.22);
+
+  /* Gradients → flat dark */
+  --vc-grad-light-surface: #141419;
+  --vc-grad-light-surface-vertical: #141419;
+  --vc-grad-light-purple: rgba(255, 255, 255, 0.04);
+  --vc-grad-light-purple-faint: rgba(255, 255, 255, 0.02);
+  --vc-grad-light-purple-fill: rgba(255, 255, 255, 0.06);
+  --vc-grad-modal-bg: #141419;
+  --vc-grad-settings-group-header: rgba(255, 255, 255, 0.03);
+  --vc-grad-sidebar-light: #141419;
+
+  /* Extended palette */
+  --vc-indigo-200: rgba(255, 255, 255, 0.15);
+  --vc-indigo-dark-hover: rgba(255, 255, 255, 0.12);
+  --vc-indigo-dark-bg: rgba(255, 255, 255, 0.04);
+  --vc-gray-50: rgba(255, 255, 255, 0.02);
+  --vc-gray-100: rgba(255, 255, 255, 0.04);
+}
+
+
+/* ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+   B. COMPONENT STYLES — full reshape
+   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ */
+
+/* ============================================
+   12. TITLEBAR
+   ============================================ */
+:root {
+  --vc-titlebar-bg: #1a1a2e;
+  --vc-titlebar-height: 36px;
+  --vc-titlebar-btn-hover-bg: rgba(197, 197, 197, 0.1);
+}
+
+/* ============================================
+   13. SIDEBAR
+   ============================================ */
+:root {
+  --vc-sidebar-width: 210px;
+  --vc-sidebar-width-collapsed: 56px;
+  --vc-sidebar-border: #dee2e6;
+  --vc-sidebar-logo-margin-top: 16px;
+}
+
+/* ============================================
+   14. SIDEBAR MENU ITEMS
+   ============================================ */
+:root {
+  --vc-menu-item-font-size: var(--vc-text-sm);
+  --vc-menu-item-padding: 9px 12px;
+  --vc-menu-item-margin: 1px 8px;
+  --vc-menu-item-radius: var(--vc-radius-sidebar-item);
+  --vc-menu-category-hover-bg: rgba(26, 26, 46, 0.04);
+  --vc-menu-category-open-color: #1a1a2e;
+}
+
+/* ============================================
+   15. SIDEBAR USER PROFILE
+   ============================================ */
+:root {
+  --vc-profile-avatar-radius: 4px;
+  --vc-profile-avatar-bg: #1a1a2e;
+  --vc-profile-section-padding: 10px 12px;
+  --vc-profile-section-margin: 14px 10px 10px;
+  --vc-profile-section-radius: 4px;
+  --vc-profile-hover-border: #adb5bd;
+  --vc-profile-hover-bg: #f8f9fa;
+}
+
+/* ============================================
+   16. SIDEBAR FOOTER
+   ============================================ */
+:root {
+  --vc-sidebar-footer-padding: 14px 8px;
+  --vc-sidebar-logout-bg: #d9534f;
+  --vc-sidebar-logout-hover-bg: #c9302c;
+  --vc-sidebar-logout-radius: 2px;
+  --vc-sidebar-footer-btn-radius: 2px;
+  --vc-sidebar-footer-btn-hover-bg: rgba(26, 26, 46, 0.06);
+  --vc-sidebar-footer-btn-hover-color: #1a1a2e;
+}
+
+/* ============================================
+   17. SIDEBAR COLLAPSED STATE
+   ============================================ */
+:root {
+  --vc-sidebar-toggle-size: 22px;
+  --vc-sidebar-toggle-hover-bg: #1a1a2e;
+  --vc-sidebar-toggle-hover-shadow: 0 2px 6px rgba(26, 26, 46, 0.25);
+  --vc-sidebar-toggle-icon-size: 14px;
+}
+
+/* ============================================
+   18. CONTENT AREA
+   ============================================ */
+:root {
+  --vc-content-bg: #ffffff;
+  --vc-content-border-left: 1px solid #dee2e6;
+}
+
+/* ============================================
+   19. CARDS — flat, bordered, sharp
+   ============================================ */
+:root {
+  --vc-card-border: 1px solid #dee2e6;
+  --vc-card-radius: 4px;
+  --vc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --vc-card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --vc-card-hover-lift: -2px;
+  --vc-card-header-bg: #f8f9fa;
+  --vc-card-header-border: 1px solid #dee2e6;
+  --vc-card-header-padding: 18px 22px;
+  --vc-card-header-icon-color: #1a1a2e;
+  --vc-card-body-padding: 18px;
+}
+
+/* ============================================
+   20. STAT TILES
+   ============================================ */
+:root {
+  --vc-stat-tile-border: 1px solid #dee2e6;
+  --vc-stat-tile-radius: 4px;
+  --vc-stat-tile-padding: 22px;
+  --vc-stat-tile-gap: 14px;
+  --vc-stat-tile-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --vc-stat-tile-hover-lift: -2px;
+  --vc-stat-tile-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --vc-stat-tile-icon-size: 48px;
+  --vc-stat-tile-icon-radius: 4px;
+  --vc-stat-tile-icon-font-size: 24px;
+  --vc-stat-tile-value-size: 30px;
+  --vc-stat-tile-value-weight: 700;
+  --vc-stat-icon-automations: #1a1a2e;
+  --vc-stat-icon-templates: #d9534f;
+  --vc-stat-icon-spy: #1ab0e8;
+  --vc-stat-icon-workflows: #4bbf73;
+}
+
+/* ============================================
+   20b. ACTION TILES
+   ============================================ */
+:root {
+  --vc-action-tile-radius: 4px;
+  --vc-action-tile-hover-bg: #f8f9fa;
+  --vc-action-tile-hover-border: #1a1a2e;
+  --vc-action-tile-icon-size: 44px;
+  --vc-action-tile-icon-radius: 4px;
+  --vc-action-tile-icon-purple: #1a1a2e;
+  --vc-action-tile-icon-blue: #1ab0e8;
+}
+html[data-theme="dark"] {
+  --vc-action-tile-hover-bg: rgba(255, 255, 255, 0.05);
+  --vc-action-tile-hover-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   20c. NOTES
+   ============================================ */
+:root {
+  --vc-note-radius: 4px;
+  --vc-note-action-btn-bg: rgba(26, 26, 46, 0.04);
+}
+
+/* ============================================
+   20d. NOTE MODAL
+   ============================================ */
+:root {
+  --vc-note-modal-radius: 4px;
+  --vc-note-modal-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --vc-note-modal-input-radius: 2px;
+  --vc-note-modal-input-focus-border: #1a1a2e;
+  --vc-note-modal-input-focus-shadow: 0 0 0 2px rgba(26, 26, 46, 0.10);
+  --vc-note-modal-cancel-bg: #f8f9fa;
+  --vc-note-modal-save-bg: #1a1a2e;
+  --vc-note-modal-save-hover-shadow: 0 2px 8px rgba(26, 26, 46, 0.25);
+  --vc-note-color-active-border: #1a1a2e;
+  --vc-note-color-active-shadow: 0 0 0 2px rgba(26, 26, 46, 0.20);
+}
+
+/* ============================================
+   20e. COMMUNITY POST ITEMS
+   ============================================ */
+:root {
+  --vc-community-item-radius: 4px;
+  --vc-community-item-hover-bg: #f8f9fa;
+  --vc-community-item-hover-border: #1a1a2e;
+}
+html[data-theme="dark"] {
+  --vc-community-item-hover-bg: rgba(255, 255, 255, 0.05);
+  --vc-community-item-hover-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   20f. ACTIVITY FEED
+   ============================================ */
+:root {
+  --vc-activity-item-radius: 4px;
+  --vc-activity-icon-automation-bg: #e9ecef;
+  --vc-activity-icon-automation-color: #1a1a2e;
+  --vc-activity-icon-spy-bg: #e8f7fc;
+  --vc-activity-icon-spy-color: #1ab0e8;
+  --vc-activity-icon-workflow-bg: #e2f5ea;
+  --vc-activity-icon-workflow-color: #4bbf73;
+}
+html[data-theme="dark"] {
+  --vc-activity-icon-automation-bg: rgba(255, 255, 255, 0.06);
+  --vc-activity-icon-spy-bg: rgba(26, 176, 232, 0.12);
+  --vc-activity-icon-workflow-bg: rgba(75, 191, 115, 0.12);
+}
+
+/* ============================================
+   20g. ARTICLE ITEMS
+   ============================================ */
+:root {
+  --vc-article-item-radius: 4px;
+  --vc-article-tag-bg: #e9ecef;
+  --vc-article-tag-color: #343a40;
+  --vc-article-cover-gradient: #1a1a2e;
+  --vc-article-new-badge-bg: #4bbf73;
+}
+html[data-theme="dark"] {
+  --vc-article-tag-bg: rgba(255, 255, 255, 0.08);
+  --vc-article-tag-color: #ced4da;
+}
+
+/* ============================================
+   20h. CONVERSATION ITEMS
+   ============================================ */
+:root {
+  --vc-conv-item-radius: 4px;
+  --vc-conv-item-hover-bg: #f8f9fa;
+  --vc-conv-item-hover-border: #1a1a2e;
+  --vc-conv-item-unread-bg: #f8f9fa;
+  --vc-conv-item-unread-border: #adb5bd;
+  --vc-conv-unread-badge-bg: #1a1a2e;
+  --vc-conv-group-avatar-bg: #1a1a2e;
+}
+html[data-theme="dark"] {
+  --vc-conv-item-hover-bg: rgba(255, 255, 255, 0.05);
+  --vc-conv-item-hover-border: rgba(255, 255, 255, 0.2);
+  --vc-conv-item-unread-bg: rgba(255, 255, 255, 0.04);
+  --vc-conv-item-unread-border: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   20i. STATUS INDICATORS
+   ============================================ */
+:root {
+  --vc-status-row-radius: 4px;
+}
+
+/* ============================================
+   20j. REFRESH BUTTON
+   ============================================ */
+:root {
+  --vc-refresh-btn-hover-border: #1a1a2e;
+}
+html[data-theme="dark"] {
+  --vc-refresh-btn-hover-bg: rgba(255, 255, 255, 0.05);
+  --vc-refresh-btn-hover-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   21. TABLES — flat, strong header
+   ============================================ */
+:root {
+  --vc-table-border: 1px solid #dee2e6;
+  --vc-table-radius: 4px;
+  --vc-table-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  --vc-table-header-bg: #f8f9fa;
+  --vc-table-header-letter-spacing: 0.8px;
+  --vc-table-header-border-bottom: 2px solid #dee2e6;
+  --vc-table-header-padding: 12px 18px;
+  --vc-table-cell-padding: 12px 18px;
+  --vc-table-row-hover-bg: #f8f9fa;
+}
+html[data-theme="dark"] {
+  --vc-table-row-hover-bg: rgba(255, 255, 255, 0.03);
+  --vc-table-header-bg: rgba(255, 255, 255, 0.03);
+  --vc-table-header-border-bottom: 2px solid #2a2a35;
+}
+
+/* ============================================
+   22. BUTTONS — flat, sharp, uppercase
+   ============================================ */
+:root {
+  /* Primary → solid black */
+  --vc-btn-primary-bg: #1a1a2e;
+  --vc-btn-primary-bg-hover: #0f0f1a;
+  --vc-btn-primary-shadow: 0 2px 6px rgba(26, 26, 46, 0.12);
+  --vc-btn-primary-shadow-hover: 0 4px 12px rgba(26, 26, 46, 0.18);
+  --vc-btn-primary-padding: 11px 22px;
+  --vc-btn-primary-radius: 2px;
+
+  /* Success → Lux green, flat */
+  --vc-btn-success-shadow: 0 2px 6px rgba(75, 191, 115, 0.15);
+
+  /* Confirm */
+  --vc-btn-confirm-bg: #1a1a2e;
+  --vc-btn-confirm-bg-hover: #0f0f1a;
+  --vc-btn-confirm-shadow: 0 2px 6px rgba(26, 26, 46, 0.15);
+  --vc-btn-confirm-padding: 10px 24px;
+  --vc-btn-confirm-radius: 2px;
+  --vc-btn-confirm-font-size: var(--vc-text-sm);
+
+  /* Cancel → light gray, bordered */
+  --vc-btn-cancel-bg: #ffffff;
+  --vc-btn-cancel-color: #343a40;
+  --vc-btn-cancel-border: 1px solid #dee2e6;
+  --vc-btn-cancel-bg-hover: #f8f9fa;
+  --vc-btn-cancel-padding: 10px 24px;
+  --vc-btn-cancel-radius: 2px;
+
+  /* Legacy .btn-one */
+  --vc-btn-one-bg: #1a1a2e;
+  --vc-btn-one-padding: 10px 22px;
+  --vc-btn-one-radius: 2px;
+  --vc-btn-one-primary: #1a1a2e;
+  --vc-btn-one-success: #4bbf73;
+  --vc-btn-one-danger: #d9534f;
+
+  /* Action buttons */
+  --vc-btn-action-size: 34px;
+  --vc-btn-action-radius: 2px;
+  --vc-btn-action-bg: #f8f9fa;
+  --vc-btn-action-hover-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+html[data-theme="dark"] {
+  --vc-btn-cancel-bg: #1c1c24;
+  --vc-btn-cancel-border: 1px solid #2a2a35;
+  --vc-btn-cancel-bg-hover: #2a2a35;
+  --vc-btn-action-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   23. FORM INPUTS — sharp, clean borders
+   ============================================ */
+:root {
+  --vc-input-border: 1px solid #dee2e6;
+  --vc-input-border-color: #dee2e6;
+  --vc-input-radius: 2px;
+  --vc-input-padding: 10px 14px;
+  --vc-input-focus-border: #1a1a2e;
+  --vc-input-focus-ring: 0 0 0 2px rgba(26, 26, 46, 0.10);
+  --vc-input-focus-brand-border: #1a1a2e;
+  --vc-input-focus-brand-ring: 0 0 0 2px rgba(26, 26, 46, 0.12);
+  --vc-checkbox-border: 1px solid #adb5bd;
+}
+html[data-theme="dark"] {
+  --vc-input-border: 1px solid #2a2a35;
+}
+
+/* ============================================
+   24. CUSTOM SELECT / SEARCHABLE DROPDOWN
+   ============================================ */
+:root {
+  --vc-select-trigger-border: 1px solid #dee2e6;
+  --vc-select-trigger-radius: 2px;
+  --vc-select-trigger-padding: 10px 14px;
+  --vc-select-trigger-hover-border: #adb5bd;
+  --vc-select-trigger-open-border: #1a1a2e;
+  --vc-select-trigger-open-ring: 0 0 0 2px rgba(26, 26, 46, 0.10);
+  --vc-select-dropdown-border: 1px solid #dee2e6;
+  --vc-select-dropdown-radius: 2px;
+  --vc-select-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  --vc-select-search-bg: #f8f9fa;
+  --vc-select-option-hover-bg: #f8f9fa;
+  --vc-select-option-selected-bg: #e9ecef;
+  --vc-select-option-selected-color: #1a1a2e;
+  --vc-select-thumbnail-radius: 2px;
+}
+
+/* ============================================
+   25. BADGES — flat, sharp, uppercase
+   ============================================ */
+:root {
+  --vc-badge-radius: 2px;
+  --vc-badge-padding: 4px 10px;
+  --vc-badge-text-transform: uppercase;
+  --vc-badge-font-weight: 700;
+  --vc-badge-success-bg: #4bbf73;
+  --vc-badge-success-color: #ffffff;
+  --vc-badge-danger-bg: #d9534f;
+  --vc-badge-danger-color: #ffffff;
+  --vc-badge-warning-bg: #f7b731;
+  --vc-badge-warning-color: #ffffff;
+  --vc-badge-info-bg: #1ab0e8;
+  --vc-badge-info-color: #ffffff;
+}
+html[data-theme="dark"] {
+  --vc-badge-success-bg: rgba(75, 191, 115, 0.18);
+  --vc-badge-success-color: #6dd191;
+  --vc-badge-danger-bg: rgba(217, 83, 79, 0.18);
+  --vc-badge-danger-color: #e88480;
+  --vc-badge-warning-bg: rgba(247, 183, 49, 0.18);
+  --vc-badge-warning-color: #f9cc62;
+  --vc-badge-info-bg: rgba(26, 176, 232, 0.18);
+  --vc-badge-info-color: #5bc5ee;
+}
+
+/* ============================================
+   26. DROPDOWNS — sharp, clean
+   ============================================ */
+:root {
+  --vc-dropdown-border: 1px solid #dee2e6;
+  --vc-dropdown-radius: 2px;
+  --vc-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --vc-dropdown-item-padding: 9px 14px;
+  --vc-dropdown-item-hover-bg: #f8f9fa;
+  --vc-dropdown-primary-color: #1a1a2e;
+  --vc-dropdown-primary-hover-bg: #e9ecef;
+  --vc-dropdown-success-hover-bg: #e2f5ea;
+  --vc-dropdown-warning-hover-bg: #fff8e1;
+  --vc-dropdown-danger-hover-bg: #fce4e4;
+  --vc-dropdown-info-color: #1ab0e8;
+  --vc-dropdown-info-hover-bg: #e8f7fc;
+}
+html[data-theme="dark"] {
+  --vc-dropdown-border: 1px solid #2a2a35;
+  --vc-dropdown-item-hover-bg: rgba(255, 255, 255, 0.05);
+  --vc-dropdown-primary-color: #e9ecef;
+  --vc-dropdown-primary-hover-bg: rgba(255, 255, 255, 0.06);
+  --vc-dropdown-info-color: #5bc5ee;
+  --vc-dropdown-info-hover-bg: rgba(26, 176, 232, 0.12);
+}
+
+/* ============================================
+   27. MODALS — flat, sharp, structured
+   ============================================ */
+:root {
+  --vc-modal-overlay-bg: rgba(0, 0, 0, 0.45);
+  --vc-modal-overlay-blur: 2px;
+
+  /* Confirm */
+  --vc-confirm-radius: 4px;
+  --vc-confirm-padding: 28px;
+  --vc-confirm-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --vc-confirm-icon-size: 48px;
+  --vc-confirm-icon-radius: 4px;
+  --vc-confirm-icon-bg: #e9ecef;
+  --vc-confirm-icon-color: #1a1a2e;
+
+  /* Dynamic */
+  --vc-dynamic-radius: 4px;
+  --vc-dynamic-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --vc-dynamic-header-bg: #f8f9fa;
+  --vc-dynamic-header-border: 1px solid #dee2e6;
+  --vc-dynamic-header-padding: 18px 24px;
+  --vc-dynamic-close-radius: 2px;
+
+  /* Prompt */
+  --vc-prompt-radius: 4px;
+  --vc-prompt-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --vc-prompt-bar-gradient: #1a1a2e;
+  --vc-prompt-close-radius: 2px;
+  --vc-prompt-close-bg: rgba(0, 0, 0, 0.04);
+  --vc-prompt-close-hover-bg: rgba(0, 0, 0, 0.08);
+  --vc-prompt-submit-bg: #1a1a2e;
+  --vc-prompt-submit-hover-bg: #0f0f1a;
+  --vc-prompt-submit-shadow: 0 2px 6px rgba(26, 26, 46, 0.15);
+  --vc-prompt-submit-radius: 2px;
+
+  /* Text Editor */
+  --vc-text-editor-radius: 4px;
+  --vc-text-editor-header-bg: #1a1a2e;
+}
+html[data-theme="dark"] {
+  --vc-modal-overlay-bg: rgba(0, 0, 0, 0.65);
+  --vc-confirm-icon-bg: rgba(255, 255, 255, 0.06);
+  --vc-dynamic-header-bg: #1c1c24;
+  --vc-dynamic-header-border: 1px solid #2a2a35;
+}
+
+/* ============================================
+   28. NOTIFICATIONS — flat, sharp
+   ============================================ */
+:root {
+  --vc-notification-radius: 2px;
+  --vc-notification-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  --vc-notification-padding: 14px 18px;
+  --vc-notification-icon-radius: 4px;
+}
+html[data-theme="dark"] {
+  --vc-notification-border: 1px solid #2a2a35;
+}
+
+/* ============================================
+   29. LOADING — flat spinners
+   ============================================ */
+:root {
+  --vc-loading-solid-bg: #ffffff;
+  --vc-loading-card-radius: 4px;
+  --vc-loading-card-padding: 28px 36px;
+  --vc-loading-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --vc-loading-card-border: 1px solid #dee2e6;
+  --vc-loading-progress-bg: #e9ecef;
+  --vc-loading-progress-fill: #1a1a2e;
+  --vc-spinner-ring-1: #1a1a2e;
+  --vc-spinner-ring-2: #343a40;
+  --vc-spinner-ring-3: #6c757d;
+}
+html[data-theme="dark"] {
+  --vc-loading-solid-bg: #0d0d12;
+  --vc-loading-progress-bg: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   30. TOOLTIPS — dark, flat, sharp
+   ============================================ */
+:root {
+  --vc-tooltip-bg: #1a1a2e;
+  --vc-tooltip-radius: 2px;
+  --vc-tooltip-padding: 14px 16px;
+  --vc-tooltip-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --vc-tooltip-title-color: #ffffff;
+  --vc-tooltip-code-bg: #0a0a12;
+  --vc-tooltip-code-color: #67e8f9;
+  --vc-tooltip-code-border: 1px solid rgba(255, 255, 255, 0.08);
+  --vc-tooltip-close-bg: rgba(255, 255, 255, 0.08);
+  --vc-tooltip-close-hover-bg: rgba(217, 83, 79, 0.3);
+  --vc-sidebar-tooltip-bg: #1a1a2e;
+  --vc-sidebar-tooltip-radius: 2px;
+  --vc-sidebar-tooltip-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   31. SETTINGS PAGE — clean, structured
+   ============================================ */
+:root {
+  --vc-settings-bg: #ffffff;
+  --vc-settings-sidebar-width: 270px;
+  --vc-settings-sidebar-shadow: 2px 0 12px rgba(0, 0, 0, 0.03);
+  --vc-settings-content-padding: 28px 36px;
+
+  /* Menu groups */
+  --vc-settings-group-bg: #fafbfc;
+  --vc-settings-group-border: 1px solid #e9ecef;
+  --vc-settings-group-radius: 4px;
+  --vc-settings-group-header-bg: #f8f9fa;
+  --vc-settings-group-header-icon-color: #1a1a2e;
+  --vc-settings-group-header-border: 1px solid #dee2e6;
+
+  /* Menu items */
+  --vc-settings-item-color: #6c757d;
+  --vc-settings-item-radius: 2px;
+  --vc-settings-item-padding: 9px 12px;
+  --vc-settings-item-active-bg: #e9ecef;
+  --vc-settings-item-active-color: #1a1a2e;
+  --vc-settings-item-active-bar: #1a1a2e;
+  --vc-settings-item-icon-active-color: #1a1a2e;
+  --vc-settings-item-hover-color: #343a40;
+
+  /* Section header */
+  --vc-settings-header-radius: 4px;
+  --vc-settings-header-padding: 22px;
+  --vc-settings-header-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  --vc-settings-header-icon-size: 48px;
+  --vc-settings-header-icon-radius: 4px;
+  --vc-settings-header-icon-bg: #e9ecef;
+  --vc-settings-header-title-size: 20px;
+  --vc-settings-header-icon-color: #1a1a2e;
+  --vc-settings-header-desc-color: #6c757d;
+
+  /* Automation settings */
+  --vc-settings-auto-header-accent: #1a1a2e;
+  --vc-settings-auto-title-icon-color: #1a1a2e;
+
+  /* Tables */
+  --vc-settings-table-radius: 4px;
+  --vc-settings-table-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  --vc-settings-table-border: 1px solid #dee2e6;
+  --vc-settings-table-header-bg: #f8f9fa;
+  --vc-settings-table-header-border: 2px solid #dee2e6;
+  --vc-settings-table-hover-bg: #f8f9fa;
+  --vc-settings-table-body-border: 1px solid #e9ecef;
+
+  /* Setting cards */
+  --vc-setting-card-border: 1px solid #dee2e6;
+  --vc-setting-card-radius: 4px;
+  --vc-setting-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  --vc-setting-card-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --vc-setting-card-hover-border: #adb5bd;
+  --vc-setting-card-header-bg: #f8f9fa;
+  --vc-setting-card-header-border: 1px solid #dee2e6;
+  --vc-setting-icon-bg: #1a1a2e;
+  --vc-setting-icon-shadow: 0 2px 6px rgba(26, 26, 46, 0.15);
+  --vc-setting-icon-radius: 4px;
+
+  /* Form elements */
+  --vc-settings-form-input-border: 1px solid #dee2e6;
+  --vc-settings-form-input-radius: 2px;
+  --vc-settings-form-input-hover-border: #adb5bd;
+  --vc-settings-form-input-focus-border: #1a1a2e;
+  --vc-settings-form-input-focus-shadow: 0 0 0 2px rgba(26, 26, 46, 0.08);
+
+  /* Toggle */
+  --vc-toggle-track-bg: #dee2e6;
+  --vc-toggle-checked-bg: #1a1a2e;
+  --vc-toggle-focus-shadow: 0 0 0 2px rgba(26, 26, 46, 0.10);
+
+  /* Info boxes */
+  --vc-info-box-radius: 4px;
+  --vc-info-box-purple-bg: #f8f9fa;
+  --vc-info-box-purple-border: 4px solid #1a1a2e;
+  --vc-info-box-purple-icon: #1a1a2e;
+
+  /* Sub-header */
+  --vc-settings-sub-header-border: 2px solid #f1f3f5;
+  --vc-settings-sub-header-icon-bg: #1a1a2e;
+  --vc-settings-sub-header-icon-shadow: 0 2px 6px rgba(26, 26, 46, 0.15);
+
+  /* Form row */
+  --vc-settings-form-row-border: 1px solid #f1f3f5;
+
+  /* Empty state */
+  --vc-settings-empty-bg: #ffffff;
+  --vc-settings-empty-border: 2px dashed #dee2e6;
+  --vc-settings-empty-radius: 4px;
+
+  /* Pinterest */
+  --vc-pinterest-select-border: 1px solid #dee2e6;
+  --vc-pinterest-select-bg: #ffffff;
+  --vc-pinterest-clear-border: 1px solid #dee2e6;
+  --vc-pinterest-clear-hover-bg: #f8f9fa;
+  --vc-pinterest-clear-hover-border: #adb5bd;
+
+  --vc-settings-mobile-border: 1px solid #dee2e6;
+}
+html[data-theme="dark"] {
+  --vc-settings-bg: #0d0d12;
+  --vc-settings-group-bg: rgba(255, 255, 255, 0.02);
+  --vc-settings-group-border: 1px solid #2a2a35;
+  --vc-settings-group-header-border: 1px solid #2a2a35;
+  --vc-settings-group-header-icon-color: #e9ecef;
+  --vc-settings-item-active-bg: rgba(255, 255, 255, 0.06);
+  --vc-settings-item-active-color: #e9ecef;
+  --vc-settings-item-icon-active-color: #e9ecef;
+  --vc-settings-item-hover-color: #ced4da;
+  --vc-settings-header-icon-color: #e9ecef;
+  --vc-settings-auto-title-icon-color: #e9ecef;
+  --vc-settings-table-border: 1px solid #2a2a35;
+  --vc-settings-table-header-bg: rgba(255, 255, 255, 0.03);
+  --vc-settings-table-header-border: 2px solid #2a2a35;
+  --vc-settings-table-hover-bg: rgba(255, 255, 255, 0.03);
+  --vc-settings-table-body-border: 1px solid #2a2a35;
+  --vc-setting-card-border: 1px solid #2a2a35;
+  --vc-setting-card-hover-border: rgba(255, 255, 255, 0.15);
+  --vc-setting-card-header-bg: rgba(255, 255, 255, 0.03);
+  --vc-setting-card-header-border: 1px solid #2a2a35;
+  --vc-setting-icon-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  --vc-settings-form-input-border: 1px solid #2a2a35;
+  --vc-settings-form-input-hover-border: rgba(255, 255, 255, 0.15);
+  --vc-settings-form-input-focus-border: #e9ecef;
+  --vc-settings-form-input-focus-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+  --vc-toggle-track-bg: #2a2a35;
+  --vc-toggle-focus-shadow: 0 0 0 2px rgba(255, 255, 255, 0.10);
+  --vc-info-box-purple-bg: rgba(255, 255, 255, 0.04);
+  --vc-settings-sub-header-border: 2px solid #2a2a35;
+  --vc-settings-form-row-border: 1px solid #2a2a35;
+  --vc-settings-empty-bg: rgba(255, 255, 255, 0.02);
+  --vc-settings-empty-border: 2px dashed #2a2a35;
+  --vc-pinterest-select-border: 1px solid #2a2a35;
+  --vc-pinterest-select-bg: #0d0d12;
+  --vc-pinterest-clear-border: 1px solid #2a2a35;
+  --vc-pinterest-clear-hover-bg: rgba(255, 255, 255, 0.04);
+  --vc-pinterest-clear-hover-border: rgba(255, 255, 255, 0.12);
+  --vc-settings-mobile-border: 1px solid #2a2a35;
+}
+
+/* ============================================
+   32. DRAWFLOW / NODE EDITOR
+   ============================================ */
+:root {
+  --vc-node-bg: #1a1a2e;
+  --vc-node-accent: #e9ecef;
+  --vc-node-accent-light: #ffffff;
+  --vc-node-label-bg: #1a1a2e;
+  --vc-node-label-radius: 2px;
+  --vc-node-label-padding: 3px 8px;
+  --vc-node-info-icon-bg: rgba(255, 255, 255, 0.15);
+  --vc-node-info-icon-hover-bg: rgba(255, 255, 255, 0.4);
+  --vc-node-selected-bg: #0f0f1a;
+  --vc-node-selected-border: rgba(233, 236, 239, 0.7);
+  --vc-node-delete-bg: #0a0a12;
+  --vc-node-delete-hover-bg: #e9ecef;
+  --vc-node-delete-hover-color: #0a0a12;
+  --vc-node-line-color: #6c757d;
+  --vc-node-line-selected: #1a1a2e;
+
+  --vc-automation-sidebar-bg: linear-gradient(180deg, #141419 0%, #0d0d12 100%);
+  --vc-node-group-title-color: #e9ecef;
+  --vc-node-item-hover-border: rgba(233, 236, 239, 0.3);
+  --vc-sidebar-inputs-back-bg: #f8f9fa;
+  --vc-sidebar-inputs-back-border: 1px solid #dee2e6;
+}
+html[data-theme="dark"] {
+  --vc-node-accent: #e9ecef;
+  --vc-node-accent-light: #ffffff;
+  --vc-sidebar-inputs-back-bg: rgba(255, 255, 255, 0.04);
+  --vc-sidebar-inputs-back-border: 1px solid #2a2a35;
+}

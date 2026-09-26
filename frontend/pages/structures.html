@@ -1,0 +1,101 @@
+<style>
+    .empty-state .material-icons {
+        margin: 0!important;
+    }
+
+    .empty-state span {
+        color: #FFF;
+    }
+</style>
+
+<div id="structures-page">
+    <!-- Structures List View -->
+    <div class="structures-list-container">
+        <!-- Header Section -->
+        <div class="structures-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="page-title">
+                            <i class="material-icons">account_tree</i>
+                            <span data-i18n="structures.title">Structures</span>
+                        </h1>
+                        <p class="page-subtitle" data-i18n="structures.subtitle">Manage your browser profiles and configurations</p>
+                        <div class="d-flex gap-3 mt-2" id="structuresUsageContainer">
+                            
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button id="newStructure" class="btn-one">
+                            <i class="material-icons">add</i>
+                            <span data-i18n="structures.new_structure">New Structure</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Structures Content -->
+        <div class="container mt-4">
+            <!-- Empty State -->
+            <div class="empty-state" id="nothing" style="display: none;">
+                <div class="empty-icon">
+                    <i class="material-icons">folder_open</i>
+                </div>
+                <h3 data-i18n="structures.no_structures">No Structures Yet</h3>
+                <p data-i18n="structures.no_structures_desc">Create your first structure to start managing browser profiles</p>
+                <button class="btn-one" onclick="$('#newStructure').click()">
+                    <i class="material-icons">add</i>
+                    <span data-i18n="structures.create_structure">Create Structure</span>
+                </button>
+            </div>
+
+            <!-- Structures Grid -->
+            <div class="structures-grid" id="structuresGrid"></div>
+        </div>
+    </div>
+
+    <!-- Structure Editing View -->
+    <div class="structure-area">
+        <div class="structure-edit-header">
+            <button class="btn-back position-relative" id="returnBack">
+                <i class="material-icons">arrow_back</i>
+                <span data-i18n="structures.back_to_structures">Back to Structures</span>
+            </button>
+            <div class="structure-info">
+                <h2 class="structure-name" id="structureName">Structure Name</h2>
+                <span class="profile-count" id="profileCount">0 profiles</span>
+            </div>
+            <div class="structure-header-actions">
+                <button class="btn-one" id="bulkUpdateProxy" style="background: var(--accent-color); color: #fff;">
+                    <i class="material-icons">sync</i>
+                    <span data-i18n="structures.bulk_update_proxy">Bulk Update Proxy</span>
+                </button>
+                <button class="btn-one" id="newProfile">
+                    <i class="material-icons">add</i>
+                    <span data-i18n="structures.add_profile">Add Profile</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="profiles-container">
+            <div class="profiles-grid" id="profilesGrid"></div>
+
+            <!-- Empty State for Profiles -->
+            <div class="profiles-empty" id="profilesEmpty">
+                <div class="empty-icon">
+                    <i class="material-icons">person_add</i>
+                </div>
+                <h3 data-i18n="structures.no_profiles">No Profiles Yet</h3>
+                <p data-i18n="structures.no_profiles_desc">Add your first profile to this structure</p>
+                <button class="btn-one" onclick="$('#newProfile').click()">
+                    <i class="material-icons">add</i>
+                    <span data-i18n="structures.add_profile">Add Profile</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/pages/structures.js"></script>

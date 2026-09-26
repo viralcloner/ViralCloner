@@ -1,0 +1,326 @@
+<div id="automation-container">
+    <div class="automation-list">
+        <div class="input-group d-flex justify-content-start mb-4">
+            <button id="newAutomation" class="btn btn-dark my-3 flex-center">
+                <i class="material-icons me-1">add</i>
+                <span data-i18n="automation.new_automation">New automation</span>
+            </button>
+            <button id="importAutomation" class="btn btn-primary my-3 flex-center">
+                <i class="material-icons me-1">cloud_upload</i>
+                <span data-i18n="automation.import_automation">Import automation</span>
+            </button>
+        </div>
+        <!-- Bulk Actions Bar -->
+        <div id="bulkActionsBar" class="bulk-actions-bar" style="display: none;">
+            <div class="bulk-actions-info">
+                <i class="material-icons">check_circle</i>
+                <span id="selectedCount">0</span>
+                <span data-i18n="automation.bulk.selected">selected</span>
+            </div>
+            <div class="bulk-actions-buttons">
+                <button id="bulkDeleteBtn" class="btn btn-danger btn-sm flex-center">
+                    <i class="material-icons me-1">delete</i>
+                    <span data-i18n="automation.bulk.delete_selected">Delete Selected</span>
+                </button>
+                <button id="clearSelectionBtn" class="btn btn-outline-secondary btn-sm flex-center">
+                    <i class="material-icons me-1">close</i>
+                    <span data-i18n="automation.bulk.clear_selection">Clear Selection</span>
+                </button>
+            </div>
+        </div>
+        <div id="automationsTableContainer" class="automation-table-container">
+            <table class="automation-table">
+                <thead>
+                    <tr>
+                        <th width="40" class="checkbox-column">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="selectAllAutomations">
+                                <span class="checkmark"></span>
+                            </label>
+                        </th>
+                        <th width="50" data-i18n="automation.table.preview">Preview</th>
+                        <th data-i18n="automation.table.name">Name</th>
+                        <th width="120" data-i18n="automation.table.id">ID</th>
+                        <th width="180" data-i18n="automation.table.created">Created Date</th>
+                        <th width="100" data-i18n="automation.table.status">Status</th>
+                        <th width="180" data-i18n="automation.table.actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="automationsTableBody">
+                </tbody>
+            </table>
+        </div>
+        <div id="emptyAutomations" style="display: none; padding: 40px; text-align: center; color: #666;">
+            <i class="material-icons" style="font-size: 64px; color: #ddd; margin-bottom: 16px;">account_tree</i><br>
+            <span data-i18n="automation.empty">You don't have any automation yet.</span><br>
+            <span data-i18n="automation.empty_hint">Click "New Automation" to create one.</span>
+        </div>
+    </div>
+    <div class="automation-editor">
+        <button class="btn btn-info flex-center" id="returnBack"><i class="material-icons">arrow_back_ios</i>
+            <span data-i18n="automation.return">Return</span></button>
+        <div id="drawflow" style="width: 100%; height: 100%;"></div>
+        
+        <!-- AI Agent Canvas Indicator (floating badge) -->
+        <div id="aiAgentCanvasIndicator" class="ai-agent-canvas-indicator">
+            <div class="spinner"></div>
+            <div class="status-text">
+                <i class="material-icons">construction</i>
+                <span id="aiAgentCurrentTool">Building...</span>
+            </div>
+        </div>
+        
+        <div class="automation-sidebar">
+            <div class="resize-handle"></div>
+            <div class="main-bar">
+                <div class="sidebar-actions">
+                    <button id="undoAction" class="btn-sidebar-action undo" disabled data-i18n-title="automation.undo_tooltip" title="Undo (Ctrl+Z)">
+                        <i class="material-icons">undo</i>
+                    </button>
+                    <button id="redoAction" class="btn-sidebar-action redo" disabled data-i18n-title="automation.redo_tooltip" title="Redo (Ctrl+Y)">
+                        <i class="material-icons">redo</i>
+                    </button>
+                    <button id="saveAutomation" class="btn-sidebar-action save">
+                        <i class="material-icons">save</i>
+                        <span data-i18n="automation.save">Save</span>
+                    </button>
+                    <button id="testAutomation" class="btn-sidebar-action test">
+                        <i class="material-icons">play_arrow</i>
+                        <span data-i18n="automation.test">Test</span>
+                    </button>
+                </div>
+                
+                <div class="sidebar-search">
+                    <i class="material-icons">search</i>
+                    <input type="text" id="nodeSearch" data-i18n-placeholder="automation.search_nodes" placeholder="Search nodes...">
+                    
+                </div>
+                
+                <div class="elements" id="nodeElementsContainer">
+                    <!-- Nodes will be dynamically populated with groups -->
+                </div>
+            </div>
+            <div class="inputs">
+                <button id="inputsBack" class="btn text-dark">
+                    <div class="material-icons">arrow_back_ios_new</div>
+                </button>
+                <hr>
+                <div class="inputs-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Automation Modal -->
+    <div id="testAutomationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content test-automation-modal">
+            <div class="modal-header">
+                <h3 data-i18n="automation.test_modal.title">Test Automation</h3>
+                <button class="close-modal" onclick="document.getElementById('testAutomationModal').style.display='none'">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3" data-i18n="automation.test_modal.description">At least one input is required (text or image).</p>
+                
+                <div class="form-group mb-3">
+                    <label for="testTextInput"><strong data-i18n="automation.test_modal.text_input">Text Input (optional)</strong></label>
+                    <textarea id="testTextInput" class="form-control" rows="4" data-i18n-placeholder="automation.test_modal.text_placeholder" placeholder="Enter test text..."></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="testImageInput"><strong data-i18n="automation.test_modal.image_input">Image Input (optional)</strong></label>
+                    <input type="file" id="testImageInput" class="form-control" accept="image/*">
+                    <small class="text-muted" data-i18n="automation.test_modal.image_hint">Select an image file to test with</small>
+                </div>
+
+                <div id="testLogs" style="display: none;" class="mt-3">
+                    <h5 data-i18n="automation.test_modal.logs">Execution Logs</h5>
+                    <div id="testLogsContent" class="test-logs-content"></div>
+                </div>
+
+                <div id="testResults" style="display: none;" class="mt-4">
+                    <h4 data-i18n="automation.test_modal.results">Test Results</h4>
+                    <div id="testResultsContent" class="test-results-content"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="executeTestBtn" class="btn btn-primary">
+                    <i class="material-icons me-1">play_arrow</i>
+                    <span data-i18n="automation.test_modal.run_test">Run Test</span>
+                </button>
+                <button id="cancelTestBtn" class="btn btn-secondary" onclick="document.getElementById('testAutomationModal').style.display='none'" data-i18n="automation.test_modal.cancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Text Editor Modal -->
+    <div id="textEditorModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content text-editor-modal">
+            <div class="modal-header">
+                <h3 id="textEditorTitle" data-i18n="automation.text_editor.title">Edit Text</h3>
+                <button class="close-modal" id="closeTextEditor">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="textEditorContent" class="form-control" rows="15" data-i18n-placeholder="automation.text_editor.placeholder" placeholder="Enter your text here..." spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelTextEditor" class="btn btn-secondary" data-i18n="automation.text_editor.cancel">
+                    Cancel
+                </button>
+                <button id="saveTextEditor" class="btn btn-primary">
+                    <i class="material-icons">check</i>
+                    <span data-i18n="automation.text_editor.apply">Apply</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-Automation Editor Modal -->
+    <div id="subAutomationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content sub-automation-modal">
+            <div class="modal-header">
+                <h3 data-i18n="automation.subautomation.modal_title">Edit Sub-Automation</h3>
+                <button class="close-modal" id="closeSubAutomation">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="modal-body sub-automation-body">
+                <div id="subEditorSidebar" class="sub-editor-sidebar">
+                    <div class="sidebar-search">
+                        <i class="material-icons">search</i>
+                        <input type="text" id="subNodeSearch" data-i18n-placeholder="automation.search_nodes" placeholder="Search nodes...">
+                    </div>
+                    <div class="elements"></div>
+                </div>
+                <div id="subdrawflow" class="sub-drawflow-canvas"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelSubAutomation" class="btn btn-secondary" data-i18n="automation.subautomation.cancel">
+                    Cancel
+                </button>
+                <button id="saveSubAutomation" class="btn btn-primary">
+                    <i class="material-icons">check</i>
+                    <span data-i18n="automation.subautomation.save">Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Agent Floating Button -->
+    <button class="ai-agent-fab" id="aiAgentFab" title="AI Assistant">
+        <i class="material-icons">smart_toy</i>
+    </button>
+
+    <!-- AI Agent Chat Panel -->
+    <div class="ai-agent-panel" id="aiAgentPanel">
+        <div class="ai-agent-header">
+            <div class="ai-agent-title">
+                <i class="material-icons">smart_toy</i>
+                <span data-i18n="automation.ai_agent.title">AI Automation Builder</span>
+            </div>
+            <div class="ai-agent-header-actions">
+                <button class="ai-agent-btn-icon" id="aiAgentUndo" title="Undo" disabled>
+                    <i class="material-icons">undo</i>
+                </button>
+                <button class="ai-agent-btn-icon" id="aiAgentRedo" title="Redo" disabled>
+                    <i class="material-icons">redo</i>
+                </button>
+                <button class="ai-agent-btn-icon" id="aiAgentExportLog" title="Copy session log to clipboard">
+                    <i class="material-icons">content_copy</i>
+                </button>
+                <button class="ai-agent-btn-icon" id="aiAgentOpenLogs" title="Open logs folder">
+                    <i class="material-icons">folder_open</i>
+                </button>
+                <button class="ai-agent-btn-icon" id="aiAgentClear" title="Clear chat">
+                    <i class="material-icons">delete_sweep</i>
+                </button>
+                <button class="ai-agent-btn-icon" id="aiAgentClose">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="ai-agent-settings">
+            <div class="ai-agent-setting-row">
+                <label data-i18n="automation.ai_agent.provider">Provider</label>
+                <select id="aiAgentProvider" class="ai-agent-select">
+                    <option value="deepseekbrowser" selected>DeepSeek Browser</option>
+                    <option value="openai">OpenAI</option>
+                    <option value="anthropic">Anthropic</option>
+                    <option value="googleai">Google AI</option>
+                    <option value="openrouter">OpenRouter</option>
+                </select>
+            </div>
+            <div class="ai-agent-setting-row">
+                <label data-i18n="automation.ai_agent.model">Model</label>
+                <select id="aiAgentModel" class="ai-agent-select">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+        </div>
+
+        <div id="aiAgentQwenWarning" class="ai-agent-qwen-warning" style="display:none;">
+            <i class="material-icons">link_off</i>
+            <span>No Qwen account connected.</span>
+            <button id="aiAgentQwenConnect" class="ai-agent-qwen-connect-btn">Connect Account</button>
+        </div>
+
+        <div class="ai-agent-messages" id="aiAgentMessages">
+            <div class="ai-agent-welcome">
+                <i class="material-icons">waving_hand</i>
+                <h4 data-i18n="automation.ai_agent.welcome_title">Hi! I'm your automation assistant</h4>
+                <p data-i18n="automation.ai_agent.welcome_text">Tell me what kind of automation you want to build, and I'll create it step by step. I can also edit existing nodes or explain how things work.</p>
+                <div class="ai-agent-suggestions">
+                    <button class="ai-agent-suggestion" data-prompt="Create a simple Pinterest automation that reposts spy content with AI-rewritten text">
+                        <i class="material-icons">auto_awesome</i>
+                        <span data-i18n="automation.ai_agent.suggestion_1">Pinterest repost with AI text</span>
+                    </button>
+                    <button class="ai-agent-suggestion" data-prompt="Build an automation that generates new images with Midjourney based on spy posts and posts to Pinterest">
+                        <i class="material-icons">image</i>
+                        <span data-i18n="automation.ai_agent.suggestion_2">Midjourney image generation</span>
+                    </button>
+                    <button class="ai-agent-suggestion" data-prompt="Create a Facebook automation that rewrites spy text using Claude and posts with the original image">
+                        <i class="material-icons">facebook</i>
+                        <span data-i18n="automation.ai_agent.suggestion_3">Facebook with Claude rewrite</span>
+                    </button>
+                    <button class="ai-agent-suggestion" data-prompt="Explain what nodes are available and their purpose">
+                        <i class="material-icons">help_outline</i>
+                        <span data-i18n="automation.ai_agent.suggestion_4">Explain available nodes</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-agent-input-area">
+            <div class="ai-agent-image-preview" id="aiAgentImagePreview" style="display: none;">
+                <img id="aiAgentPreviewImg" src="" alt="Preview">
+                <button class="ai-agent-image-remove" id="aiAgentImageRemove">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="ai-agent-input-wrapper">
+                <button class="ai-agent-attach" id="aiAgentAttach" title="Attach image">
+                    <i class="material-icons">attach_file</i>
+                </button>
+                <input type="file" id="aiAgentImageInput" accept="image/*" style="display: none;">
+                <textarea id="aiAgentInput" class="ai-agent-input" rows="1" data-i18n-placeholder="automation.ai_agent.input_placeholder" placeholder="Describe what you want to build or change..."></textarea>
+                <button class="ai-agent-send" id="aiAgentSend" disabled>
+                    <i class="material-icons">send</i>
+                </button>
+                <button class="ai-agent-stop" id="aiAgentStop" style="display: none;" data-i18n-title="automation.ai_agent.stop_agent" title="Stop agent">
+                    <i class="material-icons">stop</i>
+                </button>
+            </div>
+            <div class="ai-agent-input-hint">
+                <span data-i18n="automation.ai_agent.input_hint">Press Enter to send, Shift+Enter for new line</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../node_modules/html2canvas/dist/html2canvas.min.js"></script>
+<script src="assets/js/pages/automation.js"></script>

@@ -1,0 +1,865 @@
+﻿
+#custom-titlebar {
+  -webkit-app-region: drag;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--vc-titlebar-height);
+  background: var(--vc-titlebar-bg);
+  color: var(--vc-titlebar-text);
+  position: relative;
+  z-index: var(--vc-z-titlebar);
+}
+
+.window-controls {
+  display: flex;
+  height: 100%;
+}
+
+.window-controls button {
+  -webkit-app-region: no-drag;
+  background: none;
+  color: var(--vc-titlebar-text);
+  border: none;
+  font-size: var(--vc-text-lg);
+  cursor: pointer;
+  width: 50px;
+}
+
+.window-controls button:hover {
+  background-color: var(--vc-titlebar-btn-hover-bg);
+}
+
+.body {
+  display: flex;
+  position: relative;
+}
+
+.body > .body-sidebar {
+  width: var(--vc-sidebar-width);
+  height: calc(100vh - var(--vc-titlebar-height));
+  background-color: var(--bg-primary);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-theme="dark"] .body > .body-sidebar {
+  background-color: var(--bg-secondary);
+}
+
+.body > .body-sidebar::-webkit-scrollbar {
+  width: var(--vc-scrollbar-width-thin);
+}
+
+.body > .body-sidebar::-webkit-scrollbar-track {
+  background: var(--vc-scrollbar-track);
+}
+
+.body > .body-sidebar::-webkit-scrollbar-thumb {
+  background: var(--vc-scrollbar-thumb);
+  border-radius: var(--vc-radius-sm);
+}
+
+.body > .body-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--vc-scrollbar-thumb-hover);
+}
+
+.body > .content {
+  background-color: var(--vc-content-bg);
+  width: calc(100vw - var(--vc-sidebar-width));
+  height: calc(100vh - var(--vc-titlebar-height));
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-left: var(--vc-content-border-left);
+}
+
+.body > .content .content-container {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.body > .body-sidebar .logo {
+  text-align: center;
+  margin-top: var(--vc-sidebar-logo-margin-top);
+}
+
+/* User Profile Section */
+.body > .body-sidebar .user-profile-section {
+  display: flex;
+  align-items: center;
+  padding: var(--vc-profile-section-padding);
+  margin: var(--vc-profile-section-margin);
+  background: var(--vc-profile-section-bg);
+  border-radius: var(--vc-profile-section-radius);
+  border: 1px solid var(--vc-profile-section-border);
+  cursor: pointer;
+  transition: var(--vc-transition-base);
+  box-shadow: var(--vc-shadow-sm);
+}
+
+.body > .body-sidebar .user-profile-section:hover {
+  border-color: var(--vc-profile-hover-border);
+  background: var(--vc-profile-hover-bg);
+  box-shadow: var(--vc-shadow-brand);
+}
+
+.body > .body-sidebar .user-profile-section .user-avatar {
+  width: var(--vc-profile-avatar-size);
+  height: var(--vc-profile-avatar-size);
+  border-radius: var(--vc-profile-avatar-radius);
+  background: var(--vc-profile-avatar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.body > .body-sidebar .user-profile-section .user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.body > .body-sidebar .user-profile-section .user-avatar .material-icons {
+  color: var(--vc-text-inverse);
+  font-size: var(--vc-text-2xl);
+}
+
+.body > .body-sidebar .user-profile-section .user-info {
+  margin-left: 10px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.body > .body-sidebar .user-profile-section .user-name {
+  display: block;
+  font-size: var(--vc-profile-name-size);
+  font-weight: var(--vc-profile-name-weight);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.body > .body-sidebar .user-profile-section .user-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.body > .body-sidebar .user-profile-section:hover .user-edit-btn {
+  color: var(--vc-brand-primary);
+  background: var(--vc-brand-primary-bg);
+}
+
+.body > .body-sidebar .user-profile-section .user-edit-btn .material-icons {
+  font-size: 18px;
+}
+
+/* Profile Avatar Edit in Modal */
+.profile-avatar-edit {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--vc-radius-circle);
+  background: var(--vc-bg-tertiary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.profile-avatar-edit img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar-edit .default-avatar {
+  font-size: 50px;
+  color: var(--vc-text-muted);
+}
+
+.profile-avatar-edit .avatar-upload-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--vc-bg-overlay-strong);
+  color: var(--vc-text-inverse);
+  padding: 6px 0;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.profile-avatar-edit:hover .avatar-upload-overlay {
+  opacity: 1;
+}
+
+.profile-avatar-edit .avatar-upload-overlay .material-icons {
+  font-size: 18px;
+}
+
+.body > .body-sidebar .menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.body > .body-sidebar .menu .menu-element {
+  color: var(--vc-menu-item-color);
+  margin: var(--vc-menu-item-margin);
+  padding: var(--vc-menu-item-padding);
+  border-radius: var(--vc-menu-item-radius);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: var(--vc-menu-item-font-size);
+}
+
+.body > .body-sidebar .menu .menu-element:hover {
+  background-color: var(--vc-menu-item-hover-bg);
+  color: var(--vc-menu-item-hover-color);
+}
+
+.body > .body-sidebar .menu .menu-element img {
+  width: 18px;
+  margin-right: 8px;
+}
+
+.body > .body-sidebar .menu .menu-element.active .light {
+  display: block;
+}
+
+.body > .body-sidebar .menu .menu-element.active .dark {
+  display: none;
+}
+
+.body > .body-sidebar .menu .menu-element:not(.active) .light {
+  display: none;
+}
+
+.body > .body-sidebar .menu .menu-element:not(.active) .dark {
+  display: block;
+}
+
+/* In dark mode, show the "light" icon variants for better contrast */
+html[data-theme="dark"] .body > .body-sidebar .menu .menu-element:not(.active) .light {
+  display: block;
+}
+
+html[data-theme="dark"] .body > .body-sidebar .menu .menu-element:not(.active) .dark {
+  display: none;
+}
+
+/* In dark mode, reset colored material-icons in sidebar to white for contrast */
+html[data-theme="dark"] .body > .body-sidebar .menu .menu-element:not(.active) .menu-icon-wrapper .material-icons {
+  color: #e5e7eb !important;
+}
+
+.body > .body-sidebar .menu .menu-element.active {
+  background-color: var(--vc-menu-item-active-bg);
+  color: var(--vc-menu-item-active-color);
+}
+
+.body > .body-sidebar .menu .menu-element .notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: #dc3545;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-primary);
+}
+
+html[data-theme="dark"] .body > .body-sidebar .menu .menu-element .notification-badge {
+  border-color: var(--bg-primary);
+}
+
+.body > .body-sidebar .menu .menu-element#logout span {
+  color: var(--vc-text-inverse);
+}
+
+.body > .body-sidebar .menu .menu-element#logout .light,
+.body > .body-sidebar .menu .menu-element:hover .light {
+  display: block;
+}
+
+.body > .body-sidebar .menu .menu-element#logout .dark,
+.body > .body-sidebar .menu .menu-element:hover .dark {
+  display: none;
+}
+
+/* Sidebar Category Dropdowns */
+.body > .body-sidebar .menu .menu-category {
+  margin: 0;
+}
+
+.body > .body-sidebar .menu .menu-category-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  margin: 2px 7px;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.body > .body-sidebar .menu .menu-category-header:hover {
+  background-color: var(--vc-menu-category-hover-bg);
+}
+
+.body > .body-sidebar .menu .menu-category-header .category-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body
+  > .body-sidebar
+  .menu
+  .menu-category-header
+  .category-icon
+  .material-icons {
+  font-size: 18px;
+  color: var(--text-secondary);
+}
+
+.body > .body-sidebar .menu .menu-category-header > span:not(.material-icons) {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.body > .body-sidebar .menu .menu-category-header .arrow {
+  font-size: 18px;
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+}
+
+.body > .body-sidebar .menu .menu-category.open .menu-category-header .arrow {
+  transform: rotate(180deg);
+}
+
+.body > .body-sidebar .menu .menu-category.open .menu-category-header {
+  background-color: var(--vc-menu-category-hover-bg);
+  color: var(--vc-menu-category-open-color);
+}
+
+.body
+  > .body-sidebar
+  .menu
+  .menu-category.open
+  .menu-category-header
+  .category-icon
+  .material-icons {
+  color: var(--vc-menu-category-open-color);
+}
+
+.body > .body-sidebar .menu .menu-category-items {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.body > .body-sidebar .menu .menu-category.open .menu-category-items {
+  max-height: 300px;
+}
+
+.body > .body-sidebar .menu .menu-category-items .menu-element {
+  margin: 2px 7px 2px 17px;
+  padding: 8px 10px;
+  font-size: 13px;
+  border-left: 2px solid transparent;
+  border-radius: 0 7px 7px 0;
+}
+
+.body > .body-sidebar .menu .menu-category-items .menu-element:hover {
+  border-left-color: var(--vc-sidebar-active);
+  background-color: var(--vc-menu-category-hover-bg);
+  color: var(--vc-menu-category-open-color);
+}
+
+.body > .body-sidebar .menu .menu-category-items .menu-element.active {
+  border-left-color: var(--vc-sidebar-active);
+  background-color: var(--vc-menu-item-active-bg);
+  color: var(--vc-menu-item-active-color);
+}
+
+.body > .body-sidebar .menu .menu-category-items .menu-element img {
+  width: 16px;
+  margin-right: 8px;
+}
+
+.body > .body-sidebar .menu .menu-category-items .menu-element .menu-icon-wrapper:not(:has(img)) {
+  position: relative;
+  left: -4px;
+}
+
+/* Sidebar divider */
+.body > .body-sidebar .menu .menu-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 10px 15px;
+}
+
+/* Sidebar Footer */
+.body > .body-sidebar .sidebar-footer {
+  margin-top: auto;
+  padding: var(--vc-sidebar-footer-padding);
+  border-top: 1px solid var(--vc-sidebar-border);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes pulse-pending {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.8); }
+}
+
+.body > .body-sidebar .sidebar-footer .version-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.body > .body-sidebar .sidebar-footer .app-version {
+  text-align: center;
+  font-size: var(--vc-sidebar-version-size);
+  color: var(--text-secondary);
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.body > .body-sidebar .sidebar-footer .bug-report-btn {
+  background: transparent;
+  border: 1px solid var(--vc-sidebar-border);
+  border-radius: var(--vc-sidebar-footer-btn-radius);
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+/* Theme toggle button (same visual family as bug report) */
+.body > .body-sidebar .sidebar-footer .theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--vc-sidebar-border);
+  border-radius: var(--vc-sidebar-footer-btn-radius);
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+.body > .body-sidebar .sidebar-footer .theme-toggle-btn:hover {
+  background: var(--vc-sidebar-footer-btn-hover-bg);
+  border-color: var(--vc-sidebar-footer-btn-hover-color);
+  color: var(--vc-sidebar-footer-btn-hover-color);
+}
+
+.body > .body-sidebar .sidebar-footer .theme-toggle-btn i {
+  font-size: 16px;
+}
+
+/* Show the icon for the action the user can take next */
+.body > .body-sidebar .sidebar-footer .theme-toggle-btn .theme-icon-light {
+  display: none;
+}
+
+html[data-theme="dark"] .body > .body-sidebar .sidebar-footer .theme-toggle-btn .theme-icon-dark {
+  display: none;
+}
+
+html[data-theme="dark"] .body > .body-sidebar .sidebar-footer .theme-toggle-btn .theme-icon-light {
+  display: inline-block;
+}
+
+.body > .body-sidebar .sidebar-footer .bug-report-btn:hover {
+  background: var(--vc-sidebar-footer-btn-hover-bg);
+  border-color: var(--vc-sidebar-footer-btn-hover-color);
+  color: var(--vc-sidebar-footer-btn-hover-color);
+}
+
+.body > .body-sidebar .sidebar-footer .bug-report-btn i {
+  font-size: 16px;
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn {
+  background-color: var(--vc-sidebar-logout-bg);
+  color: var(--vc-text-inverse) !important;
+  margin: 0;
+  padding: 8px 15px;
+  border-radius: var(--vc-sidebar-logout-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: var(--vc-text-base);
+  font-weight: var(--vc-weight-medium);
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn:hover {
+  background-color: var(--vc-sidebar-logout-hover-bg);
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn .light {
+  display: block !important;
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn .dark {
+  display: none !important;
+}
+
+/* ========================================
+   Sidebar Collapse/Expand Functionality
+   ======================================== */
+
+/* Logo transitions for collapse */
+.body > .body-sidebar .logo img {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.body > .body-sidebar .logo .logo-icon {
+  display: none;
+  width: 32px;
+  height: 32px;
+}
+
+/* Logo theme variants - show dark logo by default, light logo in dark mode */
+.body > .body-sidebar .logo .logo-light {
+  display: none;
+}
+
+html[data-theme="dark"] .body > .body-sidebar .logo .logo-light {
+  display: inline;
+}
+
+html[data-theme="dark"] .body > .body-sidebar .logo .logo-dark {
+  display: none;
+}
+
+/* Floating Toggle Button - positioned on sidebar/content edge */
+.body > .sidebar-toggle-btn {
+  position: absolute;
+  left: 200px;
+  top: 24px;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  z-index: 10;
+}
+
+.body > .sidebar-toggle-btn:hover {
+  background: #1e4dff;
+  border-color: #1e4dff;
+  box-shadow: 0 4px 12px rgba(30, 77, 255, 0.35);
+  transform: translateX(-50%) scale(1.1);
+}
+
+.body > .sidebar-toggle-btn:hover .material-icons {
+  color: #fff;
+}
+
+.body > .sidebar-toggle-btn .material-icons {
+  font-size: 16px;
+  color: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Collapsed state - move button position */
+.body > .body-sidebar.collapsed ~ .sidebar-toggle-btn {
+  left: 60px;
+}
+
+.body > .body-sidebar.collapsed ~ .sidebar-toggle-btn .material-icons {
+  transform: rotate(180deg);
+}
+
+/* Menu Icon Wrapper for consistent sizing */
+.body > .body-sidebar .menu .menu-element .menu-icon-wrapper {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  transition: margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.body > .body-sidebar .menu .menu-element .menu-icon-wrapper img {
+  width: 18px;
+  height: 18px;
+}
+
+.body > .body-sidebar .menu .menu-element .menu-icon-wrapper .material-icons,
+.body > .body-sidebar .menu .menu-element .menu-icon-wrapper .menu-icon {
+  font-size: 18px;
+}
+
+.body > .body-sidebar .menu .menu-element .menu-text {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.25s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Category text transition */
+.body > .body-sidebar .menu .menu-category-header .category-text {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.25s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Sidebar footer logout button icon wrapper */
+.body > .body-sidebar .sidebar-footer .logout-btn .menu-icon-wrapper {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn .menu-icon-wrapper img {
+  width: 16px;
+  height: 16px;
+}
+
+.body > .body-sidebar .sidebar-footer .logout-btn .menu-text {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.25s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sidebar Collapsed State */
+.body > .body-sidebar.collapsed {
+  width: 60px;
+}
+
+.body > .body-sidebar.collapsed ~ .content {
+  width: calc(100vw - 60px);
+}
+
+/* Collapsed logo state */
+.body > .body-sidebar.collapsed .logo .logo-full {
+  display: none;
+}
+
+.body > .body-sidebar.collapsed .logo .logo-icon {
+  display: block;
+}
+
+/* Hide text elements when collapsed */
+.body > .body-sidebar.collapsed .user-profile-section .user-info,
+.body > .body-sidebar.collapsed .user-profile-section .user-edit-btn {
+  display: none;
+}
+
+.body > .body-sidebar.collapsed .user-profile-section {
+  padding: 10px;
+  margin: 15px 7px 10px;
+  justify-content: center;
+}
+
+/* Menu items collapsed */
+.body > .body-sidebar.collapsed .menu .menu-element .menu-text {
+  display: none;
+}
+
+.body > .body-sidebar.collapsed .menu .menu-element .menu-icon-wrapper {
+  margin-right: 0;
+}
+
+.body > .body-sidebar.collapsed .menu .menu-element {
+  justify-content: center;
+  padding: 10px;
+  margin: 2px 7px !important;
+}
+
+/* Fix icon centering when collapsed - wrapper needs relative positioning */
+.body > .body-sidebar.collapsed .menu .menu-element .menu-icon-wrapper {
+  position: relative;
+}
+
+.body > .body-sidebar.collapsed .menu .menu-element .menu-icon-wrapper img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Category headers collapsed - hide completely */
+.body > .body-sidebar.collapsed .menu .menu-category-header {
+  display: none;
+}
+
+/* Category collapsed - remove margin */
+.body > .body-sidebar.collapsed .menu .menu-category {
+  margin: 0;
+}
+
+/* Category items collapsed - always show */
+.body > .body-sidebar.collapsed .menu .menu-category-items {
+  max-height: 500px;
+  padding-left: 0;
+}
+
+.body > .body-sidebar.collapsed .menu .menu-category-items .menu-element {
+  border-radius: 7px;
+  border-left: none;
+  margin: 2px 7px !important;
+}
+
+/* Match hover style with regular menu items when collapsed */
+.body > .body-sidebar.collapsed .menu .menu-category-items .menu-element:hover {
+  border-left: none;
+  background-color: #1e4fffa4;
+  color: #fff;
+}
+
+/* Footer collapsed */
+.body > .body-sidebar.collapsed .sidebar-footer .version-row {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.body > .body-sidebar.collapsed .sidebar-footer .version-row .bug-report-btn {
+  display: none;
+}
+
+.body > .body-sidebar.collapsed .sidebar-footer .app-version {
+  font-size: 9px;
+}
+
+.body > .body-sidebar.collapsed .sidebar-footer .logout-btn .menu-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.body > .body-sidebar.collapsed .sidebar-footer .logout-btn {
+  padding: 10px;
+  gap: 0;
+}
+
+/* Tooltip for collapsed sidebar */
+.body > .body-sidebar.collapsed .menu .menu-element[data-tooltip],
+.body > .body-sidebar.collapsed .menu .menu-category[data-tooltip] .menu-category-header {
+  position: relative;
+}
+
+/* Smooth width transitions */
+.body > .body-sidebar {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.body > .content {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.posts-filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 30px;
+}
+
+.posts-filters .form-search {
+  position: relative;
+  display: inline-flex;
+}
+
+.posts-filters .form-search .icon {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.posts-filters .form-search .icon i {
+  position: relative;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+
+.posts-filters input,
+.posts-filters select {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 1px solid #cacacabd;
+  outline: none;
+  margin: 0 5px;
+}
+
+.posts-filters .form-search input {
+  padding-left: 40px;
+}
+

@@ -1,0 +1,1997 @@
+<div id="workflows-container">
+  <div class="workflows-list">
+    <div class="workflow-toolbar">
+      <div class="workflow-toolbar__main">
+        <div class="workflow-toolbar__primary-actions">
+          <button id="newWorkflow" class="btn-one workflow-toolbar__primary">
+            <i class="material-icons">add</i>
+            <span data-i18n="workflows.new_workflow">New workflow</span>
+          </button>
+          <button
+            id="bulkLaunchWorkflows"
+            class="btn-one workflow-toolbar__feature"
+          >
+            <i class="material-icons">rocket_launch</i>
+            <span data-i18n="workflows.bulk_launch">Bulk Pinterest Launch</span>
+          </button>
+        </div>
+        
+      </div>
+      <div class="bulk-action-bar" aria-live="polite" aria-hidden="true">
+        <button id="scheduledPinsSelectedWorkflows" class="bulk-action-btn" style="display:none">
+          <i class="material-icons">schedule</i>
+          <span data-i18n="workflows.scheduled_pins_selected">Scheduled Pins</span>
+        </button>
+        <button id="bulkExportCsvSelectedWorkflows" class="bulk-action-btn" style="display:none">
+          <i class="material-icons">file_download</i>
+          <span data-i18n="workflows.bulk_export_csv">Bulk Export CSV</span>
+        </button>
+        <button id="autoPublishSelectedWorkflows" class="bulk-action-btn" style="display:none">
+          <i class="material-icons">cloud_upload</i>
+          <span data-i18n="workflows.auto_publish">Auto Publish</span>
+        </button>
+        <button id="startSelectedWorkflows" class="bulk-action-btn bulk-action-btn--success" style="display:none">
+          <i class="material-icons">play_circle</i>
+          <span data-i18n="workflows.start_selected">Start Selected</span>
+        </button>
+        <button id="rerunSelectedWorkflows" class="bulk-action-btn" style="display:none">
+          <i class="material-icons">replay</i>
+          <span data-i18n="workflows.rerun_failed">Rerun Failed</span>
+        </button>
+        <button id="removeExportedSelectedWorkflows" class="bulk-action-btn" style="display:none">
+          <i class="material-icons">unpublished</i>
+          <span data-i18n="workflows.remove_exported_selected">Remove Exported Mark</span>
+        </button>
+        <button id="deleteSelectedWorkflows" class="bulk-action-btn bulk-action-btn--danger" style="display:none">
+          <i class="material-icons">delete</i>
+          <span data-i18n="workflows.delete_selected">Delete Selected</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Workflow Queue Status -->
+    <div
+      id="workflowQueueStatus"
+      class="queue-status-bar"
+      style="display: none"
+    >
+      <div class="queue-status-inner">
+        <div class="queue-status-item queue-label">
+          <i class="material-icons">play_circle</i>
+          <span id="queueRunningText">0 running</span>
+        </div>
+        <div class="queue-status-item queue-label">
+          <i class="material-icons">schedule</i>
+          <span id="queueQueuedText">0 queued</span>
+        </div>
+        <div class="queue-status-divider"></div>
+        <div class="queue-status-item stat-done">
+          <i class="material-icons">check_circle</i>
+          <span id="queueDoneText">0 done</span>
+        </div>
+        <div class="queue-status-item stat-failed">
+          <i class="material-icons">cancel</i>
+          <span id="queueFailedText">0 failed</span>
+        </div>
+        <div class="queue-status-item stat-left">
+          <i class="material-icons">pending</i>
+          <span id="queueLeftText">0 left</span>
+        </div>
+        <div class="queue-status-divider"></div>
+        <div class="queue-status-item stat-speed" id="queueSpeedItem" style="display:none">
+          <i class="material-icons">speed</i>
+          <span id="queueSpeedText"></span>
+        </div>
+        <div class="queue-status-item stat-eta" id="queueEtaItem" style="display:none">
+          <i class="material-icons">hourglass_bottom</i>
+          <span id="queueEtaText"></span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="workflowsTableContainer"
+      class="workflow-table-container"
+      style="display: none"
+    >
+      <table class="workflow-table">
+        <thead>
+          <tr>
+            <th width="50">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="selectAllWorkflows"
+              />
+            </th>
+            <th width="120" data-i18n="workflows.table.id">ID</th>
+            <th data-i18n="workflows.table.automation">Automation</th>
+            <th width="100" data-i18n="workflows.table.progress">Progress</th>
+            <th width="120" data-i18n="workflows.table.posts">Posts</th>
+            <th width="100" data-i18n="workflows.table.status">Status</th>
+            <th width="160" data-i18n="workflows.table.pinterest">Pinterest</th>
+            <th width="150" data-i18n="workflows.table.run_time">Run Time</th>
+            <th width="200" data-i18n="workflows.table.actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="workflowsTableBody"></tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-center my-3" id="workflowsPager"></div>
+    <div
+      id="emptyWorkflows"
+      style="display: none; padding: 40px; text-align: center; color: #666"
+    >
+      <i
+        class="material-icons"
+        style="font-size: 64px; color: #ddd; margin-bottom: 16px"
+        >view_list</i
+      ><br />
+      <span data-i18n="workflows.empty">You don't have any Workflow yet.</span><br />
+      <span data-i18n="workflows.empty_hint">Click "New Workflow" to create one.</span>
+    </div>
+  </div>
+  <div class="workflow-preview">
+    <button class="btn btn-info flex-center" id="returnBack">
+      <i class="material-icons">arrow_back_ios</i>
+      <span data-i18n="workflows.return">Return</span>
+    </button>
+    <div class="posts" id="posts-gallery">
+      <div class="headerbar">
+        <div
+          class="d-flex justify-content-between align-items-center flex-wrap gap-3"
+        >
+          <div class="d-flex gap-3 align-items-center flex-wrap">
+            <!-- Professional Mode Selector -->
+            <div class="workflow-mode-selector" data-role="changeMode">
+              <button data-id="spy" class="mode-btn active">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.spy">Spy Mode</span>
+              </button>
+              <button data-id="custom" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+                  />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.custom">Custom</span>
+              </button>
+              <button data-id="pinterest" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="none"
+                >
+                  <path
+                    d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.406.042-3.442.218-.936 1.407-5.965 1.407-5.965s-.359-.719-.359-1.781c0-1.669.967-2.914 2.171-2.914 1.024 0 1.518.769 1.518 1.69 0 1.03-.655 2.569-.994 3.995-.283 1.195.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.208 0 1.031.397 2.137.893 2.739a.36.36 0 0 1 .083.344c-.091.379-.293 1.194-.333 1.361-.053.218-.173.265-.4.16-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.608 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"
+                  />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.pinterest">Pinterest</span>
+              </button>
+              <button data-id="fbinsights" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="none"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                  />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.fb_insights">FB Insights</span>
+              </button>
+              <button data-id="ise" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.35-4.35" />
+                  <path d="M11 8v6M8 11h6" />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.ise">Image Search</span>
+              </button>
+              <button data-id="gtrends" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.gtrends">Google Trends</span>
+              </button>
+              <button data-id="smartsplit" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M16 3h5v5" />
+                  <path d="M8 3H3v5" />
+                  <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3" />
+                  <path d="m15 9 6-6" />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.smart_split">Smart Split</span>
+              </button>
+              <button data-id="generate" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.generate">Generate</span>
+              </button>
+              <button data-id="pfeedspy" class="mode-btn">
+                <svg
+                  class="mode-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="none"
+                >
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.406.042-3.442.218-.936 1.407-5.965 1.407-5.965s-.359-.719-.359-1.781c0-1.669.967-2.914 2.171-2.914 1.024 0 1.518.769 1.518 1.69 0 1.03-.655 2.569-.994 3.995-.283 1.195.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.208 0 1.031.397 2.137.893 2.739a.36.36 0 0 1 .083.344c-.091.379-.293 1.194-.333 1.361-.053.218-.173.265-.4.16-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.608 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+                </svg>
+                <span class="mode-label" data-i18n="workflows.modes.pfeedspy">Feed Spy</span>
+              </button>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="workflow-filters">
+              <label
+                class="filter-toggle"
+                title="Hide posts that have already been used in workflows"
+              >
+                <input type="checkbox" id="hide-used-workflow-posts" checked />
+                <span class="toggle-label" data-i18n="workflows.filters.hide_used">Hide Used</span>
+              </label>
+              <div class="filter-dropdown">
+                <svg
+                  class="filter-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M4 4h16v2.172a2 2 0 0 1-.586 1.414l-5.828 5.828a2 2 0 0 0-.586 1.414V19l-4 2v-6.172a2 2 0 0 0-.586-1.414L2.586 7.586A2 2 0 0 1 2 6.172V4z"
+                  />
+                </svg>
+                <select
+                  id="spy-category-filter"
+                  class="form-select form-select-sm"
+                >
+                  <option value="" data-i18n="workflows.filters.all_categories">All Categories</option>
+                </select>
+              </div>
+              <div class="filter-dropdown">
+                <svg
+                  class="filter-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
+                </svg>
+                <select
+                  id="spy-sort-by"
+                  class="form-select form-select-sm"
+                >
+                  <option value="newest" data-i18n="workflows.filters.sort_newest">Newest</option>
+                  <option value="virality" data-i18n="workflows.filters.sort_virality">Virality Score</option>
+                  <option value="shares" data-i18n="workflows.filters.sort_shares">Most Shares</option>
+                  <option value="comments" data-i18n="workflows.filters.sort_comments">Most Comments</option>
+                  <option value="reactions" data-i18n="workflows.filters.sort_reactions">Most Reactions</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="start-automation-group" style="position:relative; display:inline-flex; white-space:nowrap">
+            <button
+              id="startAutomation"
+              style="white-space: nowrap; border-radius: 6px 0 0 6px"
+              class="btn btn-primary flex-center"
+            >
+              <i class="material-icons me-2">play_circle</i>
+              <span><span data-i18n="workflows.actions.start">Start</span> (<span id="previewCount">0</span>)</span>
+            </button>
+            <button
+              id="startAutomationMenuToggle"
+              type="button"
+              class="btn btn-primary"
+              style="border-radius: 0 6px 6px 0; border-left: 1px solid rgba(255,255,255,0.3); padding: 0 8px"
+              title="More options"
+            >
+              <i class="material-icons" style="font-size:20px;vertical-align:middle">arrow_drop_down</i>
+            </button>
+            <div id="startAutomationMenu" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; z-index:9999; min-width:190px; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px; box-shadow:0 4px 20px rgba(0,0,0,0.15); overflow:hidden">
+              <button id="createPausedWorkflow" style="width:100%; display:flex; align-items:center; gap:10px; padding:10px 16px; border:none; background:transparent; color:var(--text-primary); cursor:pointer; font-size:14px" onmouseover="this.style.background='var(--bg-tertiary)'" onmouseout="this.style.background='transparent'">
+                <i class="material-icons" style="font-size:18px; color:#8b5cf6">pause_circle</i>
+                <span data-i18n="workflows.actions.create_paused">Create Paused</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll" data-section="spy">
+        <table class="table mt-4">
+          <thead>
+            <tr>
+              <td>
+                <input
+                  data-role="checkAll"
+                  class="form-check-input"
+                  type="checkbox"
+                />
+              </td>
+              <td data-i18n="workflows.table.platform">Platform</td>
+              <td data-i18n="workflows.table.image">Image</td>
+              <td data-i18n="workflows.table.statistics">Statistics</td>
+              <td data-i18n="workflows.table.content">Content</td>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="scroll" data-section="custom" style="display: none">
+        <div class="container">
+          <div class="row py-5">
+            <div class="col-6">
+              <form action="" id="customTitles">
+                <textarea
+                  required
+                  class="form-control"
+                  rows="10"
+                  placeholder="Titles splitted using |"
+                  data-i18n-placeholder="workflows.custom.placeholder"
+                ></textarea>
+
+                <div class="form-group mt-3">
+                  <label for="customModeImage">
+                    <i
+                      class="material-icons"
+                      style="vertical-align: middle; font-size: 18px"
+                      >image</i
+                    >
+                    <span data-i18n="workflows.custom.image_optional">Image (optional):</span>
+                  </label>
+                  <input
+                    type="file"
+                    id="customModeImage"
+                    class="form-control"
+                    accept="image/*"
+                  />
+                  <small class="text-muted" data-i18n="workflows.custom.upload_hint"
+                    >Upload one image to use for all posts</small
+                  >
+                  <div
+                    id="customModeImagePreview"
+                    class="mt-2"
+                    style="display: none"
+                  >
+                    <div style="position: relative; display: inline-block">
+                      <img
+                        src=""
+                        alt="Preview"
+                        style="
+                          max-width: 100%;
+                          max-height: 200px;
+                          border-radius: 8px;
+                          border: 2px solid #ddd;
+                        "
+                      />
+                      <button
+                        type="button"
+                        id="removeCustomImage"
+                        class="btn btn-sm btn-danger"
+                        style="position: absolute; top: 5px; right: 5px"
+                      >
+                        <i class="material-icons" style="font-size: 16px"
+                          >delete</i
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-2" data-i18n="workflows.filters.add">
+                  Add
+                </button>
+              </form>
+
+              <!-- Optional Pinterest account connection for custom mode -->
+              <div class="card mt-4" id="customModePinterestCard">
+                <div class="card-header d-flex align-items-center gap-2">
+                  <div class="form-check form-switch mb-0">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="customModePinterestEnabled"
+                      role="switch"
+                    />
+                    <label class="form-check-label fw-semibold" for="customModePinterestEnabled">
+                      <i class="material-icons me-1" style="vertical-align:middle;font-size:18px">push_pin</i>
+                      <span data-i18n="workflows.custom.pinterest_optional">Connect Pinterest account (optional)</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="card-body" id="customModePinterestBody" style="display:none">
+                  <div class="form-group mb-3">
+                    <label for="customModePinterestAccount" data-i18n="workflows.pinterest.account">Pinterest Account:</label>
+                    <select id="customModePinterestAccount" class="form-control">
+                      <option value="" data-i18n="workflows.pinterest.select_account">Select Account</option>
+                    </select>
+                  </div>
+                  <div class="form-group mb-0">
+                    <label for="customModePinterestBoard" data-i18n="workflows.pinterest.board">Board:</label>
+                    <select id="customModePinterestBoard" class="form-control" disabled>
+                      <option value="" data-i18n="workflows.pinterest.select_board">Select Board</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6" data-role="customTitles"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll" data-section="pinterest" style="display: none">
+        <div class="container">
+          <div class="row py-5">
+            <div class="col-6">
+              <div class="card">
+                <div class="card-header">
+                  <h6>
+                    <i class="material-icons me-2">select</i><span data-i18n="workflows.pinterest.select_titles">Select Pinterest
+                    Titles</span>
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="form-group mb-3">
+                    <label for="workflowPinterestAccount" data-i18n="workflows.pinterest.account"
+                      >Pinterest Account:</label
+                    >
+                    <select
+                      id="workflowPinterestAccount"
+                      class="form-control"
+                      required
+                    >
+                      <option value="" data-i18n="workflows.pinterest.select_account">Select Account</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group mb-3">
+                    <label for="workflowPinterestBoard" data-i18n="workflows.pinterest.board">Board:</label>
+                    <select
+                      id="workflowPinterestBoard"
+                      class="form-control"
+                      required
+                      disabled
+                    >
+                      <option value="" data-i18n="workflows.pinterest.select_board">Select Board</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group mb-3">
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-2"
+                    >
+                      <label data-i18n="workflows.pinterest.available_titles">Available Titles:</label>
+                      <div class="d-flex gap-2 align-items-center">
+                        <div
+                          class="input-group input-group-sm"
+                          style="width: auto"
+                        >
+                          <input
+                            type="number"
+                            id="selectFirstNCount"
+                            class="form-control"
+                            style="width: 70px"
+                            min="1"
+                            placeholder="#"
+                            title="Number of titles to select"
+                          />
+                          <button
+                            type="button"
+                            id="selectFirstN"
+                            class="btn btn-outline-secondary btn-sm"
+                            data-i18n="workflows.pinterest.select_first"
+                          >
+                            Select First
+                          </button>
+                        </div>
+                        <button
+                          type="button"
+                          id="selectAllTitles"
+                          class="btn btn-outline-primary btn-sm"
+                          data-i18n="workflows.pinterest.select_all"
+                        >
+                          Select All
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      id="availablePinterestTitles"
+                      style="
+                        max-height: 300px;
+                        overflow-y: auto;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        padding: 10px;
+                      "
+                    >
+                      <div class="text-muted text-center py-3">
+                        <i class="material-icons">title</i><br />
+                        <span data-i18n="workflows.pinterest.select_hint">Select account and board to see available titles</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    id="loadPinterestTitles"
+                    class="btn btn-info w-100"
+                    disabled
+                  >
+                    <i class="material-icons me-2">refresh</i>
+                    <span data-i18n="workflows.pinterest.refresh_titles">Refresh Titles</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="card-header">
+                  <h6 data-i18n="workflows.pinterest.selected_titles">Selected Titles for Workflow</h6>
+                </div>
+                <div class="card-body">
+                  <div
+                    id="selectedPinterestTitles"
+                    data-role="pinterestTitles"
+                    style="max-height: 400px; overflow-y: auto"
+                  >
+                    <div class="text-muted text-center py-3">
+                      <i class="material-icons">checklist</i><br />
+                      <span data-i18n="workflows.pinterest.no_titles_selected">No titles selected</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- FB Insights Mode Section -->
+      <div class="scroll" data-section="fbinsights" style="display: none">
+        <div class="fbinsights-container">
+          <!-- Step Indicator -->
+          <div class="fbinsights-steps">
+            <div class="fbinsights-step active" data-step="1">
+              <div class="step-number">1</div>
+              <div class="step-label" data-i18n="workflows.fbinsights.import_csv">Import CSV</div>
+            </div>
+            <div class="fbinsights-step-connector"></div>
+            <div class="fbinsights-step" data-step="2">
+              <div class="step-number">2</div>
+              <div class="step-label" data-i18n="workflows.fbinsights.select_posts">Select Posts</div>
+            </div>
+            <div class="fbinsights-step-connector"></div>
+            <div class="fbinsights-step" data-step="3">
+              <div class="step-number">3</div>
+              <div class="step-label" data-i18n="workflows.fbinsights.fetch_images">Fetch Images</div>
+            </div>
+            <div class="fbinsights-step-connector"></div>
+            <div class="fbinsights-step" data-step="4">
+              <div class="step-number">4</div>
+              <div class="step-label" data-i18n="workflows.fbinsights.ready">Ready</div>
+            </div>
+          </div>
+
+          <!-- Step 1: Import CSV -->
+          <div class="fbinsights-panel" data-panel="1">
+            <div class="fbinsights-card">
+              <div class="fbinsights-card-header">
+                <i class="material-icons">cloud_upload</i>
+                <span data-i18n="workflows.fbinsights.import_title">Import Facebook Insights CSV</span>
+              </div>
+              <div class="fbinsights-card-body">
+                <div class="fbinsights-dropzone" id="fbinsightsCsvDropzone">
+                  <i class="material-icons">upload_file</i>
+                  <p data-i18n="workflows.fbinsights.click_select">Click to select your CSV file</p>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="fbinsightsCsvBrowse"
+                    data-i18n="workflows.fbinsights.browse_files"
+                  >
+                    Browse Files
+                  </button>
+                </div>
+                <div
+                  class="fbinsights-file-info"
+                  id="fbinsightsCsvInfo"
+                  style="display: none"
+                >
+                  <i class="material-icons">description</i>
+                  <div class="file-details">
+                    <span class="file-name"></span>
+                    <span class="file-size"></span>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    id="fbinsightsCsvRemove"
+                  >
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+                <div class="fbinsights-instructions">
+                  <h6>
+                    <i class="material-icons">info</i> How to export from
+                    Facebook
+                  </h6>
+                  <ol>
+                    <li>Go to <strong>business.facebook.com</strong></li>
+                    <li>Navigate to <strong>Content</strong> section</li>
+                    <li>Click <strong>Export</strong> button</li>
+                    <li>Keep default options and download the CSV</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Select Posts -->
+          <div class="fbinsights-panel" data-panel="2" style="display: none">
+            <div class="fbinsights-card">
+              <div class="fbinsights-card-header">
+                <i class="material-icons">filter_list</i>
+                <span>Select Top Posts</span>
+              </div>
+              <div class="fbinsights-card-body">
+                <div class="fbinsights-post-selector">
+                  <label>Number of top posts by views:</label>
+                  <div class="d-flex align-items-center gap-3">
+                    <input
+                      type="number"
+                      id="fbinsightsPostCount"
+                      class="form-control"
+                      value="10"
+                      min="1"
+                      max="100"
+                      style="width: 100px"
+                    />
+                    <span class="text-muted" id="fbinsightsAvailableCount"
+                      >0 posts available</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="fbinsights-posts-preview"
+                  id="fbinsightsPostsPreview"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="50">#</th>
+                        <th>Content Preview</th>
+                        <th width="80">Views</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    id="fbinsightsBackToStep1"
+                  >
+                    <i class="material-icons">arrow_back</i> Back
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="fbinsightsFetchImages"
+                  >
+                    <i class="material-icons">image</i> Fetch Images
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Fetching Images -->
+          <div class="fbinsights-panel" data-panel="3" style="display: none">
+            <div class="fbinsights-card">
+              <div class="fbinsights-card-header">
+                <i class="material-icons">sync</i>
+                <span>Fetching Images</span>
+              </div>
+              <div class="fbinsights-card-body">
+                <div class="fbinsights-progress">
+                  <div class="progress-info">
+                    <span id="fbinsightsProgressText"
+                      >Processing post 0 of 0...</span
+                    >
+                    <span id="fbinsightsProgressPercent">0%</span>
+                  </div>
+                  <div class="progress">
+                    <div
+                      class="progress-bar"
+                      id="fbinsightsProgressBar"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                  <div
+                    class="fbinsights-current-status"
+                    id="fbinsightsCurrentStatus"
+                  >
+                    <i class="material-icons spin">autorenew</i>
+                    <span>Initializing...</span>
+                  </div>
+                </div>
+                <div class="fbinsights-log" id="fbinsightsLog"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Ready -->
+          <div class="fbinsights-panel" data-panel="4" style="display: none">
+            <div class="fbinsights-card">
+              <div class="fbinsights-card-header success">
+                <i class="material-icons">check_circle</i>
+                <span>Posts Ready</span>
+              </div>
+              <div class="fbinsights-card-body">
+                <div class="fbinsights-ready-summary">
+                  <div class="summary-stat">
+                    <i class="material-icons">article</i>
+                    <span id="fbinsightsReadyCount">0</span>
+                    <label>Posts Ready</label>
+                  </div>
+                  <div class="summary-stat">
+                    <i class="material-icons">image</i>
+                    <span id="fbinsightsImagesCount">0</span>
+                    <label>Images Fetched</label>
+                  </div>
+                  <div class="summary-stat warning">
+                    <i class="material-icons">warning</i>
+                    <span id="fbinsightsSkippedCount">0</span>
+                    <label>Skipped</label>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    id="fbinsightsRetryFailed"
+                    style="display: none"
+                  >
+                    <i class="material-icons">refresh</i> Retry Failed
+                  </button>
+                </div>
+                <div
+                  class="fbinsights-multiplier mt-3 mb-3 p-3"
+                  style="
+                    background: rgba(var(--bs-primary-rgb), 0.1);
+                    border-radius: 8px;
+                    border: 1px solid rgba(var(--bs-primary-rgb), 0.2);
+                  "
+                >
+                  <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="material-icons text-primary">content_copy</i>
+                      <label class="mb-0 fw-semibold">Post Multiplier:</label>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <input
+                        type="number"
+                        id="fbinsightsMultiplier"
+                        class="form-control"
+                        value="1"
+                        min="1"
+                        max="100"
+                        style="width: 80px"
+                      />
+                      <span class="text-muted">× per selected post</span>
+                    </div>
+                    <div
+                      class="ms-auto text-primary fw-semibold"
+                      id="fbinsightsTotalPosts"
+                    >
+                      Total: <span id="fbinsightsTotalCount">0</span> posts will
+                      be generated
+                    </div>
+                  </div>
+                </div>
+                <div class="fbinsights-ready-posts" id="fbinsightsReadyPosts">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="40">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="fbinsightsSelectAll"
+                            checked
+                          />
+                        </th>
+                        <th width="80">Image</th>
+                        <th>Content</th>
+                        <th width="80">Views</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    id="fbinsightsBackToStep2"
+                  >
+                    <i class="material-icons">arrow_back</i> Back
+                  </button>
+                  <div
+                    class="text-muted"
+                    style="font-size: 13px; align-self: center"
+                  >
+                    Click <strong>Start</strong> button above to begin workflow
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ISE (Image Search Engines) Mode Section -->
+      <div class="scroll" data-section="ise" style="display: none">
+        <div class="ise-container">
+          <!-- Search Form -->
+          <div class="ise-search-panel">
+            <div class="ise-search-card">
+              <div class="ise-search-header">
+                <i class="material-icons">image_search</i>
+                <span data-i18n="workflows.ise.search_title">Search Images from Google & Bing</span>
+              </div>
+              <div class="ise-search-body">
+                <form id="iseSearchForm" class="ise-search-form">
+                  <div class="ise-keywords-input">
+                    <label data-i18n="workflows.ise.keywords_label">Keywords (one per line or comma-separated):</label>
+                    <textarea
+                      id="iseKeywords"
+                      class="form-control"
+                      rows="3"
+                      placeholder="Enter keywords to search for images..."
+                      data-i18n-placeholder="workflows.ise.keywords_placeholder"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <!-- AI Query Generator -->
+                  <div class="ise-ai-generator">
+                    <div class="ise-ai-header" id="iseAiToggle">
+                      <div class="ise-ai-header-left">
+                        <i class="material-icons">auto_awesome</i>
+                        <span data-i18n="workflows.ise.ai_generate_title">Generate Keywords with AI</span>
+                      </div>
+                      <i class="material-icons ise-ai-chevron">expand_more</i>
+                    </div>
+                    <div class="ise-ai-body" id="iseAiBody" style="display: none;">
+                      <div id="iseAiNoApi" class="ise-ai-notice" style="display: none;">
+                        <i class="material-icons">warning</i>
+                        <span data-i18n="workflows.ise.ai_no_api">Connect an AI API in Settings to use this feature</span>
+                      </div>
+                      <div id="iseAiForm" style="display: none;">
+                        <div class="ise-ai-row">
+                          <div class="ise-ai-field">
+                            <label data-i18n="workflows.ise.ai_niche">Niche / Topic:</label>
+                            <input type="text" id="iseAiNiche" class="form-control" placeholder="e.g., Healthy drinks, Fitness motivation..." data-i18n-placeholder="workflows.ise.ai_niche_placeholder" />
+                          </div>
+                          <div class="ise-ai-field">
+                            <label data-i18n="workflows.ise.ai_language">Language:</label>
+                            <select id="iseAiLanguage" class="form-select">
+                              <option value="English">English</option>
+                              <option value="Spanish">Español</option>
+                              <option value="French">Français</option>
+                              <option value="German">Deutsch</option>
+                              <option value="Italian">Italiano</option>
+                              <option value="Portuguese">Português</option>
+                              <option value="Arabic">العربية</option>
+                              <option value="Chinese">中文</option>
+                              <option value="Japanese">日本語</option>
+                              <option value="Korean">한국어</option>
+                              <option value="Russian">Русский</option>
+                              <option value="Hindi">हिन्दी</option>
+                            </select>
+                          </div>
+                          <div class="ise-ai-field ise-ai-field-small">
+                            <label data-i18n="workflows.ise.ai_count">Queries:</label>
+                            <input type="number" id="iseAiCount" class="form-control" value="5" min="1" max="20" />
+                          </div>
+                        </div>
+                        <div class="ise-ai-row" id="iseAiProviderRow">
+                          <div class="ise-ai-field">
+                            <label data-i18n="workflows.ise.ai_provider">AI Provider:</label>
+                            <select id="iseAiProvider" class="form-select">
+                              <!-- Populated dynamically -->
+                            </select>
+                          </div>
+                          <div class="ise-ai-field">
+                            <label data-i18n="workflows.ise.ai_model">Model:</label>
+                            <select id="iseAiModel" class="form-select">
+                              <!-- Populated dynamically -->
+                            </select>
+                          </div>
+                        </div>
+                        <div class="ise-ai-actions">
+                          <button type="button" class="btn btn-outline-primary" id="iseAiGenerateBtn">
+                            <i class="material-icons">auto_awesome</i>
+                            <span data-i18n="workflows.ise.ai_generate_btn">Generate Keywords</span>
+                          </button>
+                          <div class="ise-ai-spinner" id="iseAiSpinner" style="display: none;">
+                            <div class="spinner-border spinner-border-sm" role="status"></div>
+                            <span data-i18n="workflows.ise.ai_generating">Generating...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ise-search-options">
+                    <div class="ise-option-group">
+                      <label data-i18n="workflows.ise.max_results">Max results per keyword:</label>
+                      <input
+                        type="number"
+                        id="iseMaxResults"
+                        class="form-control"
+                        value="20"
+                        min="5"
+                        max="50"
+                        style="width: 80px"
+                      />
+                    </div>
+                    <div class="ise-option-group">
+                      <label data-i18n="workflows.ise.search_engines">Engines:</label>
+                      <div class="ise-engine-toggles">
+                        <label class="ise-engine-toggle">
+                          <input type="checkbox" id="iseEngineGoogle" checked />
+                          <span>Google</span>
+                        </label>
+                        <label class="ise-engine-toggle">
+                          <input type="checkbox" id="iseEngineBing" checked />
+                          <span>Bing</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ise-option-group">
+                      <label class="ise-safe-toggle">
+                        <input type="checkbox" id="iseSafeSearch" checked />
+                        <span data-i18n="workflows.ise.safe_search">Safe Search</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="ise-search-actions">
+                    <button type="submit" class="btn btn-primary" id="iseSearchBtn">
+                      <i class="material-icons">search</i>
+                      <span data-i18n="workflows.ise.search_btn">Search Images</span>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="iseClearHiddenBtn">
+                      <i class="material-icons">visibility</i>
+                      <span data-i18n="workflows.ise.clear_hidden">Clear Hidden</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Progress -->
+          <div class="ise-progress-panel" id="iseProgressPanel" style="display: none">
+            <div class="ise-progress-card">
+              <div class="d-flex align-items-center gap-3">
+                <div class="spinner-border text-primary" role="status"></div>
+                <div>
+                  <span id="iseProgressText" data-i18n="workflows.ise.searching">Searching...</span>
+                  <span id="iseProgressKeyword" class="text-muted"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Results -->
+          <div class="ise-results-panel" id="iseResultsPanel" style="display: none">
+            <div class="ise-results-header">
+              <div class="ise-results-stats">
+                <span id="iseResultsCount">0</span>
+                <span data-i18n="workflows.ise.images_found">images found</span>
+                <span class="ise-results-divider">|</span>
+                <span id="iseSelectedCount">0</span>
+                <span data-i18n="workflows.ise.selected">selected</span>
+              </div>
+              <div class="ise-results-actions">
+                <button type="button" class="btn btn-sm btn-outline-primary" id="iseSelectAll">
+                  <i class="material-icons">select_all</i>
+                  <span data-i18n="workflows.ise.select_all">Select All</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="iseDeselectAll">
+                  <i class="material-icons">deselect</i>
+                  <span data-i18n="workflows.ise.deselect_all">Deselect All</span>
+                </button>
+              </div>
+            </div>
+            <div class="ise-results-grid" id="iseResultsGrid">
+              <!-- Image cards will be inserted here dynamically -->
+            </div>
+            <div class="ise-results-empty" id="iseResultsEmpty" style="display: none">
+              <i class="material-icons">image_not_supported</i>
+              <p data-i18n="workflows.ise.no_results">No images found. Try different keywords.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Google Trends Mode Section -->
+      <div class="scroll" data-section="gtrends" style="display: none">
+      <div class="gtrends-container">
+        <!-- Search/Filter Panel -->
+        <div class="gtrends-search-panel">
+          <div class="gtrends-search-card">
+            <div class="gtrends-search-header">
+              <i class="material-icons">trending_up</i>
+              <span data-i18n="workflows.gtrends.search_title">Discover Trending Topics from Google</span>
+            </div>
+            <div class="gtrends-search-body">
+              <div class="gtrends-filters">
+                <div class="gtrends-filter-group">
+                  <label data-i18n="workflows.gtrends.region">Region:</label>
+                  <select id="gtrendsRegion" class="form-select">
+                    <option value="US">United States</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="CA">Canada</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="ES">Spain</option>
+                    <option value="IT">Italy</option>
+                    <option value="BR">Brazil</option>
+                    <option value="MX">Mexico</option>
+                    <option value="IN">India</option>
+                    <option value="JP">Japan</option>
+                    <option value="KR">South Korea</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="BE">Belgium</option>
+                    <option value="CH">Switzerland</option>
+                    <option value="AT">Austria</option>
+                    <option value="PT">Portugal</option>
+                    <option value="PL">Poland</option>
+                    <option value="SE">Sweden</option>
+                    <option value="NO">Norway</option>
+                    <option value="DK">Denmark</option>
+                    <option value="FI">Finland</option>
+                    <option value="IE">Ireland</option>
+                    <option value="NZ">New Zealand</option>
+                    <option value="SG">Singapore</option>
+                    <option value="AE">UAE</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="EG">Egypt</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="MA">Morocco</option>
+                    <option value="DZ">Algeria</option>
+                    <option value="TN">Tunisia</option>
+                  </select>
+                </div>
+                <div class="gtrends-filter-group">
+                  <label data-i18n="workflows.gtrends.category">Category:</label>
+                  <select id="gtrendsCategory" class="form-select">
+                    <option value="all">All Categories</option>
+                    <option value="autos">Autos & Vehicles</option>
+                    <option value="beauty">Beauty & Fitness</option>
+                    <option value="business">Business & Industrial</option>
+                    <option value="climate">Climate</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="food">Food & Drink</option>
+                    <option value="games">Games</option>
+                    <option value="health">Health</option>
+                    <option value="hobbies">Hobbies & Leisure</option>
+                    <option value="jobs">Jobs & Education</option>
+                    <option value="law">Law & Government</option>
+                    <option value="other">Other</option>
+                    <option value="pets">Pets & Animals</option>
+                    <option value="politics">Politics</option>
+                    <option value="science">Science</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="sports">Sports</option>
+                    <option value="tech">Technology</option>
+                    <option value="travel">Travel</option>
+                  </select>
+                </div>
+                <div class="gtrends-filter-group">
+                  <label data-i18n="workflows.gtrends.keyword">Optional Keyword:</label>
+                  <input type="text" id="gtrendsKeyword" class="form-control" placeholder="Filter by keyword..." data-i18n-placeholder="workflows.gtrends.keyword_placeholder" />
+                </div>
+                <div class="gtrends-filter-group">
+                  <label data-i18n="workflows.gtrends.time_range">Time Range:</label>
+                  <select id="gtrendsTimeRange" class="form-select">
+                    <option value="4">Last 4 hours</option>
+                    <option value="24">Last 24 hours</option>
+                    <option value="48">Last 48 hours</option>
+                    <option value="168" selected>Last 7 days</option>
+                  </select>
+                </div>
+              </div>
+              <div class="gtrends-search-actions">
+                <button type="button" class="btn btn-primary" id="gtrendsFetchBtn">
+                  <i class="material-icons">search</i>
+                  <span data-i18n="workflows.gtrends.fetch_btn">Fetch Trends</span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" id="gtrendsRefreshBtn">
+                  <i class="material-icons">refresh</i>
+                  <span data-i18n="workflows.gtrends.refresh_btn">Force Refresh</span>
+                </button>
+                <button type="button" class="btn btn-outline-warning" id="gtrendsOpenBrowserBtn" title="Open browser to solve captcha if needed">
+                  <i class="material-icons">open_in_browser</i>
+                  <span data-i18n="workflows.gtrends.open_browser_btn">Open Browser</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="gtrends-loading" id="gtrendsLoading" style="display: none">
+          <div class="spinner-border text-primary" role="status"></div>
+          <span data-i18n="workflows.gtrends.loading">Fetching trending topics...</span>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="gtrends-results-panel" id="gtrendsResultsPanel" style="display: none">
+          <div class="gtrends-results-header">
+            <div class="gtrends-results-info">
+              <span class="gtrends-results-count" id="gtrendsResultsCount">0</span>
+              <span data-i18n="workflows.gtrends.topics_found">trending topics found</span>
+              <span class="gtrends-cache-indicator" id="gtrendsCacheIndicator" style="display: none">
+                <i class="material-icons">cached</i>
+                <span data-i18n="workflows.gtrends.from_cache">from cache</span>
+              </span>
+            </div>
+            <div class="gtrends-results-actions">
+              <button type="button" class="btn btn-sm btn-outline-primary" id="gtrendsSelectAll">
+                <i class="material-icons">select_all</i>
+                <span data-i18n="workflows.gtrends.select_all">Select All</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" id="gtrendsDeselectAll">
+                <i class="material-icons">deselect</i>
+                <span data-i18n="workflows.gtrends.deselect_all">Deselect All</span>
+              </button>
+              <span class="gtrends-selected-count">
+                <span id="gtrendsSelectedCount">0</span>
+                <span data-i18n="workflows.gtrends.selected">selected</span>
+              </span>
+            </div>
+          </div>
+          <div class="gtrends-results-grid" id="gtrendsResultsGrid">
+            <!-- Topic cards will be inserted here dynamically -->
+          </div>
+          <div class="gtrends-results-empty" id="gtrendsResultsEmpty" style="display: none">
+            <i class="material-icons">trending_flat</i>
+            <p data-i18n="workflows.gtrends.no_results">No trending topics found for this region and category.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Smart Split Mode -->
+      <div class="scroll" data-section="smartsplit" style="display: none">
+        <div class="smartsplit-config">
+          <div class="smartsplit-config-row">
+            <div class="smartsplit-field">
+              <label for="smartsplitProvider" data-i18n="workflows.smart_split.ai_provider">AI Provider</label>
+              <select id="smartsplitProvider" class="form-control">
+                <option value="" data-i18n="workflows.smart_split.select_provider">-- Select AI Provider --</option>
+              </select>
+            </div>
+            <div class="smartsplit-field" style="align-self: flex-end;">
+              <button type="button" class="btn btn-primary" id="smartsplitAnalyzeBtn" disabled>
+                <i class="material-icons me-1">auto_awesome</i>
+                <span data-i18n="workflows.smart_split.analyze_btn">Analyze Selected</span>
+                (<span id="smartsplitSelectedCount">0</span>)
+              </button>
+            </div>
+          </div>
+        </div>
+        <table class="table mt-4" id="smartsplit-table">
+          <thead>
+            <tr>
+              <td>
+                <input
+                  data-role="checkAll"
+                  class="form-check-input"
+                  type="checkbox"
+                />
+              </td>
+              <td data-i18n="workflows.table.platform">Platform</td>
+              <td data-i18n="workflows.table.image">Image</td>
+              <td data-i18n="workflows.table.statistics">Statistics</td>
+              <td data-i18n="workflows.table.content">Content</td>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Pinterest Feed Spy Mode Section -->
+      <div class="scroll" data-section="pfeedspy" style="display: none">
+        <div class="pfeedspy-container">
+          <!-- Config Card -->
+          <div class="pfeedspy-config-card">
+            <div class="pfeedspy-config-header">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.406.042-3.442.218-.936 1.407-5.965 1.407-5.965s-.359-.719-.359-1.781c0-1.669.967-2.914 2.171-2.914 1.024 0 1.518.769 1.518 1.69 0 1.03-.655 2.569-.994 3.995-.283 1.195.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.208 0 1.031.397 2.137.893 2.739a.36.36 0 0 1 .083.344c-.091.379-.293 1.194-.333 1.361-.053.218-.173.265-.4.16-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.608 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+              <span data-i18n="workflows.pfeedspy.title">Pinterest Feed Spy</span>
+            </div>
+            <div class="pfeedspy-config-body">
+              <!-- Pinterest Auto-Publish row (optional, Step 1) -->
+              <div class="pfeedspy-publish-row" id="pfeedspyPublishRow">
+                <label class="pfeedspy-source-label">Auto-Publish</label>
+                <div class="pfeedspy-publish-selects">
+                  <select id="pfeedspyPublishAccount">
+                    <option value="">No account (disabled)</option>
+                  </select>
+                  <select id="pfeedspyPublishBoard" disabled>
+                    <option value="">Select board…</option>
+                  </select>
+                </div>
+                <span class="pfeedspy-publish-hint">optional &middot; auto-publish scraped pins to your board</span>
+              </div>
+              <!-- Source selector -->
+              <div class="pfeedspy-source-row">
+                <label class="pfeedspy-source-label" data-i18n="workflows.pfeedspy.source_label">Source</label>
+                <div class="pfeedspy-source-toggle">
+                  <label class="pfeedspy-source-opt">
+                    <input type="radio" name="pfeedspySource" value="public" checked />
+                    <span data-i18n="workflows.pfeedspy.source_public">Public (Anonymous)</span>
+                  </label>
+                  <label class="pfeedspy-source-opt">
+                    <input type="radio" name="pfeedspySource" value="account" />
+                    <span data-i18n="workflows.pfeedspy.source_account">Connected Account</span>
+                  </label>
+                </div>
+                <div class="pfeedspy-account-select" id="pfeedspyAccountSelectWrap" style="display:none">
+                  <select id="pfeedspyAccountId">
+                    <option value="" data-i18n="workflows.pfeedspy.select_account">— Select account —</option>
+                  </select>
+                </div>
+                <label class="pfeedspy-hide-used-label">
+                  <input type="checkbox" id="pfeedspyHideUsed" />
+                  <span data-i18n="workflows.pfeedspy.hide_used">Hide used pins</span>
+                </label>
+              </div>
+              <div class="pfeedspy-config-row">
+                <div class="pfeedspy-field pfeedspy-field-query">
+                  <label data-i18n="workflows.pfeedspy.query_label">Search Query</label>
+                  <input type="text" id="pfeedspyQuery" placeholder="e.g. Healthy soup recipes..." data-i18n-placeholder="workflows.pfeedspy.query_placeholder" />
+                </div>
+                <div class="pfeedspy-field pfeedspy-field-filter">
+                  <label data-i18n="workflows.pfeedspy.min_reactions_label">Min Reactions</label>
+                  <input type="number" id="pfeedspyMinReactions" value="0" min="0" step="1" placeholder="0" />
+                </div>
+                <div class="pfeedspy-field pfeedspy-field-filter">
+                  <label data-i18n="workflows.pfeedspy.max_days_label">Max Days Ago</label>
+                  <input type="number" id="pfeedspyMaxDays" value="" min="1" step="1" placeholder="Any" data-i18n-placeholder="workflows.pfeedspy.max_days_placeholder" />
+                </div>
+                <div class="pfeedspy-actions">
+                  <button type="button" id="pfeedspyStartBtn" class="pfeedspy-btn-start">
+                    <i class="material-icons">play_arrow</i>
+                    <span data-i18n="workflows.pfeedspy.start_btn">Start Scraping</span>
+                  </button>
+                  <button type="button" id="pfeedspyStopBtn" class="pfeedspy-btn-stop" style="display:none">
+                    <i class="material-icons">stop</i>
+                    <span data-i18n="workflows.pfeedspy.stop_btn">Stop</span>
+                  </button>
+                </div>
+              </div>
+              <!-- Live stats bar -->
+              <div class="pfeedspy-live-bar" id="pfeedspyLiveBar" style="display:none">
+                <div class="pfeedspy-live-dot" id="pfeedspyLiveDot"></div>
+                <div class="pfeedspy-stat">
+                  <span class="pfeedspy-stat-value" id="pfeedspyScrapedCount">0</span>
+                  <span class="pfeedspy-stat-label" data-i18n="workflows.pfeedspy.pins_scraped">pins scraped</span>
+                </div>
+                <div class="pfeedspy-stat" id="pfeedspyFilteredStat" style="display:none">
+                  <span style="color:var(--text-secondary);font-size:12px">(</span>
+                  <span class="pfeedspy-stat-value" id="pfeedspyFilteredCount">0</span>
+                  <span class="pfeedspy-stat-label" data-i18n="workflows.pfeedspy.pins_pass_filter">pass filter</span>
+                  <span style="color:var(--text-secondary);font-size:12px">)</span>
+                </div>
+                <div class="pfeedspy-stat">
+                  <span class="pfeedspy-stat-value" id="pfeedspyPageCount">0</span>
+                  <span class="pfeedspy-stat-label" data-i18n="workflows.pfeedspy.pages_fetched">pages fetched</span>
+                </div>
+                <div id="pfeedspyStatusText" class="text-muted" style="font-size:13px"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Card -->
+          <div class="pfeedspy-results-panel" id="pfeedspyResultsPanel" style="display:none">
+            <div class="pfeedspy-results-header">
+              <span class="pfeedspy-results-title">
+                <i class="material-icons" style="font-size:18px">trending_up</i>
+                <span data-i18n="workflows.pfeedspy.top_pins">Top Trending Pins</span>
+                (<span id="pfeedspyResultsCount">0</span>)
+              </span>
+              <label class="pfeedspy-hide-used-label pfeedspy-hide-used-results">
+                <input type="checkbox" id="pfeedspyHideUsedResults" />
+                <span data-i18n="workflows.pfeedspy.hide_used">Hide used pins</span>
+              </label>
+            </div>
+            <div class="pfeedspy-results-grid" id="pfeedspyResultsGrid"></div>
+            <!-- Selection toolbar (shown after scraping done) -->
+            <div class="pfeedspy-selection-bar" id="pfeedspySelectionBar" style="display:none">
+              <span class="pfeedspy-sel-count">
+                <span id="pfeedspySelectedCount">0</span>
+                <span data-i18n="workflows.pfeedspy.pins_selected">pins selected</span>
+              </span>
+              <div class="pfeedspy-auto-select">
+                <input type="number" id="pfeedspyAutoSelectCount" value="10" min="1" max="500" />
+                <button type="button" id="pfeedspyAutoSelectBtn" class="pfeedspy-btn-autoselect">
+                  <i class="material-icons">auto_awesome</i>
+                  <span data-i18n="workflows.pfeedspy.auto_select_btn">Auto Select Top</span>
+                </button>
+                <button type="button" id="pfeedspySelectAllBtn" class="pfeedspy-btn-autoselect pfeedspy-btn-selectall">
+                  <i class="material-icons">select_all</i>
+                  <span>Select All</span>
+                </button>
+              </div>
+              <button type="button" id="pfeedspyClearSelectBtn" class="pfeedspy-btn-clear">
+                <i class="material-icons">clear</i>
+                <span data-i18n="workflows.pfeedspy.clear_btn">Clear</span>
+              </button>
+              <button type="button" id="pfeedspyNextBtn" class="pfeedspy-btn-next">
+                <span>Next</span>
+                <i class="material-icons">arrow_forward</i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Review & Configure -->
+          <div id="pfeedspyStep2Panel" class="pfeedspy-step2-panel" style="display:none">
+            <!-- Topbar -->
+            <div class="pfeedspy-step2-topbar">
+              <button type="button" id="pfeedspyBackBtn" class="pfeedspy-btn-back">
+                <i class="material-icons">arrow_back</i>
+                <span>Back to Search</span>
+              </button>
+              <div class="pfeedspy-step2-topbar-center">
+                <span class="pfeedspy-step2-topbar-title">Review &amp; Configure</span>
+                <span class="pfeedspy-step2-topbar-sub"><strong id="pfeedspyS2PinCount">0</strong> pins selected</span>
+              </div>
+              <span class="pfeedspy-step2-checked-info"><strong id="pfeedspyS2CheckedCount">0</strong> items queued for automation</span>
+            </div>
+
+            <!-- AI Title Generation Card -->
+            <div class="pfeedspy-step2-card">
+              <div class="pfeedspy-step2-card-header">
+                <i class="material-icons" style="color:#e60023">auto_awesome</i>
+                <span>Generate Similar Titles with AI</span>
+                <span class="pfeedspy-step2-optional-badge">optional</span>
+              </div>
+              <div id="pfeedspyS2NoApi" class="pfeedspy-ai-gen-no-api" style="display:none">
+                <i class="material-icons">warning</i>
+                <span>No AI keys configured. Add keys in Settings.</span>
+              </div>
+              <div id="pfeedspyS2AiForm" class="pfeedspy-step2-ai-controls">
+                <div class="pfeedspy-step2-ai-row">
+                  <label>Provider</label>
+                  <select id="pfeedspyS2Provider"></select>
+                </div>
+                <div class="pfeedspy-step2-ai-row">
+                  <label>Model</label>
+                  <select id="pfeedspyS2Model"></select>
+                </div>
+                <div class="pfeedspy-step2-ai-row">
+                  <label>Total titles</label>
+                  <input type="number" id="pfeedspyS2TotalTitles" value="10" min="1" max="500" />
+                </div>
+                <button type="button" id="pfeedspyS2GenerateBtn" class="pfeedspy-s2-gen-btn">
+                  <i class="material-icons">auto_awesome</i>
+                  <span>Generate Titles</span>
+                </button>
+                <div id="pfeedspyS2GenSpinner" style="display:none;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary)">
+                  <i class="material-icons" style="animation:spin 1s linear infinite;font-size:16px">sync</i>
+                  <span>Generating…</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pin Review List -->
+            <div class="pfeedspy-step2-card">
+              <div class="pfeedspy-step2-card-header pfeedspy-step2-list-header">
+                <span>Pins &amp; Titles</span>
+                <div class="pfeedspy-step2-bulk">
+                  <button type="button" id="pfeedspyS2CheckAll" class="pfeedspy-s2-bulk-btn">
+                    <i class="material-icons">check_box</i> Select All
+                  </button>
+                  <button type="button" id="pfeedspyS2UncheckAll" class="pfeedspy-s2-bulk-btn">
+                    <i class="material-icons">check_box_outline_blank</i> None
+                  </button>
+                </div>
+              </div>
+              <div id="pfeedspyStep2List" class="pfeedspy-step2-list"></div>
+            </div>
+
+            <!-- Output Config -->
+            <div class="pfeedspy-step2-card">
+              <div class="pfeedspy-step2-card-header">
+                <i class="material-icons">tune</i>
+                <span>Output Configuration</span>
+              </div>
+              <div class="pfeedspy-step2-output-body">
+                <div class="pfeedspy-output-group">
+                  <label class="group-label">Pass to Automation</label>
+                  <div class="pfeedspy-radio-group">
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyS2InputType" value="text" checked />
+                      <span>Text only</span>
+                    </label>
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyS2InputType" value="image" />
+                      <span>Image only</span>
+                    </label>
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyS2InputType" value="both" />
+                      <span>Both (text + image)</span>
+                    </label>
+                  </div>
+                </div>
+                <div id="pfeedspyS2PinterestInfo" class="pfeedspy-s2-pinterest-info" style="display:none">
+                  <i class="material-icons" style="color:#e60023;font-size:16px">push_pin</i>
+                  <span>Auto-publishing to: <strong id="pfeedspyS2BoardName"></strong></span>
+                </div>
+              </div>
+              <div class="pfeedspy-download-panel" id="pfeedspyS2DownloadPanel" style="display:none">
+                <div class="pfeedspy-download-info">
+                  <span id="pfeedspyS2DownloadText">Downloading images…</span>
+                  <span id="pfeedspyS2DownloadPercent">0%</span>
+                </div>
+                <div class="pfeedspy-progress-bar">
+                  <div class="pfeedspy-progress-fill" id="pfeedspyS2ProgressFill" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Output Config Card -->
+          <div class="pfeedspy-output-card" id="pfeedspyOutputCard" style="display:none">
+            <div class="pfeedspy-output-header">
+              <i class="material-icons">tune</i>
+              <span data-i18n="workflows.pfeedspy.output_config">Output Configuration</span>
+            </div>
+            <div class="pfeedspy-output-body">
+              <div class="pfeedspy-output-row">
+                <!-- Input Type -->
+                <div class="pfeedspy-output-group">
+                  <label class="group-label" data-i18n="workflows.pfeedspy.input_type">Pass to Automation</label>
+                  <div class="pfeedspy-radio-group">
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyInputType" value="text" checked />
+                      <span data-i18n="workflows.pfeedspy.type_text_only">Text only</span>
+                    </label>
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyInputType" value="image" />
+                      <span data-i18n="workflows.pfeedspy.type_image_only">Image only</span>
+                    </label>
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyInputType" value="both" />
+                      <span data-i18n="workflows.pfeedspy.type_both">Both (text + image)</span>
+                    </label>
+                  </div>
+                </div>
+                <!-- Text Content -->
+                <div class="pfeedspy-output-group" id="pfeedspyTextOptions">
+                  <label class="group-label" data-i18n="workflows.pfeedspy.text_content">Text Content</label>
+                  <div class="pfeedspy-radio-group">
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyTextType" value="title" checked />
+                      <span data-i18n="workflows.pfeedspy.text_title">Title only</span>
+                    </label>
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyTextType" value="both" />
+                      <span data-i18n="workflows.pfeedspy.text_title_desc">Title + Description</span>
+                    </label>
+                    <label class="pfeedspy-radio-option">
+                      <input type="radio" name="pfeedspyTextType" value="description" />
+                      <span data-i18n="workflows.pfeedspy.text_desc">Description only</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- AI Title Generation (visible only when text type is title or both) -->
+              <div class="pfeedspy-ai-gen-section" id="pfeedspyAiGenSection" style="display:none">
+                <label class="pfeedspy-toggle-label pfeedspy-ai-gen-toggle">
+                  <input type="checkbox" id="pfeedspyAiGenEnabled" />
+                  <span class="material-icons">auto_awesome</span>
+                  <span data-i18n="workflows.pfeedspy.ai_gen_titles">Generate similar titles with AI</span>
+                </label>
+                <div class="pfeedspy-ai-gen-body" id="pfeedspyAiGenBody" style="display:none">
+                  <!-- No API warning -->
+                  <div class="pfeedspy-ai-gen-no-api" id="pfeedspyAiGenNoApi" style="display:none">
+                    <i class="material-icons">warning</i>
+                    <span data-i18n="workflows.pfeedspy.ai_gen_no_api">No AI keys configured. Add keys in Settings.</span>
+                  </div>
+                  <!-- Configuration -->
+                  <div id="pfeedspyAiGenForm">
+                    <div class="pfeedspy-ai-gen-controls">
+                      <div class="pfeedspy-ai-gen-row" id="pfeedspyAiGenProviderRow">
+                        <label data-i18n="workflows.pfeedspy.ai_gen_provider">AI Provider</label>
+                        <select id="pfeedspyAiGenProvider"></select>
+                      </div>
+                      <div class="pfeedspy-ai-gen-row">
+                        <label data-i18n="workflows.pfeedspy.ai_gen_model">Model</label>
+                        <select id="pfeedspyAiGenModel"></select>
+                      </div>
+                      <div class="pfeedspy-ai-gen-row">
+                        <label data-i18n="workflows.pfeedspy.ai_gen_count">Total titles</label>
+                        <input type="number" id="pfeedspyAiGenCount" class="pfeedspy-ai-gen-count-input" value="10" min="2" max="500" />
+                      </div>
+                    </div>
+                    <div class="pfeedspy-ai-gen-action">
+                      <button class="pfeedspy-btn pfeedspy-ai-gen-btn" id="pfeedspyAiGenBtn">
+                        <i class="material-icons">auto_awesome</i>
+                        <span data-i18n="workflows.pfeedspy.ai_gen_btn">Generate Titles</span>
+                      </button>
+                      <div class="pfeedspy-ai-gen-spinner" id="pfeedspyAiGenSpinner" style="display:none">
+                        <i class="material-icons">sync</i>
+                        <span data-i18n="workflows.pfeedspy.ai_gen_generating">Generating...</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Results -->
+                  <div class="pfeedspy-ai-gen-results" id="pfeedspyAiGenResults" style="display:none">
+                    <div class="pfeedspy-ai-gen-results-header">
+                      <span class="pfeedspy-ai-gen-results-info" id="pfeedspyAiGenResultsInfo"></span>
+                      <button class="pfeedspy-ai-regen-btn" id="pfeedspyAiGenRegenBtn">
+                        <i class="material-icons">refresh</i>
+                        <span data-i18n="workflows.pfeedspy.ai_gen_regen">Regenerate</span>
+                      </button>
+                    </div>
+                    <div class="pfeedspy-ai-gen-titles-list" id="pfeedspyAiGenTitlesList"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Pinterest Auto-Publish (optional) -->
+              <div class="pfeedspy-pinterest-card" id="pfeedspyPinterestCard">
+                <label class="pfeedspy-toggle-label pfeedspy-pinterest-toggle">
+                  <input type="checkbox" id="pfeedspyPinterestEnabled" />
+                  <span class="material-icons">push_pin</span>
+                  <span data-i18n="workflows.pfeedspy.pinterest_connect">Connect Pinterest for auto-publish (optional)</span>
+                </label>
+                <div class="pfeedspy-pinterest-body" id="pfeedspyPinterestBody" style="display:none">
+                  <div class="pfeedspy-ai-gen-row">
+                    <label data-i18n="workflows.pfeedspy.pinterest_account">Pinterest Account</label>
+                    <select id="pfeedspyPinterestAccount">
+                      <option value="" data-i18n="workflows.pfeedspy.pinterest_select_account">Select Account</option>
+                    </select>
+                  </div>
+                  <div class="pfeedspy-ai-gen-row">
+                    <label data-i18n="workflows.pfeedspy.pinterest_board">Board</label>
+                    <select id="pfeedspyPinterestBoard" disabled>
+                      <option value="" data-i18n="workflows.pfeedspy.pinterest_select_board">Select Board</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- Download Progress -->
+              <div class="pfeedspy-download-panel" id="pfeedspyDownloadPanel" style="display:none">
+                <div class="pfeedspy-download-info">
+                  <span id="pfeedspyDownloadText" data-i18n="workflows.pfeedspy.downloading">Downloading images...</span>
+                  <span id="pfeedspyDownloadPercent">0%</span>
+                </div>
+                <div class="pfeedspy-progress-bar">
+                  <div class="pfeedspy-progress-fill" id="pfeedspyProgressFill" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate Mode -->
+      <div class="scroll" data-section="generate" style="display: none">
+        <div class="container">
+          <div class="row py-5 justify-content-center">
+            <div class="col-6">
+              <div class="generate-mode-card">
+                <div class="generate-mode-icon">
+                  <i class="material-icons">auto_awesome</i>
+                </div>
+                <h5 data-i18n="workflows.generate.title">Generate Content</h5>
+                <p class="text-muted" data-i18n="workflows.generate.description">Run the automation without any input. The automation will generate content on its own (e.g. AI text, random images, etc.).</p>
+                <div class="generate-mode-warning" id="generateModeWarning" style="display: none">
+                  <i class="material-icons">warning</i>
+                  <span data-i18n="workflows.generate.input_warning">Warning: The selected automation uses input connections. This mode is designed for automations that don't require any input.</span>
+                </div>
+                <div class="form-group mt-4">
+                  <label for="generatePostCount" data-i18n="workflows.generate.post_count_label">Number of posts to generate:</label>
+                  <input
+                    type="number"
+                    id="generatePostCount"
+                    class="form-control mt-2"
+                    min="1"
+                    max="500"
+                    value="1"
+                    style="max-width: 200px; margin: 0 auto;"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="posts" id="posts-progression">
+      <table class="table">
+        <thead>
+          <tr>
+            <td data-i18n="workflows.table.image">Image</td>
+            <td data-i18n="workflows.table.content">Content</td>
+            <td data-i18n="workflows.table.actions">Actions</td>
+            <td data-i18n="workflows.table.status">Status</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="d-flex justify-content-center my-3 pagination"></div>
+    </div>
+    <div class="nodes">
+      <div class="nodes-pipeline" id="nodesPipeline">
+        <!-- Nodes will be rendered here dynamically -->
+      </div>
+    </div>
+  </div>
+  <div class="workflow-copypaste">
+    <div class="copypaste-container"></div>
+  </div>
+
+  <div class="modal fade" id="cropperModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="d-flex align-items-center">
+            <h5 class="modal-title me-3">Crop Image</h5>
+            <span
+              id="cropperStepIndicator"
+              class="badge bg-primary step-indicator"
+            ></span>
+          </div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div
+          class="modal-body d-flex justify-content-center align-items-center"
+          style="padding: 20px; overflow: hidden"
+        >
+          <div
+            id="cropperContainer"
+            style="
+              width: 100%;
+              height: calc(100vh - 180px);
+              max-height: 70vh;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <img
+              id="cropperImage"
+              style="max-width: 100%; max-height: 100%; display: block"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="prevCrop"
+            class="btn btn-outline-secondary"
+            style="display: none"
+          >
+            <span
+              class="material-icons"
+              style="font-size: 16px; vertical-align: middle"
+              >arrow_back</span
+            >
+            Previous
+          </button>
+          <button type="button" id="skipCrop" class="btn btn-secondary">
+            Skip
+          </button>
+          <button type="button" id="confirmCrop" class="btn btn-primary">
+            Crop & Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="inpaintModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header inpaint-header">
+          <div class="d-flex align-items-center">
+            <div class="inpaint-title-section">
+              <span class="material-icons inpaint-title-icon"
+                >auto_fix_high</span
+              >
+              <h5 class="modal-title">Inpaint Image</h5>
+            </div>
+            <span
+              id="inpaintStepIndicator"
+              class="badge bg-success step-indicator ms-3"
+            ></span>
+          </div>
+          <div class="d-flex align-items-center">
+            <!-- Inpaint controls - Professional grouped layout -->
+            <div id="inpaintControls" class="inpaint-controls-wrapper">
+              <div class="inpaint-control-group">
+                <div class="control-group-label">
+                  <span class="material-icons">brush</span>
+                  <span>Drawing Mode</span>
+                </div>
+                <select id="inpaintDrawMode" class="inpaint-select">
+                  <option value="brush">Brush</option>
+                  <option value="rectangle">Rectangle</option>
+                </select>
+              </div>
+              <div class="inpaint-control-divider"></div>
+              <div class="inpaint-control-group">
+                <div class="control-group-label">
+                  <span class="material-icons">line_weight</span>
+                  <span>Brush Size</span>
+                </div>
+                <div class="brush-size-control">
+                  <input
+                    type="range"
+                    id="inpaintBrushSize"
+                    min="5"
+                    max="50"
+                    value="20"
+                    class="inpaint-range"
+                  />
+                  <span id="inpaintBrushSizeLabel" class="brush-size-value"
+                    >20px</span
+                  >
+                </div>
+              </div>
+              <div class="inpaint-control-divider"></div>
+              <button
+                type="button"
+                id="inpaintClearMask"
+                class="inpaint-clear-btn"
+              >
+                <span class="material-icons">delete_outline</span>
+                <span>Clear Mask</span>
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn-close ms-3"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+        <div
+          class="modal-body d-flex justify-content-center align-items-center"
+        >
+          <div
+            id="inpaintImageContainer"
+            style="width: 90%; height: 80vh; position: relative"
+          >
+            <img
+              id="inpaintImage"
+              style="
+                max-width: 100%;
+                max-height: 100%;
+                display: block;
+                margin: 0 auto;
+              "
+            />
+            <!-- Canvas for inpainting mask overlay -->
+            <canvas
+              id="inpaintMaskCanvas"
+              style="position: absolute; top: 0; left: 0; pointer-events: auto"
+            ></canvas>
+            <!-- Scanner animation overlay -->
+            <div id="inpaintScanner" class="inpaint-scanner">
+              <div class="scanner-line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="prevInpaint"
+            class="btn btn-outline-secondary"
+            style="display: none"
+          >
+            <span
+              class="material-icons"
+              style="font-size: 16px; vertical-align: middle"
+              >arrow_back</span
+            >
+            Previous
+          </button>
+          <button type="button" id="skipInpaint" class="btn btn-secondary">
+            Skip
+          </button>
+          <button
+            type="button"
+            id="finishInpaint"
+            class="btn btn-primary"
+            style="display: none"
+          >
+            Finish Inpainting
+          </button>
+          <button type="button" id="confirmInpaint" class="btn btn-success">
+            Apply Inpainting
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+
+  <!-- Bulk Workflow Launcher Modal -->
+  <div class="modal fade" id="bulkLaunchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content bulk-launch-modal">
+        <div class="modal-header bulk-launch-header">
+          <div class="d-flex align-items-center">
+            <span class="material-icons bulk-launch-icon">rocket_launch</span>
+            <h5 class="modal-title ms-2">Bulk Workflow Launcher</h5>
+          </div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Step 1: Select Automation -->
+          <div class="bulk-launch-section">
+            <div class="section-header">
+              <span class="step-badge">1</span>
+              <span class="section-title" data-i18n="workflows.bulk_launch_modal.select_automation">Select Automation</span>
+            </div>
+            <select
+              id="bulkLaunchAutomation"
+              class="form-select form-select-lg"
+            >
+              <option value="" data-i18n="workflows.bulk_launch_modal.select_automation_placeholder">-- Select an automation --</option>
+            </select>
+          </div>
+
+          <!-- Step 2: Select Accounts & Boards -->
+          <div class="bulk-launch-section mt-4">
+            <div class="section-header">
+              <span class="step-badge">2</span>
+              <span class="section-title" data-i18n="workflows.bulk_launch_modal.select_accounts"
+                >Select Pinterest Accounts & Boards</span
+              >
+              <div class="ms-auto d-flex align-items-center gap-2">
+                <button
+                  type="button"
+                  id="bulkSelectAll"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  <i class="material-icons" style="font-size: 16px"
+                    >select_all</i
+                  >
+                  <span data-i18n="workflows.bulk_launch_modal.select_all">Select All</span>
+                </button>
+                <button
+                  type="button"
+                  id="bulkDeselectAll"
+                  class="btn btn-sm btn-outline-secondary"
+                >
+                  <i class="material-icons" style="font-size: 16px">deselect</i>
+                  <span data-i18n="workflows.bulk_launch_modal.clear">Clear</span>
+                </button>
+              </div>
+            </div>
+            <div class="bulk-launch-info-bar">
+              <div class="info-item">
+                <i class="material-icons">account_circle</i>
+                <span id="bulkTotalAccounts">0</span> <span data-i18n="workflows.bulk_launch_modal.accounts">accounts</span>
+              </div>
+              <div class="info-item">
+                <i class="material-icons">dashboard</i>
+                <span id="bulkTotalBoards">0</span> <span data-i18n="workflows.bulk_launch_modal.boards_with_titles">boards with titles</span>
+              </div>
+              <div class="info-item selected">
+                <i class="material-icons">check_circle</i>
+                <span id="bulkSelectedCount">0</span> <span data-i18n="workflows.bulk_launch_modal.selected">selected</span>
+              </div>
+              <div class="info-item titles">
+                <i class="material-icons">title</i>
+                <span id="bulkTotalTitles">0</span> <span data-i18n="workflows.bulk_launch_modal.total_titles">total titles</span>
+              </div>
+            </div>
+            <div id="bulkAccountsGrid" class="bulk-accounts-grid">
+              <div class="text-center text-muted py-5">
+                <i class="material-icons" style="font-size: 48px"
+                  >hourglass_empty</i
+                >
+                <p class="mt-2" data-i18n="workflows.bulk_launch_modal.loading_accounts">Loading Pinterest accounts...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bulk-launch-footer">
+          <div class="launch-summary">
+            <span class="summary-text">
+              <span data-i18n="workflows.bulk_launch_modal.ready_to_launch">Ready to launch</span>
+              <strong id="bulkWorkflowCount">0</strong> <span data-i18n="workflows.bulk_launch_modal.workflows_with">workflows with</span>
+              <strong id="bulkPostCount">0</strong> <span data-i18n="workflows.bulk_launch_modal.total_posts">total posts</span>
+            </span>
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            data-i18n="workflows.bulk_launch_modal.cancel"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            id="bulkLaunchStart"
+            class="btn btn-primary btn-lg"
+            disabled
+          >
+            <i class="material-icons me-2">rocket_launch</i>
+            <span data-i18n="workflows.bulk_launch_modal.launch_all">Launch All Workflows</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/pages/workflows.js"></script>

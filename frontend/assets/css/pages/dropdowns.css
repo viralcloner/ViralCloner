@@ -1,0 +1,284 @@
+﻿
+/* Three-dot Dropdown Menu for Action Buttons */
+.action-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.action-dropdown-toggle {
+  width: var(--vc-btn-action-size);
+  height: var(--vc-btn-action-size);
+  border: none;
+  border-radius: var(--vc-dropdown-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--vc-transition-base);
+  background: var(--vc-btn-action-bg);
+  color: var(--vc-btn-action-color);
+}
+
+.action-dropdown-toggle:hover {
+  background: var(--vc-gray-200);
+  transform: translateY(var(--vc-hover-lift-sm));
+}
+
+.action-dropdown-toggle i {
+  font-size: 20px;
+}
+
+.action-dropdown-menu {
+  position: fixed;
+  min-width: 160px;
+  background: var(--vc-dropdown-bg);
+  border-radius: var(--vc-dropdown-radius);
+  box-shadow: var(--vc-shadow-dropdown);
+  border: var(--vc-dropdown-border);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease,
+    visibility 0.1s ease;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Dropdown positioning is handled by JavaScript for fixed positioning */
+
+.action-dropdown.dropup.open .action-dropdown-menu {
+  transform: scale(1);
+}
+
+.action-dropdown.open .action-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.action-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--vc-dropdown-item-padding);
+  cursor: pointer;
+  transition: var(--vc-transition-fast);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-size: var(--vc-dropdown-item-font-size);
+  color: var(--vc-dropdown-item-color);
+}
+
+.action-dropdown-item i {
+  font-size: var(--vc-dropdown-item-icon-size);
+  width: 20px;
+  text-align: center;
+}
+
+.action-dropdown-item:hover {
+  background: var(--vc-dropdown-item-hover-bg);
+}
+
+.action-dropdown-item.item-primary {
+  color: var(--vc-dropdown-primary-color);
+}
+
+.action-dropdown-item.item-primary:hover {
+  background: var(--vc-dropdown-primary-hover-bg);
+}
+
+.action-dropdown-item.item-success {
+  color: var(--vc-dropdown-success-color);
+}
+
+.action-dropdown-item.item-success:hover {
+  background: var(--vc-dropdown-success-hover-bg);
+}
+
+.action-dropdown-item.item-warning {
+  color: var(--vc-dropdown-warning-color);
+}
+
+.action-dropdown-item.item-warning:hover {
+  background: var(--vc-dropdown-warning-hover-bg);
+}
+
+.action-dropdown-item.item-info {
+  color: var(--vc-dropdown-info-color);
+}
+
+.action-dropdown-item.item-info:hover {
+  background: var(--vc-dropdown-info-hover-bg);
+}
+
+.action-dropdown-item.item-danger {
+  color: var(--vc-dropdown-danger-color);
+}
+
+.action-dropdown-item.item-danger:hover {
+  background: var(--vc-dropdown-danger-hover-bg);
+}
+
+/* Disabled dropdown item (e.g. Delete blocked because the workflow is in use
+   by Facebook Groups). Kept clickable in the DOM so the title tooltip shows on
+   hover, but visually dimmed and non-interactive. */
+.action-dropdown-item.is-disabled,
+.action-dropdown-item.is-disabled:hover {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: none;
+}
+
+.action-dropdown-divider {
+  height: 1px;
+  background: var(--vc-dropdown-divider-color);
+  margin: var(--vc-dropdown-divider-margin);
+}
+
+/* Profile Capability Checkboxes */
+.profile-capabilities {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-image-blocked {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: #b45309;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.profile-image-blocked .material-icons {
+  flex: 0 0 auto;
+  font-size: 15px;
+}
+
+.capability-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.capability-label:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.capability-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--vc-green-accent);
+}
+
+.capability-label .material-icons {
+  font-size: 18px;
+  color: var(--vc-gray-500);
+}
+
+.capability-label:has(input:checked) .material-icons {
+  color: var(--vc-green-accent);
+}
+
+html[data-theme="dark"] .capability-label:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="dark"] .capability-label .material-icons {
+  color: var(--vc-gray-400);
+}
+
+html[data-theme="dark"] .capability-label:has(input:checked) .material-icons {
+  color: var(--vc-green-accent);
+}
+
+/* Sora Profiles Container */
+.sora-profiles-container {
+  max-width: 500px;
+  background: var(--vc-bg-elevated);
+  border: 1px solid var(--vc-border-color-lighter);
+  border-radius: var(--vc-radius-lg);
+  overflow: hidden;
+}
+
+.sora-profile-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--vc-gray-100);
+  transition: background-color 0.15s ease;
+}
+
+.sora-profile-item:last-child {
+  border-bottom: none;
+}
+
+.sora-profile-item:hover {
+  background: var(--vc-gray-50);
+}
+
+.sora-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sora-profile-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--vc-gray-800);
+}
+
+.sora-profile-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--vc-gray-500);
+}
+
+.sora-no-profiles {
+  padding: 24px;
+  text-align: center;
+  color: var(--vc-gray-500);
+  font-size: 14px;
+}
+
+html[data-theme="dark"] .sora-profiles-container {
+  background: var(--vc-bg-elevated);
+  border-color: var(--vc-border-color);
+}
+
+html[data-theme="dark"] .sora-profile-item {
+  border-bottom-color: var(--vc-border-color);
+}
+
+html[data-theme="dark"] .sora-profile-item:hover {
+  background: var(--vc-border-color);
+}
+
+html[data-theme="dark"] .sora-profile-name {
+  color: var(--vc-gray-100);
+}
+
+html[data-theme="dark"] .sora-profile-status {
+  color: var(--vc-gray-400);
+}
+
+html[data-theme="dark"] .sora-no-profiles {
+  color: var(--vc-gray-400);
+}

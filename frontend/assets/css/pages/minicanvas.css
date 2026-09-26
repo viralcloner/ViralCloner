@@ -1,0 +1,622 @@
+﻿
+.precheck-container {
+  height: calc(100vh - 40px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.precheck {
+  width: 350px;
+  display: block;
+}
+
+#captchaBanner {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 99999;
+  animation: captchaFadeIn 0.3s ease;
+}
+
+@keyframes captchaFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes captchaPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.92;
+  }
+}
+
+@keyframes captchaIconBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+#captchaBanner .captcha-modal {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  padding: 32px 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+#captchaBanner .captcha-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 152, 0, 0.3);
+  animation: captchaIconBounce 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+#captchaBanner .captcha-icon i {
+  font-size: 40px;
+  color: #fff;
+}
+
+#captchaBanner .captcha-header h3 {
+  color: #1a1a2e;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+#captchaBanner .captcha-header p {
+  color: #6c757d;
+  font-size: 14px;
+  margin: 0 0 24px 0;
+}
+
+#captchaBanner .captcha-body {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e9ecef;
+}
+
+#captchaBanner .captcha-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+#captchaBanner .captcha-info-row:not(:last-child) {
+  border-bottom: 1px solid #e9ecef;
+}
+
+#captchaBanner .captcha-label {
+  color: #6c757d;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#captchaBanner .captcha-value {
+  color: #1a1a2e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#captchaBanner .captcha-seed {
+  background: rgba(255, 152, 0, 0.15);
+  color: #e65100;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: "Monaco", "Consolas", monospace;
+  font-size: 13px;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+#captchaBanner .captcha-instructions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(33, 150, 243, 0.08);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+#captchaBanner .captcha-instructions i {
+  color: #1976d2;
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+#captchaBanner .captcha-instructions span {
+  color: #495057;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#captchaBanner .captcha-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+}
+
+#captchaBanner .captcha-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(76, 175, 80, 0.4);
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+}
+
+#captchaBanner .captcha-btn:active {
+  transform: translateY(0);
+}
+
+#captchaBanner .captcha-btn i {
+  font-size: 20px;
+}
+
+#captchaBanner .captcha-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+#captchaBanner .captcha-actions .captcha-btn {
+  flex: 1;
+}
+
+#captchaBanner .captcha-btn-discord {
+  background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
+  box-shadow: 0 8px 20px rgba(88, 101, 242, 0.3);
+}
+
+#captchaBanner .captcha-btn-discord:hover {
+  background: linear-gradient(135deg, #7289DA 0%, #5865F2 100%);
+  box-shadow: 0 12px 28px rgba(88, 101, 242, 0.4);
+}
+
+/* Captcha Minimize Button */
+#captchaBanner .captcha-minimize-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  color: #6c757d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+#captchaBanner .captcha-minimize-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #495057;
+}
+
+#captchaBanner .captcha-minimize-btn i {
+  font-size: 20px;
+}
+
+#captchaBanner .captcha-modal {
+  position: relative;
+}
+
+/* Minimized Captcha Indicator */
+#captchaMinimizedIndicator {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 99998;
+  box-shadow: 0 4px 20px rgba(255, 152, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: captchaMinimizedPulse 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+#captchaMinimizedIndicator:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(255, 152, 0, 0.5);
+}
+
+#captchaMinimizedIndicator .captcha-minimized-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#captchaMinimizedIndicator .captcha-minimized-icon i {
+  font-size: 28px;
+  color: #fff;
+}
+
+#captchaMinimizedIndicator .captcha-minimized-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background: #f44336;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.4);
+}
+
+@keyframes captchaMinimizedPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Google Account Disconnected Banner */
+#googleDisconnectedBanner {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 99999;
+  animation: captchaFadeIn 0.3s ease;
+}
+
+#googleDisconnectedBanner .google-disconnect-modal {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  padding: 32px 40px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+#googleDisconnectedBanner .google-disconnect-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 152, 0, 0.3);
+  animation: captchaIconBounce 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+#googleDisconnectedBanner .google-disconnect-icon i {
+  font-size: 40px;
+  color: #fff;
+}
+
+#googleDisconnectedBanner .google-disconnect-header h3 {
+  color: #1a1a2e;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+#googleDisconnectedBanner .google-disconnect-header p {
+  color: #6c757d;
+  font-size: 14px;
+  margin: 0 0 24px 0;
+}
+
+#googleDisconnectedBanner .google-disconnect-body {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e9ecef;
+}
+
+#googleDisconnectedBanner .google-disconnect-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+#googleDisconnectedBanner .google-disconnect-info-row:not(:last-child) {
+  border-bottom: 1px solid #e9ecef;
+}
+
+#googleDisconnectedBanner .google-disconnect-label {
+  color: #6c757d;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#googleDisconnectedBanner .google-disconnect-value {
+  color: #1a1a2e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#googleDisconnectedBanner .google-disconnect-count {
+  background: rgba(255, 152, 0, 0.15);
+  color: #e65100;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: "Monaco", "Consolas", monospace;
+  font-size: 13px;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  font-weight: 600;
+}
+
+#googleDisconnectedBanner .google-disconnect-instructions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(33, 150, 243, 0.08);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+#googleDisconnectedBanner .google-disconnect-instructions i {
+  color: #1976d2;
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+#googleDisconnectedBanner .google-disconnect-instructions span {
+  color: #495057;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#googleDisconnectedBanner .google-disconnect-buttons {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+#googleDisconnectedBanner .google-disconnect-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#googleDisconnectedBanner .google-disconnect-btn i {
+  font-size: 20px;
+}
+
+#googleDisconnectedBanner .google-disconnect-btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+#googleDisconnectedBanner .google-disconnect-btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(108, 117, 125, 0.4);
+  background: linear-gradient(135deg, #7d868d 0%, #6c757d 100%);
+}
+
+#googleDisconnectedBanner .google-disconnect-btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#googleDisconnectedBanner .google-disconnect-btn-primary {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+}
+
+#googleDisconnectedBanner .google-disconnect-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(76, 175, 80, 0.4);
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+}
+
+#googleDisconnectedBanner .google-disconnect-btn:active {
+  transform: translateY(0);
+}
+
+/* Google Disconnect Minimize Button */
+#googleDisconnectedBanner .google-disconnect-minimize-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  color: #6c757d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+#googleDisconnectedBanner .google-disconnect-minimize-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #495057;
+}
+
+#googleDisconnectedBanner .google-disconnect-minimize-btn i {
+  font-size: 20px;
+}
+
+/* Google Disconnect Error Box */
+#googleDisconnectedBanner .google-disconnect-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(220, 53, 69, 0.08);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+#googleDisconnectedBanner .google-disconnect-error i {
+  color: #dc3545;
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+#googleDisconnectedBanner .google-disconnect-error span {
+  color: #842029;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+html[data-theme="dark"] #googleDisconnectedBanner .google-disconnect-error {
+  background: rgba(220, 53, 69, 0.15);
+  border-color: rgba(220, 53, 69, 0.35);
+}
+
+html[data-theme="dark"] #googleDisconnectedBanner .google-disconnect-error span {
+  color: #f8d7da;
+}
+
+/* Minimized Google Disconnect Indicator */
+#googleDisconnectedMinimizedIndicator {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 99998;
+  box-shadow: 0 4px 20px rgba(255, 152, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: captchaMinimizedPulse 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+#googleDisconnectedMinimizedIndicator:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(255, 152, 0, 0.5);
+}
+
+#googleDisconnectedMinimizedIndicator .google-disconnect-minimized-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#googleDisconnectedMinimizedIndicator .google-disconnect-minimized-icon i {
+  font-size: 28px;
+  color: #fff;
+}
+
+#googleDisconnectedMinimizedIndicator .google-disconnect-minimized-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background: #f44336;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.4);
+}
+
+/* Monitoring start */

@@ -1,0 +1,863 @@
+﻿/* ========== Professional Confirm Modal ========== */
+.confirmModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  animation: confirmModalFadeIn 0.2s ease-out;
+}
+
+.confirmModal.closing {
+  animation: confirmModalFadeOut 0.2s ease-out forwards;
+}
+
+.confirmModal.closing .confirm-modal-content {
+  animation: confirmModalSlideOut 0.2s ease-out forwards;
+}
+
+@keyframes confirmModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes confirmModalFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes confirmModalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes confirmModalSlideOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+}
+
+.confirm-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--vc-modal-overlay-bg);
+  backdrop-filter: blur(var(--vc-modal-overlay-blur));
+}
+
+.confirm-modal-content {
+  position: relative;
+  background: var(--vc-confirm-bg);
+  border-radius: var(--vc-confirm-radius);
+  padding: var(--vc-confirm-padding);
+  min-width: var(--vc-confirm-min-width);
+  max-width: var(--vc-confirm-max-width);
+  box-shadow: var(--vc-confirm-shadow);
+  text-align: center;
+  animation: var(--vc-confirm-animation);
+}
+
+.confirm-modal-icon {
+  width: var(--vc-confirm-icon-size);
+  height: var(--vc-confirm-icon-size);
+  margin: 0 auto 20px;
+  background: var(--vc-confirm-icon-bg);
+  border-radius: var(--vc-confirm-icon-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-modal-icon i {
+  font-size: 28px;
+  color: var(--vc-confirm-icon-color);
+}
+
+.confirm-modal-message {
+  font-size: var(--vc-confirm-msg-size);
+  font-weight: var(--vc-confirm-msg-weight);
+  color: var(--vc-confirm-msg-color);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-modal-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+.confirm-modal-btn:focus {
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+.confirm-modal-btn.btn-cancel {
+  background: var(--vc-btn-cancel-bg);
+  color: var(--vc-btn-cancel-color);
+  border: 1px solid var(--vc-gray-200);
+}
+
+.confirm-modal-btn.btn-cancel:hover {
+  background: var(--vc-btn-cancel-hover-bg);
+  color: var(--vc-gray-700);
+}
+
+.confirm-modal-btn.btn-confirm {
+  background: linear-gradient(135deg, var(--vc-confirm-accent) 0%, var(--vc-confirm-accent-hover) 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+}
+
+.confirm-modal-btn.btn-confirm:hover {
+  background: linear-gradient(135deg, var(--vc-confirm-accent-hover) 0%, var(--vc-confirm-accent-dark) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+}
+
+.confirm-modal-btn.btn-confirm:active {
+  transform: translateY(0);
+}
+
+/* ========== Confirm Modal Dark Mode ========== */
+html[data-theme="dark"] .confirm-modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme="dark"] .confirm-modal-content {
+  background: var(--vc-confirm-bg);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .confirm-modal-icon {
+  background: var(--vc-confirm-icon-bg);
+}
+
+html[data-theme="dark"] .confirm-modal-icon i {
+  color: var(--vc-confirm-accent);
+}
+
+html[data-theme="dark"] .confirm-modal-message {
+  color: var(--vc-confirm-msg-color);
+}
+
+html[data-theme="dark"] .confirm-modal-btn.btn-cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .confirm-modal-btn.btn-cancel:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .confirm-modal-btn:focus {
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
+}
+
+/* ========== Professional Dynamic Modal ========== */
+.dynamicModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  animation: confirmModalFadeIn 0.2s ease-out;
+}
+
+.dynamicModal.closing {
+  animation: confirmModalFadeOut 0.2s ease-out forwards;
+}
+
+.dynamicModal.closing .dynamic-modal-content {
+  animation: confirmModalSlideOut 0.2s ease-out forwards;
+}
+
+.dynamic-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--vc-modal-overlay-bg);
+  backdrop-filter: blur(var(--vc-modal-overlay-blur));
+}
+
+.dynamic-modal-content {
+  position: relative;
+  background: var(--vc-dynamic-bg);
+  border-radius: var(--vc-dynamic-radius);
+  min-width: var(--vc-dynamic-min-width);
+  max-width: var(--vc-dynamic-max-width);
+  max-height: var(--vc-dynamic-max-height);
+  box-shadow: var(--vc-dynamic-shadow);
+  animation: var(--vc-confirm-animation);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  outline: none;
+}
+
+.dynamic-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--vc-dynamic-header-padding);
+  border-bottom: var(--vc-dynamic-header-border);
+  background: var(--vc-dynamic-header-bg);
+}
+
+.dynamic-modal-title {
+  font-size: var(--vc-dynamic-title-size);
+  font-weight: var(--vc-dynamic-title-weight);
+  color: var(--vc-dynamic-title-color);
+  margin: 0;
+}
+
+.dynamic-modal-close {
+  width: var(--vc-dynamic-close-size);
+  height: var(--vc-dynamic-close-size);
+  border-radius: var(--vc-dynamic-close-radius);
+  border: none;
+  background: transparent;
+  color: var(--vc-gray-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--vc-transition-base);
+}
+
+.dynamic-modal-close:hover {
+  background: var(--vc-gray-200);
+  color: var(--vc-gray-700);
+}
+
+.dynamic-modal-close:active {
+  transform: scale(0.95);
+}
+
+.dynamic-modal-close i {
+  font-size: 20px;
+}
+
+.dynamic-modal-body {
+  padding: var(--vc-dynamic-body-padding);
+  overflow-y: auto;
+  color: var(--vc-dynamic-body-color);
+  font-size: var(--vc-dynamic-body-font-size);
+  line-height: 1.6;
+}
+
+.dynamic-modal-body h6 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vc-gray-800);
+  margin: 0 0 12px;
+}
+
+.dynamic-modal-body p {
+  margin: 0 0 12px;
+}
+
+.dynamic-modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.dynamic-modal-body hr {
+  border: none;
+  border-top: 1px solid var(--vc-border-color-lighter);
+  margin: 16px 0;
+}
+
+.dynamic-modal-body .btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.dynamic-modal-body .btn-outline-primary {
+  background: transparent;
+  color: var(--vc-confirm-accent);
+  border: 1px solid var(--vc-confirm-accent);
+}
+
+.dynamic-modal-body .btn-outline-primary:hover {
+  background: var(--vc-confirm-accent);
+  color: #ffffff;
+}
+
+.dynamic-modal-body .btn-outline-secondary {
+  background: transparent;
+  color: var(--vc-gray-500);
+  border: 1px solid var(--vc-gray-300);
+}
+
+.dynamic-modal-body .btn-outline-secondary:hover {
+  background: var(--vc-gray-100);
+  color: var(--vc-gray-700);
+}
+
+/* ============================================
+   DYNAMIC MODAL - Dark Mode Overrides
+   ============================================ */
+html[data-theme="dark"] .dynamic-modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme="dark"] .dynamic-modal-content {
+  background: var(--vc-dynamic-bg);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px var(--border-color);
+}
+
+html[data-theme="dark"] .dynamic-modal-header {
+  border-bottom-color: var(--border-color);
+  background: var(--vc-dynamic-header-bg);
+}
+
+html[data-theme="dark"] .dynamic-modal-title {
+  color: var(--vc-dynamic-title-color);
+}
+
+html[data-theme="dark"] .dynamic-modal-close {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .dynamic-modal-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dynamic-modal-body {
+  color: var(--vc-dynamic-body-color);
+}
+
+html[data-theme="dark"] .dynamic-modal-body h6 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dynamic-modal-body hr {
+  border-top-color: var(--border-color);
+}
+
+html[data-theme="dark"] .dynamic-modal-body .btn-outline-secondary {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .dynamic-modal-body .btn-outline-secondary:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dynamic-modal-body label {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dynamic-modal-body label span {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dynamic-modal-body small {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .dynamic-modal-body small.text-danger {
+  color: #f87171 !important;
+}
+
+/* ============================================
+   Workflow Skip Modal
+   ============================================ */
+.workflow-skip-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.workflow-skip-modal .modal-content {
+  background: var(--vc-bg-elevated);
+  border-radius: 8px;
+  padding: 0;
+  width: 500px;
+  max-width: 90vw;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--vc-border-color-lighter);
+}
+
+.workflow-skip-modal .modal-header {
+  background: var(--vc-bg-surface-alt);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--vc-border-color-lighter);
+  color: var(--vc-gray-800);
+}
+
+.workflow-skip-modal .modal-header h4 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--vc-gray-800);
+}
+
+.workflow-skip-modal .modal-body {
+  padding: 24px;
+  color: var(--vc-gray-600);
+  text-align: center;
+}
+
+.workflow-skip-modal .modal-body p {
+  font-size: 1rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  color: var(--vc-gray-500);
+}
+
+.workflow-skip-modal .btn-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.workflow-skip-modal .btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.workflow-skip-modal .btn-primary {
+  background: #007bff;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.workflow-skip-modal .btn-primary:hover {
+  background: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.workflow-skip-modal .btn-secondary {
+  background: #6c757d;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.workflow-skip-modal .btn-secondary:hover {
+  background: #545b62;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme: Workflow skip modal */
+html[data-theme="dark"] .workflow-skip-modal .modal-content {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .workflow-skip-modal .modal-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .workflow-skip-modal .modal-header h4 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .workflow-skip-modal .modal-body {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .workflow-skip-modal .modal-body p {
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   Auto-Selection Notification
+   ============================================ */
+.auto-selection-notification {
+  position: fixed;
+  top: 30px;
+  right: 20px;
+  background: var(--vc-notification-bg);
+  color: var(--vc-gray-800);
+  padding: var(--vc-notification-padding);
+  border-radius: var(--vc-notification-radius);
+  box-shadow: var(--vc-notification-shadow);
+  z-index: 10001;
+  min-width: var(--vc-notification-min-width);
+  max-width: var(--vc-notification-max-width);
+  border: var(--vc-notification-border);
+}
+
+.auto-selection-notification.hide {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.auto-selection-notification .notification-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.auto-selection-notification .notification-icon {
+  width: var(--vc-notification-icon-size);
+  height: var(--vc-notification-icon-size);
+  background: var(--vc-notification-icon-bg);
+  border-radius: var(--vc-notification-icon-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--vc-border-color-lighter);
+  color: var(--vc-prompt-accent);
+}
+
+.auto-selection-notification .notification-title {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+  color: var(--vc-notification-title-color);
+}
+
+.auto-selection-notification .notification-body {
+  margin-bottom: 15px;
+  color: var(--vc-notification-body-color);
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.auto-selection-notification .notification-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.auto-selection-notification .btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.auto-selection-notification .btn-primary {
+  background: #007bff;
+  color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.auto-selection-notification .btn-primary:hover {
+  background: #0056b3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.auto-selection-notification .btn-secondary {
+  background: transparent;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+}
+
+.auto-selection-notification .btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+/* Dark theme: Auto-selection notification */
+html[data-theme="dark"] .auto-selection-notification {
+  background: var(--vc-notification-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .auto-selection-notification .notification-icon {
+  background: var(--vc-notification-icon-bg);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .auto-selection-notification .notification-title {
+  color: var(--vc-notification-title-color);
+}
+
+html[data-theme="dark"] .auto-selection-notification .notification-body {
+  color: var(--vc-notification-body-color);
+}
+
+html[data-theme="dark"] .auto-selection-notification .btn-secondary {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .auto-selection-notification .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   Enhanced Choose Modal (Image Selection)
+   ============================================ */
+.enhanced-choose-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.enhanced-choose-modal .modal-content {
+  background: var(--vc-bg-elevated);
+  border-radius: 8px;
+  padding: 0;
+  width: 700px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  border: 1px solid var(--vc-border-color-lighter);
+}
+
+.enhanced-choose-modal .modal-header {
+  background: var(--vc-bg-surface-alt);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--vc-border-color-lighter);
+  color: var(--vc-gray-800);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enhanced-choose-modal .modal-header h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.25rem;
+  flex-grow: 1;
+  color: var(--vc-gray-800);
+}
+
+.enhanced-choose-modal .modal-header .close {
+  background: var(--vc-bg-surface-alt);
+  border: 1px solid var(--vc-border-color-lighter);
+  color: var(--vc-gray-500);
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enhanced-choose-modal .modal-header .close:hover {
+  background: var(--vc-gray-200);
+  color: var(--vc-gray-600);
+}
+
+.enhanced-choose-modal .workflow-preference-section {
+  margin: 20px;
+  padding: 16px;
+  background: var(--vc-bg-surface-alt);
+  border-radius: 6px;
+  border-left: 4px solid var(--vc-prompt-accent);
+  border: 1px solid var(--vc-border-color-lighter);
+}
+
+.enhanced-choose-modal .workflow-preference-section label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--vc-gray-600);
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0;
+}
+
+.enhanced-choose-modal .workflow-preference-section input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--vc-prompt-accent);
+}
+
+.enhanced-choose-modal .split-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.enhanced-choose-modal .chooseLabel {
+  flex: calc(50% - 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--vc-bg-elevated);
+  border-radius: 6px;
+  padding: 16px;
+  cursor: pointer;
+  border: 2px solid var(--vc-border-color-lighter);
+}
+
+.enhanced-choose-modal .chooseLabel:hover {
+  background: var(--vc-bg-surface-alt);
+  border-color: var(--vc-prompt-accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.enhanced-choose-modal .chooseLabel.checked {
+  background: rgba(33, 150, 243, 0.08);
+  border-color: var(--vc-prompt-accent);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.enhanced-choose-modal .chooseLabel img {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.enhanced-choose-modal .confirm-btn {
+  margin: 20px;
+  width: calc(100% - 40px);
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.enhanced-choose-modal .confirm-btn:hover:not(:disabled) {
+  background: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.enhanced-choose-modal .confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dark theme: Enhanced choose modal */
+html[data-theme="dark"] .enhanced-choose-modal .modal-content {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .modal-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .modal-header h3 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .modal-header .close {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .modal-header .close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .workflow-preference-section {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .workflow-preference-section label {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .chooseLabel {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .chooseLabel:hover {
+  background: var(--bg-secondary);
+  border-color: #007bff;
+}
+
+html[data-theme="dark"] .enhanced-choose-modal .chooseLabel.checked {
+  background: rgba(0, 123, 255, 0.15);
+  border-color: #007bff;
+}

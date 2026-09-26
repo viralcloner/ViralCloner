@@ -1,0 +1,35 @@
+<svg viewBox="0 0 81 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g filter="url(#filter0_d)">
+    <g filter="url(#filter1_i)">
+      <path d="M75.324 19.654a2 2 0 0 0 1.864-1.995V4.123a2 2 0 0 0-1.864-1.995l-15.12-1.037H3v19.6h57.203l15.121-1.037Z" fill="#FF9EAD"/>
+      <path d="M75.324 19.654a2 2 0 0 0 1.864-1.995V4.123a2 2 0 0 0-1.864-1.995l-15.12-1.037H3v19.6h57.203l15.121-1.037Z" fill="#FC7C90"/>
+    </g>
+    <g style="mix-blend-mode:multiply" opacity=".5">
+      <path d="M75.324 19.654a2 2 0 0 0 1.864-1.995V4.123a2 2 0 0 0-1.864-1.995L60.188 1.091v19.6h15.136v-1.037Z" fill="#8CC8FF"/>
+      <path d="M75.324 19.654a2 2 0 0 0 1.864-1.995V4.123a2 2 0 0 0-1.864-1.995L60.188 1.091v19.6h15.136v-1.037Z" fill="#FC7C90"/>
+    </g>
+    <path d="M70.25 20.001V1.776l-2-.27v18.771h2v-.276Z" fill="#fff"/>
+  </g>
+  <defs>
+    <filter id="filter0_d" x="0" y=".091" width="80.188" height="25.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feMorphology radius="1" in="SourceAlpha" result="effect1_dropShadow"/>
+      <feOffset dy="2"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feColorMatrix values="0 0 0 0 0.25098 0 0 0 0 0.341176 0 0 0 0 0.427451 0 0 0 0.3 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <filter id="filter1_i" x="3" y="1.091" width="74.188" height="19.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset/>
+      <feGaussianBlur stdDeviation="1.8"/>
+      <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feColorMatrix values="0 0 0 0 0.988235 0 0 0 0 0.486275 0 0 0 0 0.564706 0 0 0 1 0"/>
+      <feBlend in2="shape" result="effect1_innerShadow"/>
+    </filter>
+  </defs>
+</svg>

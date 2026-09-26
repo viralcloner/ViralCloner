@@ -1,0 +1,228 @@
+<div class="home-dashboard">
+    <!-- Welcome Header -->
+    <div class="welcome-header">
+        <div class="welcome-text">
+            <h1 data-i18n="home.welcome">Welcome back!</h1>
+            <p id="current-date"></p>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-tile stat-automations">
+            <div class="stat-tile-icon">
+                <i class="material-icons">precision_manufacturing</i>
+            </div>
+            <div class="stat-tile-content">
+                <span class="stat-tile-value" data_log="automations">0</span>
+                <span class="stat-tile-label" data-i18n="home.automations">Automations</span>
+            </div>
+        </div>
+
+        <div class="stat-tile stat-templates">
+            <div class="stat-tile-icon">
+                <i class="material-icons">palette</i>
+            </div>
+            <div class="stat-tile-content">
+                <span class="stat-tile-value" data_log="minicanvas">0</span>
+                <span class="stat-tile-label" data-i18n="home.templates">Templates</span>
+            </div>
+        </div>
+
+        <div class="stat-tile stat-spy">
+            <div class="stat-tile-icon">
+                <i class="material-icons">visibility</i>
+            </div>
+            <div class="stat-tile-content">
+                <span class="stat-tile-value" data_log="spyposts">0</span>
+                <span class="stat-tile-label" data-i18n="home.spy_posts">Spy Posts</span>
+            </div>
+        </div>
+
+        <div class="stat-tile stat-workflows">
+            <div class="stat-tile-icon">
+                <i class="material-icons">account_tree</i>
+            </div>
+            <div class="stat-tile-content">
+                <span class="stat-tile-value" data_log="workflows">0</span>
+                <span class="stat-tile-label" data-i18n="home.workflows">Workflows</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="home-grid">
+        <!-- Random Recipes -->
+        <div class="home-card articles-card">
+            <div class="home-card-header">
+                <i class="material-icons">restaurant</i>
+                <span data-i18n="home.random_recipes">Random Recipes</span>
+                <button class="refresh-btn" id="refresh-articles">
+                    <i class="material-icons">refresh</i>
+                </button>
+            </div>
+            <div class="home-card-body">
+                <div class="articles-feed" id="articles-list">
+                    <div class="articles-loading">
+                        <span data-i18n="home.load_recipes_on_request">Select refresh to load recipes from TheMealDB.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="home-card activity-card">
+            <div class="home-card-header">
+                <i class="material-icons">history</i>
+                <span data-i18n="home.recent_activity">Recent Activity</span>
+                <button class="refresh-btn" id="refresh-activity">
+                    <i class="material-icons">refresh</i>
+                </button>
+            </div>
+            <div class="home-card-body">
+                <div class="activity-feed" id="activity-list">
+                    <div class="empty-state">
+                        <i class="material-icons">inbox</i>
+                        <p data-i18n="home.no_activity">No recent activity</p>
+                        <span data-i18n="home.activity_hint">Activity will appear here as you use the app</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="home-card notes-card">
+            <div class="home-card-header">
+                <i class="material-icons">sticky_note_2</i>
+                <span data-i18n="home.notes">Notes</span>
+                <button class="add-note-btn" id="add-note-btn" title="Add Note">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+            <div class="home-card-body">
+                <div class="notes-list" id="notes-list">
+                    <div class="empty-state">
+                        <i class="material-icons">note_add</i>
+                        <p data-i18n="home.no_notes">No notes yet</p>
+                        <span data-i18n="home.notes_hint">Click + to create your first note</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="home-card quick-actions-card">
+            <div class="home-card-header">
+                <i class="material-icons">flash_on</i>
+                <span data-i18n="home.quick_actions">Quick Actions</span>
+            </div>
+            <div class="home-card-body">
+                <div class="actions-grid">
+                    <a href="#" class="action-tile" data-action="workflows">
+                        <div class="action-tile-icon purple">
+                            <i class="material-icons">account_tree</i>
+                        </div>
+                        <span data-i18n="nav.workflows">Workflows</span>
+                    </a>
+                    <a href="#" class="action-tile" data-action="new-automation">
+                        <div class="action-tile-icon blue">
+                            <i class="material-icons">precision_manufacturing</i>
+                        </div>
+                        <span data-i18n="nav.automations">Automations</span>
+                    </a>
+                    <a href="#" class="action-tile" data-action="create-template">
+                        <div class="action-tile-icon pink">
+                            <i class="material-icons">palette</i>
+                        </div>
+                        <span data-i18n="nav.minicanvas">Mini Canvas</span>
+                    </a>
+                    <a href="#" class="action-tile" data-action="spy-posts">
+                        <div class="action-tile-icon green">
+                            <i class="material-icons">visibility</i>
+                        </div>
+                        <span data-i18n="home.spy_posts">Spy Posts</span>
+                    </a>
+                    <a href="#" class="action-tile" data-action="structures">
+                        <div class="action-tile-icon orange">
+                            <i class="material-icons">storage</i>
+                        </div>
+                        <span data-i18n="nav.structures">Structures</span>
+                    </a>
+                    <a href="#" class="action-tile" data-action="settings">
+                        <div class="action-tile-icon gray">
+                            <i class="material-icons">settings</i>
+                        </div>
+                        <span data-i18n="nav.settings">Settings</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Posts -->
+        <div class="home-card community-posts-card">
+            <div class="home-card-header">
+                <i class="material-icons">forum</i>
+                <span data-i18n="nav.community">Community</span>
+                <a href="#" class="view-all-link" data-action="community" data-i18n="home.view_all">View All</a>
+            </div>
+            <div class="home-card-body">
+                <div class="community-posts-list" id="community-posts-list">
+                    <div class="loading-state">
+                        <div class="spinner-border spinner-border-sm"></div>
+                        <span data-i18n="home.loading_posts">Loading posts...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversations -->
+        <div class="home-card conversations-card">
+            <div class="home-card-header">
+                <i class="material-icons">chat</i>
+                <span data-i18n="home.messages">Messages</span>
+                <a href="#" class="view-all-link" data-action="conversations" data-i18n="home.view_all">View All</a>
+            </div>
+            <div class="home-card-body">
+                <div class="conversations-list-home" id="conversations-list-home">
+                    <div class="loading-state">
+                        <div class="spinner-border spinner-border-sm"></div>
+                        <span data-i18n="home.loading_messages">Loading messages...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Note Modal -->
+<div class="note-modal-overlay" id="note-modal-overlay">
+    <div class="note-modal">
+        <div class="note-modal-header">
+            <span id="note-modal-title">New Note</span>
+            <button class="note-modal-close" id="note-modal-close">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+        <div class="note-modal-body">
+            <input type="text" class="note-title-input" id="note-title-input" placeholder="Note title..." maxlength="100">
+            <textarea class="note-content-input" id="note-content-input" placeholder="Write your note here..." maxlength="1000"></textarea>
+            <div class="note-color-picker">
+                <span data-i18n="home.color">Color:</span>
+                <div class="note-colors">
+                    <button class="note-color active" data-color="#fef3c7" style="background: #fef3c7;"></button>
+                    <button class="note-color" data-color="#dbeafe" style="background: #dbeafe;"></button>
+                    <button class="note-color" data-color="#dcfce7" style="background: #dcfce7;"></button>
+                    <button class="note-color" data-color="#fce7f3" style="background: #fce7f3;"></button>
+                    <button class="note-color" data-color="#f3e8ff" style="background: #f3e8ff;"></button>
+                    <button class="note-color" data-color="#fff" style="background: #fff; border: 1px solid #e5e7eb;"></button>
+                </div>
+            </div>
+        </div>
+        <div class="note-modal-footer">
+            <button class="note-modal-btn cancel" id="note-modal-cancel" data-i18n="common.cancel">Cancel</button>
+            <button class="note-modal-btn save" id="note-modal-save" data-i18n="common.save">Save Note</button>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/pages/home.js"></script>

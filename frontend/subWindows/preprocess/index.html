@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre Process</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .mainArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 40px);
+        }
+
+        .nochrome {
+            display: none;
+        }
+
+        .loader {
+            width: 40px;
+            aspect-ratio: 1;
+            background: #FFF;
+            animation: l1 1s infinite;
+        }
+
+        @keyframes l1 {
+            0% {
+                transform: perspective(150px) rotateX(0deg)
+            }
+
+            100% {
+                transform: perspective(150px) rotateX(180deg)
+            }
+        }
+
+        .loading-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="custom-titlebar">
+        <span class="title"></span>
+        <div class="window-controls">
+            <button onclick="window.electronAPI.minimize()">–</button>
+            <button onclick="window.electronAPI.toggleMaxRestore()"><i class="material-icons" style="font-size:16px;vertical-align:middle">crop_square</i></button>
+            <button onclick="window.electronAPI.close()">×</button>
+        </div>
+    </div>
+
+    <div class="mainArea">
+
+        <div class="loading-area">
+            <div class="bg-dark p-4 rounded mb-2 d-flex">
+                <div class="loader me-2"></div>
+                <img src="../../assets/images/logo.png" width="100">
+            </div>
+        </div>
+
+        <div class="nochrome">
+            <div class="card text-center p-4 shadow" style="max-width: 400px;">
+                <div class="card-body">
+                    <img src="../../assets/images/icons/chrome.png" width="48" class="mb-2">
+                    <h5 class="card-title mb-3">VCBrowser Not Found</h5>
+                    <p class="card-text">
+                        VCBrowser is not installed. Please restart ViralCloner to download and install VCBrowser automatically.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(async function () {
+            try {
+                // Check for VCBrowser instead of Chrome
+                const result = await window.electronAPI.checkVCBrowser();
+                if (result.installed) {
+                    window.electronAPI.allFine();
+                } else {
+                    $(".loading-area").hide();
+                    $(".nochrome").show();
+                }
+
+            } catch (error) {
+                console.error('Failed to check VCBrowser:', error);
+                $(".loading-area").hide();
+                $(".nochrome").show();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

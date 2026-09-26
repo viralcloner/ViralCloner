@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Cloner</title>
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Template override — populated by JS when a non-default template is active -->
+    <link id="vc-template-override" rel="stylesheet" disabled>
+    <link rel="stylesheet" href="assets/css/drawflow.min.css" />
+    <link rel="stylesheet" href="assets/css/drawflow-theme.css">
+    <link rel="stylesheet" href="assets/css/ai-agent.css">
+
+    <!-- Leaflet for GPS Map -->
+    <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="../node_modules/tippy.js/dist/tippy.umd.min.js"></script>
+    <script src="assets/js/drawflow.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Leaflet for GPS Map -->
+    <script src="assets/vendor/leaflet/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="assets/css/lightbox.min.css">
+    <script src="assets/js/lightbox-plus-jquery.min.js"></script>
+
+    <!-- Cropper -->
+    <script src="assets/js/cropper.min.js"></script>
+    <link rel="stylesheet" href="assets/css/cropper.min.css">
+
+    <!-- Mini Canvas -->
+    <script src="assets/js/minicanvas/fabric.min.js"></script>
+    <script src="assets/js/minicanvas/range.js"></script>
+    <script src="assets/js/minicanvas/tooltip.js"></script>
+    <script src="assets/js/minicanvas/editor.js"></script>
+    <script src="assets/js/minicanvas/fontfaceobserver.js"></script>
+    <script src="assets/js/minicanvas/jquery.justifiedGallery.min.js"></script>
+
+    <!-- Video Editor Preview Engine (needed globally for automation exports) -->
+    <script src="assets/js/videoeditor/subtitle-templates.js"></script>
+    <script src="assets/js/videoeditor/preview-engine.js"></script>
+    <script src="assets/js/minicanvas/iro.js"></script>
+    <link rel="stylesheet" href="assets/css/minicanvas-editor.css">
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/app.js"></script>
+
+        <!-- Apply cached theme ASAP to avoid flash (app.js will sync with persisted setting) -->
+    <script>
+        (function () {
+            try {
+                // Apply theme
+                const cached = localStorage.getItem('vc.theme');
+                const theme = cached === 'dark' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.setAttribute('data-bs-theme', theme);
+                
+                // Apply RTL direction for Arabic
+                const lang = localStorage.getItem('vc.language');
+                if (lang === 'ar') {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                    document.documentElement.setAttribute('lang', 'ar');
+                    // Preload RTL stylesheet
+                    const link = document.createElement('link');
+                    link.id = 'rtl-stylesheet';
+                    link.rel = 'stylesheet';
+                    link.href = 'assets/css/rtl.css';
+                    document.head.appendChild(link);
+                }
+            } catch (e) {
+                // ignore
+            }
+        })();
+    </script>
+
+    <script>
+        window.intervals = [];
+        window.loadingState = { isNavigating: false };
+        
+        (async function () {
+            const path = await window.electronAPI.getUserDataPath();
+            window.localPath = path;
+            
+            // Show dev tools button only in development mode
+            const isDev = await window.electronAPI.isDev();
+            if (isDev) {
+                document.getElementById('dev-tools-btn').style.display = 'inline-block';
+                document.getElementById('refresh-frontend-btn').style.display = 'inline-block';
+            }
+        })();
+        
+        // Debounce function to prevent rapid navigation
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+<link rel="stylesheet" href="assets/css/local-edition.css">
+</head>
+
+<body>
+
+    <div id="custom-titlebar">
+        <span class="title"></span>
+        <div class="window-controls">
+            <button id="dev-tools-btn" onclick="window.electronAPI.openDevTools()" title="Open DevTools (Dev Only)" style="display: none; margin-right: 10px;"><i class="material-icons" style="font-size:16px;vertical-align:middle">build</i></button>
+            <button id="refresh-frontend-btn" onclick="window.electronAPI.refreshFrontend()" title="Refresh Frontend (Dev Only)" style="display: none; margin-right: 10px;"><i class="material-icons" style="font-size:16px;vertical-align:middle">refresh</i></button>
+            <button onclick="window.electronAPI.minimize()">–</button>
+            <button onclick="window.electronAPI.toggleMaxRestore()"><i class="material-icons" style="font-size:16px;vertical-align:middle">crop_square</i></button>
+            <button onclick="window.handleAppClose()">×</button>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="body-sidebar">
+            <div class="logo">
+                <img src="assets/images/logo.png" width="100" class="logo-full logo-dark">
+                <img src="assets/images/logo-light.png" width="100" class="logo-full logo-light">
+                <img src="assets/images/icon.png" width="32" class="logo-icon">
+            </div>
+            
+            <!-- User Profile Section -->
+            <div class="user-profile-section" id="localWorkspaceLabel">
+                <div class="user-avatar" id="userAvatar">
+                    <span class="material-icons">person</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="userName" data-i18n="local.workspace">Local workspace</span>
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+
+            <div class="menu">
+                <!-- Home - standalone -->
+                <a href="#home" class="menu-element active" data-tooltip="Home" data-i18n-tooltip="nav.home">
+                    <div class="menu-icon-wrapper">
+                        <img class="light" src="assets/images/icons/home.png">
+                        <img class="dark" src="assets/images/icons/home-black.png">
+                    </div>
+                    <span class="menu-text" data-i18n="nav.home">Home</span>
+                </a>
+
+                <!-- Automation Category -->
+                <div class="menu-category" data-tooltip="Automation" data-i18n-tooltip="nav.automation">
+                    <div class="menu-category-header" data-category="automation">
+                        <div class="category-icon">
+                            <span class="material-icons">auto_awesome</span>
+                        </div>
+                        <span class="category-text" data-i18n="nav.automation">Automation</span>
+                        <span class="material-icons arrow">expand_more</span>
+                    </div>
+                    <div class="menu-category-items">
+                        <a href="#workflows" class="menu-element" data-tooltip="Workflows" data-i18n-tooltip="nav.workflows">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/flows.png">
+                                <img class="dark" src="assets/images/icons/flows-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.workflows">Workflows</span>
+                        </a>
+                        <a href="#automation" class="menu-element" data-tooltip="Automations" data-i18n-tooltip="nav.automations">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/robot.png">
+                                <img class="dark" src="assets/images/icons/robot-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.automations">Automations</span>
+                        </a>
+                        <a href="#analytics" class="menu-element" data-tooltip="Analytics" data-i18n-tooltip="nav.analytics">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">monitoring</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.analytics">Analytics</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tools Category -->
+                <div class="menu-category" data-tooltip="Tools" data-i18n-tooltip="nav.tools">
+                    <div class="menu-category-header" data-category="tools">
+                        <div class="category-icon">
+                            <span class="material-icons">build</span>
+                        </div>
+                        <span class="category-text" data-i18n="nav.tools">Tools</span>
+                        <span class="material-icons arrow">expand_more</span>
+                    </div>
+                    <div class="menu-category-items">
+                        <a href="#spy" class="menu-element" data-tooltip="Spy" data-i18n-tooltip="nav.spy">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/spy.png">
+                                <img class="dark" src="assets/images/icons/spy-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.spy">Spy</span>
+                        </a>
+                        <a href="#minicanvas" class="menu-element" data-tooltip="Mini Canvas" data-i18n-tooltip="nav.minicanvas">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/photoeditor.png">
+                                <img class="dark" src="assets/images/icons/photoeditor-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.minicanvas">Mini Canvas</span>
+                        </a>
+                        <a href="#videoeditor" class="menu-element" data-tooltip="Video Editor" data-i18n-tooltip="nav.video_editor">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">video_library</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.video_editor">Video Editor</span>
+                        </a>
+                        <a href="#fb-analytics" class="menu-element" data-platform="facebook" data-tooltip="FB Analytics" data-i18n-tooltip="nav.fb_analytics">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">analytics</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.fb_analytics">FB Analytics</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Management Category -->
+                <div class="menu-category" data-tooltip="Management" data-i18n-tooltip="nav.management">
+                    <div class="menu-category-header" data-category="management">
+                        <div class="category-icon">
+                            <span class="material-icons">folder</span>
+                        </div>
+                        <span class="category-text" data-i18n="nav.management">Management</span>
+                        <span class="material-icons arrow">expand_more</span>
+                    </div>
+                    <div class="menu-category-items">
+                        <a href="#structures" class="menu-element" data-tooltip="Structures" data-i18n-tooltip="nav.structures">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/structure.png">
+                                <img class="dark" src="assets/images/icons/structure-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.structures">Structures</span>
+                        </a>
+                        <a href="#backup" class="menu-element" data-tooltip="Backup & Restore" data-i18n-tooltip="nav.backup">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/recover.png">
+                                <img class="dark" src="assets/images/icons/recover-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.backup">Backup & Restore</span>
+                        </a>
+                        <a href="#mailboxes" class="menu-element" data-tooltip="Mailboxes" data-i18n-tooltip="nav.mailboxes">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">mark_email_unread</i>
+                                <span id="mailboxNotificationBadge" class="notification-badge d-none">0</span>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.mailboxes">Mailboxes</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pinterest Category -->
+                <div class="menu-category" data-platform="pinterest" data-tooltip="Pinterest" data-i18n-tooltip="nav.pinterest">
+                    <div class="menu-category-header" data-category="pinterest">
+                        <div class="category-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.406.042-3.442.218-.936 1.407-5.965 1.407-5.965s-.359-.719-.359-1.781c0-1.669.967-2.914 2.171-2.914 1.024 0 1.518.769 1.518 1.69 0 1.03-.655 2.569-.994 3.995-.283 1.195.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.208 0 1.031.397 2.137.893 2.739a.36.36 0 0 1 .083.345c-.091.379-.293 1.194-.333 1.361-.053.218-.176.265-.4.159-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+                        </div>
+                        <span class="category-text" data-i18n="nav.pinterest">Pinterest</span>
+                        <span class="material-icons arrow">expand_more</span>
+                    </div>
+                    <div class="menu-category-items">
+                        <a href="#pinterest-accounts" class="menu-element" data-tooltip="Pinterest Accounts" data-i18n-tooltip="nav.pinterest_accounts">
+                            <div class="menu-icon-wrapper">
+                                <img class="light" src="assets/images/icons/pinterest.png">
+                                <img class="dark" src="assets/images/icons/pinterest-black.png">
+                            </div>
+                            <span class="menu-text" data-i18n="nav.pinterest_accounts">Pinterest Accounts</span>
+                        </a>
+                        <a href="#pinterest-analytics" class="menu-element" data-tooltip="Pinterest Analytics" data-i18n-tooltip="nav.pinterest_analytics">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">analytics</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.pinterest_analytics">Pinterest Analytics</span>
+                        </a>
+                        <a href="#pinterest-scanner" class="menu-element" data-tooltip="Pinterest Scanner" data-i18n-tooltip="nav.pinterest_scanner">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">manage_search</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.pinterest_scanner">Pinterest Scanner</span>
+                        </a>
+                        <a href="#pinterest-keywords" class="menu-element" data-tooltip="Keyword Research" data-i18n-tooltip="nav.pinterest_keywords">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">trending_up</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.pinterest_keywords">Keyword Research</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Facebook Category -->
+                <div class="menu-category" data-platform="facebook" data-tooltip="Facebook" data-i18n-tooltip="nav.facebook">
+                    <div class="menu-category-header" data-category="facebook">
+                        <div class="category-icon">
+                            <img class="dark" src="assets/images/icons/facebook-black.png" width="20">
+                        </div>
+                        <span class="category-text" data-i18n="nav.facebook">Facebook</span>
+                        <span class="material-icons arrow">expand_more</span>
+                    </div>
+                    <div class="menu-category-items">
+                        <a href="#fb-groups" class="menu-element" data-addon="fb_groups" data-tooltip="Facebook Groups" data-i18n-tooltip="nav.fb_groups">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">groups_3</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.fb_groups">Facebook Groups</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Additional Tools Category -->
+                <div class="menu-category" data-tooltip="Additional Tools" data-i18n-tooltip="nav.additional_tools">
+                    <div class="menu-category-header" data-category="additional-tools">
+                        <div class="category-icon">
+                            <span class="material-icons">handyman</span>
+                        </div>
+                        <span class="category-text" data-i18n="nav.additional_tools">Additional Tools</span>
+                        <span class="material-icons arrow">expand_more</span>
+                    </div>
+                    <div class="menu-category-items">
+                        <a href="#wp-auto-category" class="menu-element" data-tooltip="WP Auto Category" data-i18n-tooltip="nav.wp_auto_category">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">category</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.wp_auto_category">WP Auto Category</span>
+                        </a>
+                        <a href="#ai-image-cleaner" class="menu-element" data-tooltip="AI Image Cleaner" data-i18n-tooltip="nav.ai_image_cleaner">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">auto_fix_high</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.ai_image_cleaner">AI Image Cleaner</span>
+                        </a>
+                        <a href="#gemini-watermark-remover" class="menu-element" data-tooltip="Gemini Watermark Remover" data-i18n-tooltip="nav.gemini_watermark_remover">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">water_drop</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.gemini_watermark_remover">Gemini Watermark Remover</span>
+                        </a>
+                        <a href="#ai-text-humanizer" class="menu-element" data-tooltip="AI Text Humanizer" data-i18n-tooltip="nav.ai_text_humanizer">
+                            <div class="menu-icon-wrapper">
+                                <i class="material-icons menu-icon">edit_note</i>
+                            </div>
+                            <span class="menu-text" data-i18n="nav.ai_text_humanizer">AI Text Humanizer</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Community - standalone -->
+                
+
+                <!-- Marketplace - standalone -->
+                
+
+                <!-- Settings - standalone -->
+                <a href="#settings" class="menu-element" data-tooltip="Settings" data-i18n-tooltip="nav.settings">
+                    <div class="menu-icon-wrapper">
+                        <img class="light" src="assets/images/icons/settings.png">
+                        <img class="dark" src="assets/images/icons/settings-black.png">
+                    </div>
+                    <span class="menu-text" data-i18n="nav.settings">Settings</span>
+                </a>
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="version-row">
+                    <div class="app-version" id="appVersion">v1.0.0</div>
+                    <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+                        <i class="material-icons theme-icon theme-icon-dark">dark_mode</i>
+                        <i class="material-icons theme-icon theme-icon-light">light_mode</i>
+                    </button>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Collapse Sidebar">
+            <span class="material-icons">chevron_left</span>
+        </button>
+        
+        <div class="content">
+            <div id="pagesContent" class="content-container"></div>
+        </div>
+    </div>
+
+    <!-- Floating FB Groups Activity Indicator - Persists across page navigation -->
+    <div id="fbg-floating-indicator" class="fbg-floating-indicator">
+        <div class="fbg-float-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+            <span class="fbg-float-count">0</span>
+        </div>
+        <div class="fbg-float-info">
+            <span class="fbg-float-label">FB Groups Active</span>
+            <span class="fbg-float-sub">Click to view</span>
+        </div>
+        <button class="fbg-float-close" title="Dismiss">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+
+    <!-- Floating Spy Indicator - Persists across page navigation -->
+    <div id="spy-floating-indicator" class="spy-floating-indicator">
+        <div class="spy-indicator-main">
+            <div class="spy-indicator-icon">
+                <i class="material-icons">visibility</i>
+                <span class="spy-total-count">0</span>
+            </div>
+            <div class="spy-indicator-info">
+                <span class="spy-indicator-label" data-i18n="spy.spy_active">Spy Active</span>
+                <span class="spy-session-count">1 session</span>
+            </div>
+            <button class="spy-indicator-expand" title="Expand">
+                <i class="material-icons">expand_less</i>
+            </button>
+        </div>
+        <div class="spy-indicator-panel">
+            <div class="spy-panel-header">
+                <span data-i18n="spy.active_sessions">Active Spy Sessions</span>
+                <button class="spy-stop-all-btn" title="Stop All">
+                    <i class="material-icons">stop_circle</i>
+                    <span data-i18n="spy.stop_all">Stop All</span>
+                </button>
+            </div>
+            <div class="spy-sessions-list">
+                <!-- Sessions populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div id="captchaBanner">
+        <div class="captcha-modal">
+            <button id="captchaMinimizeBtn" class="captcha-minimize-btn" title="Minimize">
+                <i class="material-icons">remove</i>
+            </button>
+            <div class="captcha-icon">
+                <i class="material-icons">security</i>
+            </div>
+            <div class="captcha-header">
+                <h3>Captcha Verification Required</h3>
+                <p>Discord/Midjourney has detected automated activity</p>
+            </div>
+            <div class="captcha-body">
+                <div class="captcha-info-row">
+                    <span class="captcha-label">Profile</span>
+                    <span class="captcha-value" id="captchaProfile"></span>
+                </div>
+                <div class="captcha-info-row">
+                    <span class="captcha-label">Seed</span>
+                    <code class="captcha-seed" id="captchaSeed"></code>
+                </div>
+            </div>
+            <div class="captcha-instructions">
+                <i class="material-icons">info</i>
+                <span>Please solve the captcha in the browser window, then click the button below</span>
+            </div>
+            <div class="captcha-actions">
+                <button id="captchaOpenDiscordBtn" class="captcha-btn captcha-btn-discord">
+                    <i class="material-icons">open_in_new</i>
+                    <span data-i18n="captcha.open_discord">Open Discord Profile</span>
+                </button>
+                <button id="captchaSolvedBtn" class="captcha-btn">
+                    <i class="material-icons">check_circle</i>
+                    <span>I've Solved the Captcha</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimized Captcha Indicator -->
+    <div id="captchaMinimizedIndicator">
+        <div class="captcha-minimized-icon">
+            <i class="material-icons">security</i>
+        </div>
+        <span class="captcha-minimized-badge">!</span>
+    </div>
+
+    <!-- Minimized Copy-Paste Indicator (floating icon, persists across page navigation) -->
+    <div id="copypasteMinimizedIndicator">
+        <div class="copypaste-minimized-icon">
+            <i class="material-icons">content_copy</i>
+        </div>
+        <span class="copypaste-minimized-badge">!</span>
+    </div>
+
+    <!-- Google Account Disconnected Banner -->
+    <div id="googleDisconnectedBanner">
+        <div class="google-disconnect-modal">
+            <button id="googleDisconnectMinimizeBtn" class="google-disconnect-minimize-btn" title="Minimize">
+                <i class="material-icons">remove</i>
+            </button>
+            <div class="google-disconnect-icon">
+                <i class="material-icons">account_circle</i>
+            </div>
+            <div class="google-disconnect-header">
+                <h3 data-i18n="google_disconnect.title">Google Account Disconnected</h3>
+                <p data-i18n="google_disconnect.subtitle">Your Google account session has expired</p>
+            </div>
+            <div class="google-disconnect-body">
+                <div class="google-disconnect-info-row">
+                    <span class="google-disconnect-label" data-i18n="google_disconnect.profile_label">Profile</span>
+                    <span class="google-disconnect-value" id="googleDisconnectedProfile"></span>
+                </div>
+                <div class="google-disconnect-info-row" id="googleDisconnectedCountRow" style="display: none;">
+                    <span class="google-disconnect-label" data-i18n="google_disconnect.more_profiles">More profiles need attention</span>
+                    <span class="google-disconnect-count" id="googleDisconnectedCount"></span>
+                </div>
+            </div>
+            <div class="google-disconnect-instructions">
+                <i class="material-icons">info</i>
+                <span data-i18n="google_disconnect.instructions">Click the button below to open the browser and log in to your Google account again. Once logged in, click "I've Reconnected".</span>
+            </div>
+            <div id="googleDisconnectError" class="google-disconnect-error" style="display:none;">
+                <i class="material-icons">error_outline</i>
+                <span id="googleDisconnectErrorText"></span>
+            </div>
+            <div class="google-disconnect-buttons">
+                <button id="openGoogleProfileBtn" class="google-disconnect-btn google-disconnect-btn-secondary">
+                    <i class="material-icons">open_in_new</i>
+                    <span data-i18n="google_disconnect.open_browser">Open Profile Browser</span>
+                </button>
+                <button id="googleReconnectedBtn" class="google-disconnect-btn google-disconnect-btn-primary">
+                    <i class="material-icons">check_circle</i>
+                    <span data-i18n="google_disconnect.ive_reconnected">I've Reconnected</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimized Google Disconnect Indicator -->
+    <div id="googleDisconnectedMinimizedIndicator">
+        <div class="google-disconnect-minimized-icon">
+            <i class="material-icons">account_circle</i>
+        </div>
+        <span class="google-disconnect-minimized-badge">!</span>
+    </div>
+
+</body>
+
+</html>

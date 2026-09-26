@@ -1,0 +1,4307 @@
+<div class="fb-analytics-container">
+    <!-- Step 1: Import & Configure -->
+    <div id="fb-analytics-step1" class="fb-analytics-step">
+        <!-- Header Section -->
+        <div class="fb-analytics-header">
+            <div class="container-fluid">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1 class="page-title">
+                            <i class="material-icons">analytics</i>
+                            <span data-i18n="fb_analytics.title">Facebook Content Analytics</span>
+                        </h1>
+                        <p class="page-subtitle" data-i18n="fb_analytics.subtitle">Deep AI-powered analysis to identify winning patterns, keywords, and content strategies</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Section -->
+        <div class="fb-analytics-import-section">
+            <div class="container-fluid">
+                <div class="import-card">
+                    <div class="import-icon">
+                        <i class="material-icons">upload_file</i>
+                    </div>
+                    <h3 data-i18n="fb_analytics.import.title">Import Facebook Insights CSV</h3>
+                    <p data-i18n="fb_analytics.import.description">Export your content data from Facebook Business Manager and import it here for analysis</p>
+                    
+                    <div class="import-dropzone" id="import-dropzone">
+                        <i class="material-icons">cloud_upload</i>
+                        <span data-i18n="fb_analytics.import.drag_drop">Drag & drop your CSV file here</span>
+                        <span class="import-or" data-i18n="fb_analytics.import.or">or</span>
+                        <button class="btn-browse" id="btn-browse-csv">
+                            <i class="material-icons">folder_open</i>
+                            <span data-i18n="fb_analytics.import.browse">Browse Files</span>
+                        </button>
+                    </div>
+
+                    <div class="import-info" id="import-info" style="display: none;">
+                        <div class="import-file-info">
+                            <i class="material-icons">description</i>
+                            <span id="import-filename">filename.csv</span>
+                            <span id="import-post-count" class="post-count"></span>
+                            <button class="btn-remove-file" id="btn-remove-file" title="Remove file">
+                                <i class="material-icons">close</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Scans Section -->
+                <div class="saved-scans-card" id="saved-scans-card">
+                    <div class="saved-scans-header" id="saved-scans-toggle">
+                        <h3>
+                            <i class="material-icons">history</i>
+                            <span data-i18n="fb_analytics.saved_scans.title">Saved Scans</span>
+                            <span class="scan-count-badge" id="scan-count-badge">0</span>
+                        </h3>
+                        <i class="material-icons toggle-icon">expand_more</i>
+                    </div>
+                    <div class="saved-scans-content" id="saved-scans-content" style="display: none;">
+                        <div class="saved-scans-list" id="saved-scans-list">
+                            <div class="no-scans-message" id="no-scans-message">
+                                <i class="material-icons">inbox</i>
+                                <p data-i18n="fb_analytics.saved_scans.no_scans">No saved scans yet. Complete an analysis and save it to view later.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Configuration -->
+                <div class="ai-config-card" id="ai-config-card" style="display: none;">
+                    <h3>
+                        <i class="material-icons">psychology</i>
+                        <span data-i18n="fb_analytics.ai.title">Analysis Configuration</span>
+                    </h3>
+                    
+                    <div class="ai-config-row">
+                        <div class="config-group">
+                            <label data-i18n="fb_analytics.ai.provider">AI Provider</label>
+                            <select id="ai-provider-select" class="form-select">
+                                <option value="" data-i18n="fb_analytics.ai.select_provider">Select AI Provider</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label data-i18n="fb_analytics.ai.model">Model</label>
+                            <select id="ai-model-select" class="form-select" disabled>
+                                <option value="" data-i18n="fb_analytics.ai.select_model">Select Model</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ai-config-row">
+                        <div class="config-group">
+                            <label data-i18n="fb_analytics.ai.page_type">Page Type / Niche</label>
+                            <select id="page-type-select" class="form-select">
+                                <option value="recipe">Food & Recipes</option>
+                                <option value="fitness">Fitness & Health</option>
+                                <option value="fashion">Fashion & Beauty</option>
+                                <option value="travel">Travel & Lifestyle</option>
+                                <option value="business">Business & Finance</option>
+                                <option value="tech">Technology</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="education">Education</option>
+                                <option value="motivation">Motivation & Quotes</option>
+                                <option value="general" selected>General / Mixed</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label data-i18n="fb_analytics.ai.analysis_depth">Analysis Depth</label>
+                            <select id="analysis-depth-select" class="form-select">
+                                <option value="30">Standard (Top 30 posts)</option>
+                                <option value="50" selected>Deep (Top 50 posts)</option>
+                                <option value="100">Comprehensive (Top 100 posts)</option>
+                                <option value="200">Extended (Top 200 posts)</option>
+                                <option value="300">Maximum (Top 300 posts)</option>
+                            </select>
+                            <small class="config-hint" id="chunked-analysis-hint" style="display: none; color: #f0ad4e; margin-top: 4px;">Large datasets will be analyzed in chunks to avoid token limits</small>
+                        </div>
+                    </div>
+
+                    <div class="analysis-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="analyze-images">
+                            <span data-i18n="fb_analytics.ai.analyze_images">Analyze post images for visual patterns</span>
+                        </label>
+                        <div class="image-count-config" id="image-count-config" style="display: none;">
+                            <label>Number of images to analyze:</label>
+                            <select id="image-count-select" class="form-select form-select-sm" style="width: 140px; display: inline-block; margin-left: 10px;">
+                                <option value="5">5 images</option>
+                                <option value="10" selected>10 images</option>
+                                <option value="15">15 images</option>
+                                <option value="20">20 images</option>
+                                <option value="30">30 images</option>
+                                <option value="50">50 images (max)</option>
+                            </select>
+                        </div>
+                        <small class="option-hint" data-i18n="fb_analytics.ai.analyze_images_hint">Fetches and downloads images from top posts using spy profile for visual pattern analysis</small>
+                    </div>
+
+                    <div class="ai-config-row">
+                        <div class="config-group">
+                            <label data-i18n="fb_analytics.spy.profile_label">Spy Profile for Image Fetching</label>
+                            <select id="spy-profile-select" class="form-select" disabled>
+                                <option value="" data-i18n="fb_analytics.spy.select_profile">Select Spy Profile</option>
+                            </select>
+                        </div>
+                        <div class="config-group spy-profile-status-group">
+                            <label>&nbsp;</label>
+                            <div id="spy-profile-status">
+                                <div class="check-status checking">
+                                    <i class="material-icons spin">sync</i>
+                                    <span data-i18n="fb_analytics.spy.checking">Checking Facebook spy profiles...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-config-actions">
+                        <button class="btn-analyze" id="btn-start-analysis" disabled>
+                            <i class="material-icons">auto_awesome</i>
+                            <span data-i18n="fb_analytics.ai.start_analysis">Start Deep Analysis</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Analysis Progress -->
+    <div id="fb-analytics-step2" class="fb-analytics-step" style="display: none;">
+        <div class="fb-analytics-header">
+            <div class="container-fluid">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1 class="page-title">
+                            <i class="material-icons">analytics</i>
+                            <span data-i18n="fb_analytics.analyzing.title">Deep Analysis in Progress</span>
+                        </h1>
+                        <p class="page-subtitle" id="analysis-subtitle" data-i18n="fb_analytics.analyzing.subtitle">Extracting patterns, keywords, and insights from your content...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-progress-section">
+            <div class="container-fluid">
+                <div class="progress-card">
+                    <div class="progress-icon">
+                        <i class="material-icons spin">auto_awesome</i>
+                    </div>
+                    <h3 id="progress-title" data-i18n="fb_analytics.analyzing.processing">Processing your content data...</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="analysis-progress-bar" style="width: 0%"></div>
+                    </div>
+                    <p class="progress-status" id="progress-status"></p>
+                    <div class="progress-log" id="progress-log"></div>
+                    
+                    <button class="btn-cancel-analysis" id="btn-cancel-analysis">
+                        <i class="material-icons">cancel</i>
+                        <span data-i18n="common.cancel">Cancel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Results Dashboard -->
+    <div id="fb-analytics-step3" class="fb-analytics-step" style="display: none;">
+        <div class="fb-analytics-header">
+            <div class="container-fluid">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1 class="page-title">
+                            <i class="material-icons">insights</i>
+                            <span data-i18n="fb_analytics.results.title">Deep Analytics Results</span>
+                        </h1>
+                        <p class="page-subtitle" id="results-subtitle"></p>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-export" id="btn-export-results">
+                            <i class="material-icons">download</i>
+                            <span data-i18n="fb_analytics.results.export">Export Report</span>
+                        </button>
+                        <button class="btn-new-analysis" id="btn-new-analysis">
+                            <i class="material-icons">refresh</i>
+                            <span data-i18n="fb_analytics.results.new_analysis">New Analysis</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analytics-dashboard">
+            <div class="container-fluid">
+                <!-- Overview Cards -->
+                <div class="dashboard-overview" id="dashboard-overview">
+                    <div class="overview-card">
+                        <div class="overview-icon posts">
+                            <i class="material-icons">article</i>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-value" id="total-posts">0</span>
+                            <span class="overview-label" data-i18n="fb_analytics.results.total_posts">Posts Analyzed</span>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon views">
+                            <i class="material-icons">visibility</i>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-value" id="total-views">0</span>
+                            <span class="overview-label" data-i18n="fb_analytics.results.total_views">Total Views</span>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon engagement">
+                            <i class="material-icons">trending_up</i>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-value" id="viral-rate">0%</span>
+                            <span class="overview-label" data-i18n="fb_analytics.results.viral_rate">Viral Hit Rate</span>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon top-niche">
+                            <i class="material-icons">local_fire_department</i>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-value" id="top-keyword">-</span>
+                            <span class="overview-label" data-i18n="fb_analytics.results.top_keyword">#1 Keyword</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IMAGE GALLERY - Primary Visual Analysis Section -->
+                <div class="analytics-card full-width image-gallery-card" id="image-gallery-card" style="display: none;">
+                    <div class="card-header image-header">
+                        <h3>
+                            <i class="material-icons">photo_library</i>
+                            <span data-i18n="fb_analytics.results.image_gallery">Analyzed Post Images</span>
+                        </h3>
+                        <div class="gallery-controls">
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="grid" title="Grid View">
+                                    <i class="material-icons">grid_view</i>
+                                </button>
+                                <button class="view-btn" data-view="list" title="List View">
+                                    <i class="material-icons">view_list</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="gallery-hint">
+                            <i class="material-icons">info</i>
+                            <span>Click any image to see its detailed AI analysis. The AI has automatically compared all images above.</span>
+                        </div>
+                        <div class="image-grid" id="image-grid"></div>
+                    </div>
+                </div>
+
+                <!-- AI Visual Comparison (automatic, shown when 2+ images analyzed) -->
+                <div class="analytics-card full-width ai-comparison-card" id="ai-comparison-card" style="display: none;">
+                    <div class="card-header gold">
+                        <h3>
+                            <i class="material-icons">psychology</i>
+                            <span data-i18n="fb_analytics.results.ai_comparison">AI Visual Comparison</span>
+                        </h3>
+                        <span class="header-badge">Automatic</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="ai-comparison-intro">
+                            <i class="material-icons">auto_awesome</i>
+                            <p>AI analyzed each image in ultra-detail and automatically compared them to find the winning formula.</p>
+                        </div>
+                        <div class="ai-comparison-content" id="ai-comparison-content"></div>
+                    </div>
+                </div>
+
+                <!-- Visual Patterns Summary (shown when images analyzed) -->
+                <div class="analytics-card full-width" id="visual-summary-card" style="display: none; margin-top: 10px;">
+                    <div class="card-header">
+                        <h3>
+                            <i class="material-icons">auto_awesome</i>
+                            <span data-i18n="fb_analytics.results.visual_summary">Visual Winning Formula</span>
+                        </h3>
+                    </div>
+                    <div class="card-content" id="visual-summary-content"></div>
+                </div>
+
+                <!-- Main Analytics Grid -->
+                <div class="analytics-grid" style="margin-top: 12px;">
+                    <!-- Winning Keywords -->
+                    <div class="analytics-card" id="keywords-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">key</i>
+                                <span data-i18n="fb_analytics.results.winning_keywords">Winning Keywords & Phrases</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="keywords-content"></div>
+                    </div>
+
+                    <!-- Hook Patterns -->
+                    <div class="analytics-card" id="hooks-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">flash_on</i>
+                                <span data-i18n="fb_analytics.results.hook_patterns">Viral Hook Patterns</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="hooks-content"></div>
+                    </div>
+
+                    <!-- Niche-Specific Analysis -->
+                    <div class="analytics-card" id="niche-specific-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons" id="niche-icon">restaurant</i>
+                                <span id="niche-title" data-i18n="fb_analytics.results.niche_insights">Niche-Specific Insights</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="niche-specific-content"></div>
+                    </div>
+
+                    <!-- Content Structure -->
+                    <div class="analytics-card" id="content-structure-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">format_list_numbered</i>
+                                <span data-i18n="fb_analytics.results.content_structure">Winning Content Structure</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="content-structure-content"></div>
+                    </div>
+
+                    <!-- Visual Patterns (hidden by default) -->
+                    <div class="analytics-card" id="visual-patterns-card" style="display: none;">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">palette</i>
+                                <span data-i18n="fb_analytics.results.visual_patterns">Visual Patterns in Top Posts</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="visual-patterns-content"></div>
+                    </div>
+
+                    <!-- Psychological Triggers -->
+                    <div class="analytics-card" id="triggers-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">psychology</i>
+                                <span data-i18n="fb_analytics.results.psychological_triggers">Psychological Triggers Used</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="triggers-content"></div>
+                    </div>
+
+                    <!-- Top Posts Deep Analysis -->
+                    <div class="analytics-card full-width" id="top-posts-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">emoji_events</i>
+                                <span data-i18n="fb_analytics.results.top_posts_deep">Top Posts - Why They Worked</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="top-posts-content"></div>
+                    </div>
+
+                    <!-- Do More -->
+                    <div class="analytics-card" id="do-more-card">
+                        <div class="card-header green">
+                            <h3>
+                                <i class="material-icons">thumb_up</i>
+                                <span data-i18n="fb_analytics.results.do_more">Do More Of This</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="do-more-content"></div>
+                    </div>
+
+                    <!-- Avoid -->
+                    <div class="analytics-card" id="avoid-card">
+                        <div class="card-header red">
+                            <h3>
+                                <i class="material-icons">thumb_down</i>
+                                <span data-i18n="fb_analytics.results.avoid">Stop Doing This</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="avoid-content"></div>
+                    </div>
+
+                    <!-- Content Ideas -->
+                    <div class="analytics-card full-width" id="content-ideas-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="material-icons">lightbulb</i>
+                                <span data-i18n="fb_analytics.results.content_ideas">AI-Generated Content Ideas Based on Your Data</span>
+                            </h3>
+                        </div>
+                        <div class="card-content" id="content-ideas-content"></div>
+                    </div>
+
+                    <!-- Generate Automation Card -->
+                    <div class="analytics-card full-width generate-automation-card" id="generate-automation-card">
+                        <div class="card-header purple">
+                            <h3>
+                                <i class="material-icons">auto_fix_high</i>
+                                <span data-i18n="fb_analytics.automation.title">Generate Viral Content Automation</span>
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <p class="automation-description" data-i18n="fb_analytics.automation.description">
+                                Create an automation that generates viral Facebook posts based on your analyzed patterns. 
+                                Input a recipe title and get AI-generated text + matching image.
+                            </p>
+                            
+                            <div class="automation-config">
+                                <div class="config-row">
+                                    <div class="config-group">
+                                        <label data-i18n="fb_analytics.automation.text_ai">Text Generation AI</label>
+                                        <select id="auto-text-provider" class="form-select">
+                                            <option value="openai">OpenAI (GPT-4o)</option>
+                                            <option value="anthropic">Anthropic (Claude)</option>
+                                            <option value="googleai">Google AI (Gemini)</option>
+                                            <option value="openrouter">OpenRouter</option>
+                                        </select>
+                                    </div>
+                                    <div class="config-group">
+                                        <label data-i18n="fb_analytics.automation.image_gen">Image Generator</label>
+                                        <select id="auto-image-provider" class="form-select">
+                                            <option value="midjourney">Midjourney</option>
+                                            <option value="chatgptimage">ChatGPT Image</option>
+                                            <option value="gptimage">GPT Image (DALL-E 3)</option>
+                                            <option value="googleaiimage">Google Imagen</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="automation-preview">
+                                    <div class="preview-node input-node">
+                                        <i class="material-icons">input</i>
+                                        <span data-i18n="fb_analytics.automation.input_node">Recipe Title</span>
+                                    </div>
+                                    <div class="preview-arrow"><i class="material-icons">arrow_forward</i></div>
+                                    <div class="preview-node ai-node">
+                                        <i class="material-icons">psychology</i>
+                                        <span data-i18n="fb_analytics.automation.text_node">AI Text</span>
+                                    </div>
+                                    <div class="preview-arrow"><i class="material-icons">arrow_forward</i></div>
+                                    <div class="preview-node image-node">
+                                        <i class="material-icons">image</i>
+                                        <span data-i18n="fb_analytics.automation.image_node">Image Gen</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn-generate-automation" id="btn-generate-automation">
+                                    <i class="material-icons">rocket_launch</i>
+                                    <span data-i18n="fb_analytics.automation.generate_btn">Generate Automation</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Floating Button -->
+    <button class="ai-chat-fab" id="ai-chat-fab" title="Chat with AI about your analysis">
+        <i class="material-icons">smart_toy</i>
+    </button>
+
+    <!-- AI Chat Panel (ChatGPT-style) -->
+    <div class="ai-chat-panel" id="ai-chat-panel">
+        <div class="ai-chat-header">
+            <div class="ai-chat-header-left">
+                <div class="ai-chat-avatar">
+                    <i class="material-icons">psychology</i>
+                </div>
+                <div class="ai-chat-header-info">
+                    <span class="ai-chat-title" data-i18n="fb_analytics.chat.title">Analytics Assistant</span>
+                    <span class="ai-chat-subtitle" data-i18n="fb_analytics.chat.subtitle">Ask anything about your analysis</span>
+                </div>
+            </div>
+            <div class="ai-chat-header-right">
+                <select class="ai-chat-model-select" id="ai-chat-model" title="Select AI model">
+                    <option value="openai">GPT-4o (Free)</option>
+                    <option value="anthropic">Claude</option>
+                    <option value="googleai">Gemini</option>
+                    <option value="openrouter">OpenRouter</option>
+                </select>
+                <div class="ai-chat-menu-wrapper">
+                    <button class="ai-chat-header-btn" id="ai-chat-menu-btn" title="More options">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <div class="ai-chat-dropdown" id="ai-chat-dropdown">
+                        <button class="ai-chat-dropdown-item" id="ai-chat-new">
+                            <i class="material-icons">add_comment</i>
+                            <span data-i18n="fb_analytics.chat.new_chat">New Chat</span>
+                        </button>
+                        <button class="ai-chat-dropdown-item" id="ai-chat-history">
+                            <i class="material-icons">history</i>
+                            <span data-i18n="fb_analytics.chat.history">History</span>
+                        </button>
+                        <div class="ai-chat-dropdown-divider"></div>
+                        <button class="ai-chat-dropdown-item" id="ai-chat-close">
+                            <i class="material-icons">close</i>
+                            <span data-i18n="fb_analytics.chat.close">Close</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat History Sidebar -->
+        <div class="ai-chat-history-panel" id="ai-chat-history-panel" style="display: none;">
+            <div class="ai-chat-history-header">
+                <h4 data-i18n="fb_analytics.chat.history_title">Chat History</h4>
+                <button class="ai-chat-header-btn" id="ai-chat-history-close">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="ai-chat-history-list" id="ai-chat-history-list">
+                <!-- Conversations loaded dynamically -->
+            </div>
+        </div>
+        
+        <div class="ai-chat-messages" id="ai-chat-messages">
+            <div class="ai-chat-welcome" id="ai-chat-welcome">
+                <div class="ai-chat-welcome-icon">
+                    <i class="material-icons">auto_awesome</i>
+                </div>
+                <h4 data-i18n="fb_analytics.chat.welcome_title">Hello! I'm your Analytics Assistant</h4>
+                <p data-i18n="fb_analytics.chat.welcome_text">I know everything about your analyzed Facebook page, including top posts, visual patterns, keywords, and engagement strategies. Ask me anything!</p>
+                <div class="ai-chat-suggestions">
+                    <button class="ai-chat-suggestion" data-prompt="What are the top 5 strategies I should use based on this analysis?">
+                        <i class="material-icons">lightbulb</i>
+                        <span>Top 5 strategies</span>
+                    </button>
+                    <button class="ai-chat-suggestion" data-prompt="What visual elements make the top posts successful?">
+                        <i class="material-icons">image</i>
+                        <span>Visual success factors</span>
+                    </button>
+                    <div class="viral-titles-group">
+                        <button class="ai-chat-suggestion viral-titles-btn" id="generate-viral-titles-btn">
+                            <i class="material-icons">title</i>
+                            <span data-i18n="fb_analytics.chat.generate_titles">Generate viral titles</span>
+                        </button>
+                        <select id="viral-titles-count" class="viral-titles-count">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+                    <button class="ai-chat-suggestion" data-prompt="Write me a viral post for this niche">
+                        <i class="material-icons">edit</i>
+                        <span>Write a viral post</span>
+                    </button>
+                    <button class="ai-chat-suggestion" data-prompt="What keywords drive the most engagement?">
+                        <i class="material-icons">trending_up</i>
+                        <span>Top keywords</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ai-chat-image-preview" id="ai-chat-image-preview" style="display: none;">
+            <div class="preview-images" id="preview-images"></div>
+            <button class="clear-images-btn" id="clear-chat-images">
+                <i class="material-icons">close</i>
+                <span data-i18n="fb_analytics.chat.clear_images">Clear</span>
+            </button>
+        </div>
+        
+        <div class="ai-chat-input-area">
+            <input type="file" id="ai-chat-image-input" accept="image/*" multiple style="display: none;">
+            <button class="ai-chat-attach-btn" id="ai-chat-attach" title="Attach images">
+                <i class="material-icons">add_photo_alternate</i>
+            </button>
+            <div class="ai-chat-input-wrapper">
+                <textarea id="ai-chat-input" placeholder="Ask about your analysis..." rows="1"></textarea>
+            </div>
+            <button class="ai-chat-send-btn" id="ai-chat-send" title="Send message" disabled>
+                <i class="material-icons">send</i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Detail Modal -->
+    <div class="image-modal" id="image-detail-modal">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content image-detail-content">
+            <button class="modal-close" id="modal-close-detail">
+                <i class="material-icons">close</i>
+            </button>
+            <div class="modal-body">
+                <div class="image-detail-left">
+                    <div class="detail-image-container">
+                        <img id="detail-image" src="" alt="Post image">
+                    </div>
+                    <div class="image-meta">
+                        <span class="meta-item">
+                            <i class="material-icons">visibility</i>
+                            <span id="detail-views">0</span> views
+                        </span>
+                        <span class="meta-item">
+                            <i class="material-icons">emoji_events</i>
+                            Rank #<span id="detail-rank">0</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="image-detail-right">
+                    <h3>AI Visual Analysis</h3>
+                    <div class="analysis-sections" id="detail-analysis"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Scan Modal -->
+    <div class="image-modal" id="save-scan-modal">
+        <div class="modal-overlay" id="save-scan-overlay"></div>
+        <div class="modal-content save-scan-content">
+            <button class="modal-close" id="save-scan-close">
+                <i class="material-icons">close</i>
+            </button>
+            <div class="save-scan-body">
+                <div class="save-scan-icon">
+                    <i class="material-icons">save</i>
+                </div>
+                <h3 data-i18n="fb_analytics.saved_scans.modal_title">Save Analysis</h3>
+                <p data-i18n="fb_analytics.saved_scans.modal_desc">Enter a name for this scan to find it later.</p>
+                <div class="save-scan-input-group">
+                    <input type="text" id="save-scan-name" class="form-control" placeholder="e.g., Recipe Page Analysis - Jan 2026">
+                </div>
+                <div class="save-scan-actions">
+                    <button class="btn-cancel" id="save-scan-cancel">
+                        <span data-i18n="common.cancel">Cancel</span>
+                    </button>
+                    <button class="btn-confirm" id="save-scan-confirm">
+                        <i class="material-icons">save</i>
+                        <span data-i18n="fb_analytics.results.save_scan">Save Scan</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for Facebook Analytics Page -->
+<style>
+.fb-analytics-container {
+    min-height: 100%;
+    background: var(--bg-primary);
+}
+
+.fb-analytics-header {
+    padding: 30px 0 20px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fb-analytics-header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fb-analytics-header .header-left {
+    flex: 1;
+}
+
+.fb-analytics-header .header-right {
+    display: flex;
+    gap: 10px;
+}
+
+.fb-analytics-header .page-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.fb-analytics-header .page-title i {
+    color: var(--accent-color);
+    font-size: 32px;
+}
+
+.fb-analytics-header .page-subtitle {
+    color: var(--text-secondary);
+    margin: 8px 0 0 44px;
+    font-size: 14px;
+}
+
+/* Import Section */
+.fb-analytics-import-section {
+    padding: 40px 0;
+}
+
+.import-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.import-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.import-icon i {
+    font-size: 40px;
+    color: white;
+}
+
+.import-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 10px;
+}
+
+.import-card > p {
+    color: var(--text-secondary);
+    margin: 0 0 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.import-dropzone {
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 50px 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.import-dropzone:hover,
+.import-dropzone.dragover {
+    border-color: var(--accent-color);
+    background: var(--accent-color-light);
+}
+
+.import-dropzone i {
+    font-size: 48px;
+    color: var(--text-tertiary);
+}
+
+.import-dropzone span {
+    color: var(--text-secondary);
+}
+
+.import-or {
+    color: var(--text-tertiary) !important;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.btn-browse {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-browse span {
+    color: var(--bg-primary);
+}
+
+.btn-browse:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.import-info {
+    margin-top: 20px;
+}
+
+.import-file-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-primary);
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.import-file-info i {
+    color: var(--accent-color);
+}
+
+.import-file-info .post-count {
+    background: var(--accent-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.btn-remove-file {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-remove-file:hover {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+/* Saved Scans Section */
+.saved-scans-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.saved-scans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.saved-scans-header:hover {
+    background: var(--bg-hover);
+}
+
+.saved-scans-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.saved-scans-header h3 i {
+    color: var(--accent-color);
+    font-size: 20px;
+}
+
+.saved-scans-header .toggle-icon {
+    color: var(--text-tertiary);
+    transition: transform 0.3s ease;
+}
+
+.saved-scans-header.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.scan-count-badge {
+    background: var(--accent-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 20px;
+    text-align: center;
+}
+
+.saved-scans-content {
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border-color);
+}
+
+.saved-scans-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.no-scans-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-tertiary);
+}
+
+.no-scans-message i {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.no-scans-message p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.saved-scan-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.saved-scan-item:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scan-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.scan-icon i {
+    color: white;
+    font-size: 24px;
+}
+
+.scan-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.scan-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scan-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.scan-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.scan-meta i {
+    font-size: 14px;
+}
+
+.scan-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-load-scan, .btn-delete-scan {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-load-scan {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-load-scan:hover {
+    background: var(--accent-hover);
+}
+
+.btn-delete-scan {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-delete-scan:hover {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* Save Scan Button */
+.btn-save-scan {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-save-scan:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-save-scan:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* AI Configuration Card */
+.ai-config-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.ai-config-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 24px;
+}
+
+.ai-config-card h3 i {
+    color: var(--accent-color);
+}
+
+.ai-config-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.ai-provider-status {
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+}
+
+.ai-auto-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.ai-auto-selected i {
+    font-size: 20px;
+}
+
+.ai-auto-selected.loading {
+    color: var(--text-secondary);
+}
+
+.ai-auto-selected.loading i.spin {
+    animation: spin 1s linear infinite;
+}
+
+.ai-auto-selected.error {
+    color: var(--danger);
+}
+
+.ai-auto-selected .text-success {
+    color: var(--success);
+}
+
+.ai-auto-selected .text-danger {
+    color: var(--danger);
+}
+
+.config-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.config-group .form-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.config-group .form-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spy-profile-check {
+    margin-bottom: 24px;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--bg-primary);
+}
+
+.check-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.check-status.checking {
+    color: var(--text-secondary);
+}
+
+.check-status.success {
+    color: var(--success);
+}
+
+.check-status.error {
+    color: var(--danger);
+}
+
+.check-status i.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.ai-config-actions {
+    text-align: center;
+}
+
+.btn-analyze {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-analyze:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--accent-rgb), 0.3);
+}
+
+.btn-analyze:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Progress Section */
+.analysis-progress-section {
+    padding: 60px 0;
+}
+
+.progress-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 60px 40px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.progress-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+}
+
+.progress-icon i {
+    font-size: 50px;
+    color: white;
+}
+
+.progress-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 30px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-status {
+    color: var(--text-secondary);
+    margin: 0 0 20px;
+    font-size: 14px;
+}
+
+.progress-log {
+    max-height: 150px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    background: var(--bg-primary);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+.progress-log:empty {
+    display: none;
+}
+
+.progress-log .log-item {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.progress-log .log-item:last-child {
+    border-bottom: none;
+}
+
+.btn-cancel-analysis {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-analysis:hover {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* Results Dashboard */
+.analytics-dashboard {
+    padding: 30px 0;
+}
+
+.dashboard-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.overview-card {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.overview-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overview-icon.posts {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+}
+
+.overview-icon.views {
+    background: rgba(14, 165, 233, 0.1);
+    color: #0ea5e9;
+}
+
+.overview-icon.engagement {
+    background: rgba(236, 72, 153, 0.1);
+    color: #ec4899;
+}
+
+.overview-icon.top-niche {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.overview-icon i {
+    font-size: 28px;
+}
+
+.overview-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.overview-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Analytics Grid */
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.analytics-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.analytics-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.card-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-header h3 i {
+    color: var(--accent-color);
+    font-size: 20px;
+}
+
+.card-content {
+    padding: 24px;
+}
+
+/* Header buttons */
+.btn-export,
+.btn-new-analysis {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-export {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-export:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-color);
+}
+
+.btn-new-analysis {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+}
+
+.btn-new-analysis:hover {
+    background: var(--accent-hover);
+}
+
+/* Niche Performance Styles */
+.niche-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.niche-item:last-child {
+    border-bottom: none;
+}
+
+.niche-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.niche-rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-color-light);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.niche-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.niche-stats {
+    text-align: right;
+}
+
+.niche-views {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.niche-posts {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Content Type Styles */
+.content-type-item {
+    margin-bottom: 16px;
+}
+
+.content-type-item:last-child {
+    margin-bottom: 0;
+}
+
+.content-type-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.content-type-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.content-type-value {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.content-type-bar {
+    height: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.content-type-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.content-type-fill.photos { background: #6366f1; }
+.content-type-fill.videos { background: #ec4899; }
+.content-type-fill.reels { background: #f59e0b; }
+.content-type-fill.links { background: #10b981; }
+.content-type-fill.text { background: #8b5cf6; }
+
+/* Posting Times Styles */
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.time-day {
+    text-align: center;
+}
+
+.time-day-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.time-slot {
+    height: 20px;
+    border-radius: 4px;
+    background: var(--bg-primary);
+    position: relative;
+}
+
+.time-slot.active {
+    background: var(--accent-color);
+}
+
+.time-slot.hot {
+    background: #f59e0b;
+}
+
+/* Top Posts Styles */
+.top-post-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.top-post-item:last-child {
+    border-bottom: none;
+}
+
+.top-post-rank {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.top-post-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.top-post-text {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.top-post-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.top-post-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.top-post-meta i {
+    font-size: 14px;
+}
+
+/* Recommendations Styles */
+.recommendation-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.recommendation-item:last-child {
+    margin-bottom: 0;
+}
+
+.recommendation-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.recommendation-icon.do-more {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.recommendation-icon.avoid {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.recommendation-icon.optimize {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+}
+
+.recommendation-icon.timing {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.recommendation-icon i {
+    font-size: 24px;
+}
+
+.recommendation-content {
+    flex: 1;
+}
+
+.recommendation-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.recommendation-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Analysis Options Styles */
+.analysis-options {
+    background: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.checkbox-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color);
+}
+
+.option-hint {
+    display: block;
+    margin-top: 8px;
+    margin-left: 28px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+/* Card Header Variants */
+.card-header.green {
+    background: rgba(16, 185, 129, 0.1);
+    border-bottom-color: rgba(16, 185, 129, 0.2);
+}
+
+.card-header.green h3,
+.card-header.green h3 i {
+    color: #10b981;
+}
+
+.card-header.red {
+    background: rgba(239, 68, 68, 0.1);
+    border-bottom-color: rgba(239, 68, 68, 0.2);
+}
+
+.card-header.red h3,
+.card-header.red h3 i {
+    color: #ef4444;
+}
+
+.card-header.gold {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(234, 179, 8, 0.1) 100%);
+    border-bottom-color: rgba(245, 158, 11, 0.3);
+}
+
+.card-header.gold h3,
+.card-header.gold h3 i {
+    color: #f59e0b;
+}
+
+.card-header.gold .header-badge {
+    background: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* AI Comparison Card Styles */
+.ai-comparison-card {
+    border: 2px solid rgba(245, 158, 11, 0.3);
+}
+
+.ai-comparison-intro {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(245, 158, 11, 0.08);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.ai-comparison-intro i {
+    font-size: 28px;
+    color: #f59e0b;
+}
+
+.ai-comparison-intro p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.ai-comparison-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+.ai-comparison-content h2,
+.ai-comparison-content h3,
+.ai-comparison-content h4 {
+    color: var(--text-primary);
+    margin: 24px 0 12px;
+    font-weight: 600;
+}
+
+.ai-comparison-content h2:first-child,
+.ai-comparison-content h3:first-child,
+.ai-comparison-content h4:first-child {
+    margin-top: 0;
+}
+
+.ai-comparison-content strong {
+    color: #f59e0b;
+}
+
+.ai-comparison-content ul,
+.ai-comparison-content ol {
+    margin: 12px 0;
+    padding-left: 24px;
+}
+
+.ai-comparison-content li {
+    margin: 8px 0;
+}
+
+.ai-comparison-content p {
+    margin: 12px 0;
+}
+
+/* Keywords Styles */
+.keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.keyword-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-primary);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.keyword-tag.high {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10b981;
+}
+
+.keyword-tag.medium {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #f59e0b;
+}
+
+.keyword-score {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* Hook Pattern Styles */
+.hook-item {
+    padding: 16px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.hook-item:last-child {
+    margin-bottom: 0;
+}
+
+.hook-example {
+    font-style: italic;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 14px;
+    border-left: 3px solid var(--accent-color);
+    padding-left: 12px;
+}
+
+.hook-explanation {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Niche-Specific Insight Styles */
+.insight-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.insight-item:last-child {
+    margin-bottom: 0;
+}
+
+.insight-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--accent-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.insight-icon i {
+    font-size: 20px;
+    color: var(--accent-color);
+}
+
+.insight-content h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.insight-content p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Structure Item Styles */
+.structure-item {
+    display: flex;
+    gap: 16px;
+    padding: 14px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.structure-item:last-child {
+    margin-bottom: 0;
+}
+
+.structure-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--accent-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.structure-icon i {
+    font-size: 20px;
+    color: var(--accent-color);
+}
+
+.structure-content h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.structure-content p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Visual Pattern Styles - Legacy */
+.visual-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.visual-item:last-child {
+    margin-bottom: 0;
+}
+
+.visual-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: var(--accent-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.visual-icon i {
+    font-size: 24px;
+    color: var(--accent-color);
+}
+
+.visual-content h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.visual-content p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* NEW Deep Visual Analysis Styles */
+.visual-summary {
+    margin-bottom: 20px;
+}
+
+.visual-summary .alert {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: var(--text-primary);
+    padding: 16px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.visual-summary .alert i {
+    color: #f59e0b;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.visual-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.visual-detail-card {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.visual-detail-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.detail-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.detail-header i {
+    font-size: 22px;
+    color: var(--accent-color);
+}
+
+.detail-header h5 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.detail-winner {
+    margin-bottom: 10px;
+}
+
+.detail-winner .badge {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.detail-winner .badge-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.detail-winner .badge-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.detail-tags .tag {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.color-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.color-tag {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+    color: var(--text-primary);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.detail-insight {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Scroll Stoppers Section */
+.scroll-stoppers-section {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.scroll-stoppers-section h5 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.scroll-stoppers-section h5 i {
+    color: #ef4444;
+}
+
+.stoppers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stopper-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    border-left: 3px solid #ef4444;
+}
+
+.stopper-element {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.stopper-frequency {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Visual Recommendations */
+.visual-recommendations {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.visual-recommendations h5 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.visual-recommendations h5 i {
+    color: #10b981;
+}
+
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recommendation-item {
+    background: var(--bg-primary);
+    padding: 14px 18px;
+    border-radius: 10px;
+    border-left: 3px solid #10b981;
+}
+
+.recommendation-item h6 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.recommendation-item p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Trigger Styles */
+.trigger-item {
+    padding: 14px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 3px solid;
+}
+
+.trigger-item:last-child {
+    margin-bottom: 0;
+}
+
+.trigger-item.curiosity {
+    border-color: #8b5cf6;
+}
+
+.trigger-item.urgency {
+    border-color: #ef4444;
+}
+
+.trigger-item.social-proof {
+    border-color: #10b981;
+}
+
+.trigger-item.emotion {
+    border-color: #ec4899;
+}
+
+.trigger-item.value {
+    border-color: #f59e0b;
+}
+
+.trigger-item.fomo {
+    border-color: #06b6d4;
+}
+
+.trigger-item h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.trigger-item p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Top Post Deep Analysis */
+.top-post-deep {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.top-post-deep:last-child {
+    margin-bottom: 0;
+}
+
+.top-post-deep .top-post-rank {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.top-post-deep .top-post-rank.gold {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.top-post-deep .top-post-rank.silver {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+}
+
+.top-post-deep .top-post-rank.bronze {
+    background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
+}
+
+.top-post-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.top-post-details .top-post-text {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    margin-bottom: 12px;
+}
+
+.top-post-analysis {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+}
+
+.top-post-analysis h5 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.top-post-analysis p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Action Items (Do More / Avoid) */
+.action-item {
+    padding: 16px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.action-item:last-child {
+    margin-bottom: 0;
+}
+
+.action-item h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.action-item p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Content Ideas Styles */
+.idea-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.idea-item:last-child {
+    margin-bottom: 0;
+}
+
+.idea-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.idea-content h4 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.idea-content p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.idea-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.idea-tag {
+    padding: 4px 10px;
+    background: var(--accent-color-light);
+    color: var(--accent-color);
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Card Content Scroll */
+.card-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .dashboard-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .analytics-card.full-width {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .ai-config-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .fb-analytics-header .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
+
+/* Generate Automation Card */
+.generate-automation-card {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(147, 51, 234, 0.1) 100%);
+    border: 2px solid rgba(147, 51, 234, 0.3);
+}
+
+.generate-automation-card .card-header.purple {
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+    color: white;
+}
+
+.generate-automation-card .card-header.purple h3 {
+    color: white;
+}
+
+.automation-description {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.automation-config .config-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.automation-config .config-group label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.automation-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.preview-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    min-width: 100px;
+}
+
+.preview-node i {
+    font-size: 28px;
+    color: var(--accent-color);
+}
+
+.preview-node span {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.preview-node.input-node {
+    border-color: #10b981;
+}
+
+.preview-node.input-node i {
+    color: #10b981;
+}
+
+.preview-node.ai-node {
+    border-color: #3b82f6;
+}
+
+.preview-node.ai-node i {
+    color: #3b82f6;
+}
+
+.preview-node.image-node {
+    border-color: #f59e0b;
+}
+
+.preview-node.image-node i {
+    color: #f59e0b;
+}
+
+.preview-arrow {
+    font-size: 24px;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+.btn-generate-automation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-generate-automation:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(147, 51, 234, 0.4);
+}
+
+.btn-generate-automation:active {
+    transform: translateY(0);
+}
+
+.btn-generate-automation i {
+    font-size: 22px;
+}
+
+@media (max-width: 768px) {
+    .automation-config .config-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .automation-preview {
+        flex-wrap: wrap;
+    }
+}
+
+/* ========================================
+   IMAGE GALLERY STYLES
+   ======================================== */
+
+/* Image count config */
+.image-count-config {
+    margin-top: 10px;
+    margin-left: 28px;
+    padding: 10px 15px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.image-count-config label {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+/* Image Gallery Card */
+.image-gallery-card {
+    margin-bottom: 24px;
+}
+
+.image-gallery-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.image-gallery-card .card-header.image-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.image-gallery-card .card-header h3 {
+    color: white;
+}
+
+.image-gallery-card .card-header h3 i {
+    color: white;
+}
+
+.gallery-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-compare {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-compare:hover:not(:disabled) {
+    background: rgba(255,255,255,0.3);
+}
+
+.btn-compare:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.view-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.view-btn {
+    padding: 6px 10px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+    color: white;
+    background: rgba(255,255,255,0.1);
+}
+
+.view-btn.active {
+    color: white;
+    background: rgba(255,255,255,0.2);
+}
+
+.gallery-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.gallery-hint i {
+    font-size: 18px;
+    color: var(--accent-color);
+}
+
+/* Image Grid */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.image-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+.image-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    border-color: var(--accent-color);
+}
+
+.image-item.selected {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.image-item .rank-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 12px;
+    z-index: 2;
+}
+
+.image-item .image-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+}
+
+.image-item .image-info {
+    padding: 12px;
+    background: var(--bg-secondary);
+}
+
+.image-item .image-views {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.image-item .image-views i {
+    font-size: 16px;
+}
+
+.image-item .image-views strong {
+    color: var(--text-primary);
+}
+
+.image-item .image-patterns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.image-item .pattern-tag {
+    padding: 2px 8px;
+    background: var(--accent-color-10);
+    color: var(--accent-color);
+    font-size: 10px;
+    border-radius: 10px;
+}
+
+/* List view specific */
+.image-grid.list-view .image-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.image-grid.list-view .image-thumb {
+    width: 200px;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+}
+
+.image-grid.list-view .image-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Visual Summary Card */
+#visual-summary-card .card-content {
+    padding: 0;
+}
+
+.visual-formula-banner {
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 12px;
+    margin: 20px;
+}
+
+.visual-formula-banner p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.visual-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 0 20px 20px;
+}
+
+.visual-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+}
+
+.visual-stat-item i {
+    font-size: 28px;
+    color: var(--accent-color);
+}
+
+.visual-stat-item .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.visual-stat-item .stat-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ========================================
+   IMAGE MODALS
+   ======================================== */
+
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal.show {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
+    z-index: 1;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 2;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--text-primary);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Image Detail Modal */
+.image-detail-content {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-detail-content .modal-body {
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+}
+
+.image-detail-left {
+    flex: 0 0 55%;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-image-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.detail-image-container img {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+.image-overlay-controls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 8px;
+}
+
+.overlay-btn {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.overlay-btn:hover,
+.overlay-btn.active {
+    background: rgba(255,255,255,0.2);
+}
+
+.composition-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: 
+        linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 33.33% 33.33%;
+}
+
+.image-meta {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 15px;
+    background: rgba(0,0,0,0.8);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    font-size: 14px;
+}
+
+.meta-item i {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.image-detail-right {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.image-detail-right h3 {
+    margin: 0 0 20px;
+    color: var(--text-primary);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.analysis-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.analysis-section {
+    padding: 16px;
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+}
+
+.analysis-section .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.analysis-section .section-header i {
+    font-size: 20px;
+    color: var(--accent-color);
+}
+
+.analysis-section .section-content {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.analysis-section.full-text .section-content {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 12px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    white-space: pre-wrap;
+}
+
+.analysis-section .section-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.analysis-section .section-tag {
+    padding: 4px 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 11px;
+    border-radius: 12px;
+}
+
+/* Image Compare Modal */
+.image-compare-content {
+    width: 1200px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.compare-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.compare-header h2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: var(--text-primary);
+}
+
+.compare-header h2 i {
+    color: var(--accent-color);
+}
+
+.compare-body {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    overflow-x: auto;
+    flex: 1;
+}
+
+.compare-column {
+    flex: 1;
+    min-width: 280px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.compare-column .column-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.compare-column .column-info {
+    padding: 16px;
+}
+
+.compare-column .column-rank {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.compare-column .column-rank .rank-badge {
+    padding: 4px 12px;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 12px;
+}
+
+.compare-column .column-rank .views {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.compare-column .analysis-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.compare-column .analysis-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.compare-column .analysis-item .item-label {
+    color: var(--text-secondary);
+    min-width: 70px;
+}
+
+.compare-column .analysis-item .item-value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.compare-summary {
+    padding: 20px 24px;
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+}
+
+.compare-summary h4 {
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.compare-summary .summary-content {
+    display: flex;
+    gap: 24px;
+}
+
+.compare-summary .commonalities,
+.compare-summary .differences {
+    flex: 1;
+}
+
+.compare-summary .summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.compare-summary .summary-list li {
+    padding: 6px 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.compare-summary .summary-list li i {
+    font-size: 16px;
+}
+
+.commonalities .summary-list li i {
+    color: #10b981;
+}
+
+.differences .summary-list li i {
+    color: #f59e0b;
+}
+
+@media (max-width: 1024px) {
+    .image-detail-content {
+        width: 95vw;
+    }
+    
+    .image-detail-content .modal-body {
+        flex-direction: column;
+    }
+    
+    .image-detail-left {
+        flex: none;
+    }
+    
+    .image-compare-content {
+        width: 95vw;
+    }
+    
+    .compare-body {
+        flex-direction: column;
+    }
+}
+
+/* ========== AI CHAT PANEL ========== */
+
+/* Floating Action Button */
+.ai-chat-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ai-chat-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.ai-chat-fab i {
+    font-size: 28px;
+}
+
+.ai-chat-fab.active {
+    display: flex;
+}
+
+/* Chat Panel */
+.ai-chat-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 420px;
+    height: 600px;
+    max-height: calc(100vh - 150px);
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    display: none;
+    flex-direction: column;
+    z-index: 1001;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.ai-chat-panel.open {
+    display: flex;
+    animation: slideUp 0.3s ease;
+}
+
+.ai-chat-panel.minimized {
+    height: 56px;
+}
+
+.ai-chat-panel.minimized .ai-chat-messages,
+.ai-chat-panel.minimized .ai-chat-input-area,
+.ai-chat-panel.minimized .ai-chat-image-preview,
+.ai-chat-panel.minimized .ai-chat-history-panel {
+    display: none !important;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Chat Header */
+.ai-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    min-height: 56px;
+    box-sizing: border-box;
+}
+
+.ai-chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.ai-chat-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ai-chat-avatar i {
+    color: white;
+    font-size: 20px;
+}
+
+.ai-chat-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ai-chat-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    white-space: nowrap;
+}
+
+.ai-chat-subtitle {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+}
+
+.ai-chat-header-right {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.ai-chat-model-select {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    font-size: 11px;
+    padding: 4px 6px;
+    cursor: pointer;
+    max-width: 80px;
+}
+
+.ai-chat-model-select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.ai-chat-model-select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.ai-chat-header-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.ai-chat-header-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+}
+
+.ai-chat-header-btn i {
+    font-size: 18px;
+}
+
+/* Chat Menu Dropdown */
+.ai-chat-menu-wrapper {
+    position: relative;
+}
+
+.ai-chat-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    min-width: 160px;
+    padding: 6px 0;
+    z-index: 100;
+    display: none;
+    animation: dropdownFadeIn 0.15s ease;
+}
+
+.ai-chat-dropdown.show {
+    display: block;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-chat-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+}
+
+.ai-chat-dropdown-item:hover {
+    background: var(--bg-tertiary);
+}
+
+.ai-chat-dropdown-item i {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.ai-chat-dropdown-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 6px 0;
+}
+
+/* Chat History Panel */
+.ai-chat-history-panel {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    background: var(--bg-secondary);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--border-color);
+}
+
+.ai-chat-history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ai-chat-history-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ai-chat-history-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.ai-chat-history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 4px;
+}
+
+.ai-chat-history-item:hover {
+    background: var(--bg-tertiary);
+}
+
+.ai-chat-history-item.active {
+    background: var(--accent-color-alpha);
+}
+
+.ai-chat-history-item i {
+    color: var(--text-secondary);
+    font-size: 20px;
+}
+
+.ai-chat-history-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.ai-chat-history-item-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ai-chat-history-item-date {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.ai-chat-history-item-delete {
+    opacity: 0;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.ai-chat-history-item:hover .ai-chat-history-item-delete {
+    opacity: 1;
+}
+
+.ai-chat-history-item-delete:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.ai-chat-history-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.ai-chat-history-empty i {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+/* Chat Messages */
+.ai-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ai-chat-welcome {
+    text-align: center;
+    padding: 20px;
+}
+
+.ai-chat-welcome-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.ai-chat-welcome-icon i {
+    color: white;
+    font-size: 30px;
+}
+
+.ai-chat-welcome h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+
+.ai-chat-welcome p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 20px;
+    line-height: 1.5;
+}
+
+.ai-chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.ai-chat-suggestion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    color: var(--text-primary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ai-chat-suggestion:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.ai-chat-suggestion i {
+    font-size: 16px;
+}
+
+/* Copyable title items from AI response */
+.copyable-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.copyable-title:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-color);
+}
+
+.copyable-title .title-number {
+    font-weight: 600;
+    color: var(--accent-color);
+    min-width: 24px;
+}
+
+.copyable-title .title-text {
+    flex: 1;
+    word-break: break-word;
+}
+
+.copyable-title .title-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.copyable-title:hover .title-actions {
+    opacity: 1;
+}
+
+.copyable-title .title-action-btn {
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copyable-title .title-action-btn:hover {
+    background: var(--accent-hover);
+    transform: scale(1.1);
+}
+
+.copyable-title .title-action-btn i {
+    font-size: 16px;
+}
+
+.copyable-title.copied {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+/* Copy all titles button */
+.copy-all-titles-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+    padding: 0 4px;
+}
+
+.copy-all-titles-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copy-all-titles-btn:hover {
+    background: linear-gradient(135deg, var(--accent-hover), #7c3aed);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.copy-all-titles-btn i {
+    font-size: 18px;
+}
+
+/* Viral titles group with count selector */
+.viral-titles-group {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+}
+
+.viral-titles-group .viral-titles-btn {
+    border-radius: 8px 0 0 8px;
+    flex: 1;
+}
+
+.viral-titles-count {
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 55px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.viral-titles-count:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-color);
+}
+
+.viral-titles-count:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Highlight pulse animation for automation section */
+.highlight-pulse {
+    animation: highlightPulse 2s ease;
+}
+
+@keyframes highlightPulse {
+    0%, 100% {
+        box-shadow: none;
+    }
+    25%, 75% {
+        box-shadow: 0 0 0 4px var(--accent-color), 0 0 20px var(--accent-color);
+    }
+    50% {
+        box-shadow: 0 0 0 6px var(--accent-color), 0 0 30px var(--accent-color);
+    }
+}
+
+/* Viral titles button emphasis */
+.ai-chat-suggestion.viral-titles-btn {
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    color: white;
+    border-color: transparent;
+}
+
+.ai-chat-suggestion.viral-titles-btn:hover {
+    background: linear-gradient(135deg, var(--accent-hover), #7c3aed);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.ai-chat-suggestion.viral-titles-btn i {
+    color: white;
+}
+
+/* Message Bubbles */
+.ai-chat-message {
+    display: flex;
+    gap: 10px;
+    max-width: 90%;
+}
+
+.ai-chat-message.own {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.ai-chat-message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ai-chat-message-avatar i {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.ai-chat-message.own .ai-chat-message-avatar {
+    background: var(--accent-color);
+}
+
+.ai-chat-message.own .ai-chat-message-avatar i {
+    color: white;
+}
+
+.ai-chat-message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ai-chat-message-bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.ai-chat-message.own .ai-chat-message-bubble {
+    background: var(--accent-color);
+    color: white;
+}
+
+.ai-chat-message-bubble p {
+    margin: 0 0 8px;
+}
+
+.ai-chat-message-bubble p:last-child {
+    margin-bottom: 0;
+}
+
+.ai-chat-message-bubble code {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.ai-chat-message-bubble pre {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+.ai-chat-message-bubble pre code {
+    background: none;
+    padding: 0;
+}
+
+.ai-chat-message-bubble ul,
+.ai-chat-message-bubble ol {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.ai-chat-message-bubble li {
+    margin-bottom: 4px;
+}
+
+.ai-chat-message-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.ai-chat-message-images img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.ai-chat-message-time {
+    font-size: 10px;
+    color: var(--text-secondary);
+    align-self: flex-end;
+}
+
+.ai-chat-message.own .ai-chat-message-time {
+    align-self: flex-start;
+}
+
+/* Typing Indicator */
+.ai-chat-typing {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-tertiary);
+    border-radius: 16px;
+    width: fit-content;
+}
+
+.ai-chat-typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.ai-chat-typing-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    animation: typingDot 1.4s infinite ease-in-out;
+}
+
+.ai-chat-typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.ai-chat-typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingDot {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}
+
+/* Image Preview */
+.ai-chat-image-preview {
+    padding: 8px 16px;
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ai-chat-image-preview .preview-images {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    overflow-x: auto;
+}
+
+.ai-chat-image-preview .preview-images img {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.ai-chat-image-preview .clear-images-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ai-chat-image-preview .clear-images-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* Input Area */
+.ai-chat-input-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.ai-chat-attach-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.ai-chat-attach-btn:hover {
+    background: var(--accent-color);
+    color: white;
+}
+
+.ai-chat-attach-btn i {
+    font-size: 20px;
+}
+
+.ai-chat-input-wrapper {
+    flex: 1;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    padding: 0 16px;
+}
+
+.ai-chat-input-wrapper textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 14px;
+    padding: 10px 0;
+    resize: none;
+    max-height: 120px;
+    line-height: 1.4;
+}
+
+.ai-chat-input-wrapper textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+.ai-chat-input-wrapper textarea:focus {
+    outline: none;
+}
+
+.ai-chat-send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.ai-chat-send-btn:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+.ai-chat-send-btn:not(:disabled):hover {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+.ai-chat-send-btn i {
+    font-size: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ai-chat-panel {
+        width: calc(100vw - 20px);
+        right: 10px;
+        bottom: 80px;
+        height: calc(100vh - 120px);
+    }
+    
+    .ai-chat-fab {
+        right: 20px;
+        bottom: 20px;
+    }
+}
+</style>
+
+<script src="assets/js/pages/fb-analytics.js"></script>
+</div>

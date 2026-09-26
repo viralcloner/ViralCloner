@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Proxy Setup",
+  "version": "1.0",
+  "description": "Chrome extension to set up proxy with authentication in MV3.",
+  "permissions": [
+    "proxy",
+    "webRequest",
+    "webRequestAuthProvider",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Proxy Setup"
+  }
+}

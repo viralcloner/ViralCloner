@@ -1,0 +1,132 @@
+/* ============================================
+   ViralCloner - Main Stylesheet
+   ============================================
+   This file imports all page-specific CSS modules.
+   Each page has its own CSS file for better organization.
+   ============================================ */
+
+/* Design Template - THE source of truth for colors, fonts, spacing, shapes */
+@import url("pages/template.css");
+
+/* Base - Font imports, Material Icons, Global Resets */
+@import url("pages/base.css");
+
+/* Dark Theme Overrides */
+@import url("pages/dark-theme.css");
+
+/* Loading States */
+@import url("pages/loading.css");
+
+/* Global Components - Buttons, Tables, Forms, Modals */
+@import url("pages/components.css");
+
+/* Modals - Professional confirm/dynamic modals */
+@import url("pages/modals.css");
+
+/* Dropdowns - Action dropdown menus */
+@import url("pages/dropdowns.css");
+
+/* Layout - Titlebar, Sidebar, Main Body Structure */
+@import url("pages/layout.css");
+
+/* ============================================
+   Page-Specific Styles
+   ============================================ */
+
+/* Home/Dashboard Page */
+@import url("pages/home.css");
+
+/* Settings Page */
+@import url("pages/settings.css");
+
+/* Spy Page */
+@import url("pages/spy.css");
+
+/* Automation Page */
+@import url("pages/automation.css");
+
+/* Workflows Page */
+@import url("pages/workflows.css");
+
+/* Structures Page */
+@import url("pages/structures.css");
+
+/* Marketplace Page */
+@import url("pages/marketplace.css");
+
+/* Community Forum Page */
+@import url("pages/community.css");
+
+/* Community - BBC News Style Grid */
+@import url("pages/bbc-news.css");
+
+/* Reports/Bug Reporting Page */
+@import url("pages/reports.css");
+
+/* Pinterest Accounts Page */
+@import url("pages/pinterest-accounts.css");
+
+/* Pinterest Analytics Page */
+@import url("pages/pinterest-analytics.css");
+
+/* MiniCanvas Page */
+@import url("pages/minicanvas.css");
+
+/* Video Editor Page */
+@import url("pages/videoeditor.css");
+
+/* Monitoring Page */
+@import url("pages/monitoring.css");
+
+/* ============================================
+   Workflow Mode-Specific Styles
+   ============================================ */
+
+/* FB Analytics/Insights Mode */
+@import url("pages/fb-analytics.css");
+
+/* Image Search Engine (ISE) Mode */
+@import url("pages/image-search.css");
+
+/* Google Trends Mode */
+@import url("pages/google-trends.css");
+@import url("pages/pfeedspy.css");
+
+/* Miscellaneous Modals (Spy filter, Proxy, Update) */
+@import url("pages/misc-modals.css");
+
+/* Nodes Pipeline View */
+@import url("pages/nodes-pipeline.css");
+
+/* Workflow Mode Selector & Filters */
+@import url("pages/workflow-modes.css");
+
+/* Spy Toolbar & Floating Indicators */
+@import url("pages/spy-toolbar.css");
+
+/* WP Auto Category Page */
+@import url("pages/wp-auto-category.css");
+
+/* Backup & Restore Page */
+@import url("pages/backup.css");
+
+/* Mailbox Manager & Inbox Reader */
+@import url("pages/mailboxes.css");
+
+/* AI Image Cleaner Page */
+@import url("pages/ai-image-cleaner.css");
+
+/* Gemini Watermark Remover Page */
+@import url("pages/gemini-watermark-remover.css");
+
+/* AI Text Humanizer Page */
+@import url("pages/ai-text-humanizer.css");
+
+/* Pinterest Scanner Page */
+@import url("pages/pinterest-scanner.css");
+
+/* Facebook Groups Page */
+@import url("pages/fb-groups.css");
+
+/* Pinterest Keyword Research Page */
+@import url("pages/pinterest-keywords.css");

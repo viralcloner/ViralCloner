@@ -1,0 +1,408 @@
+<!-- ============================================
+     Video Editor Page
+     ============================================ -->
+
+<!-- Project List View (default) -->
+<div id="ve-project-list">
+    <div class="ve-projects-header">
+        <div class="ve-projects-header-left">
+            <h1 data-i18n="videoeditor.title">Video Editor</h1>
+            <p data-i18n="videoeditor.subtitle">Create stunning videos with timeline editing, effects, and AI tools</p>
+        </div>
+        <div class="ve-projects-header-right">
+            <button class="ve-btn ve-btn-secondary" id="ve-import-project-btn">
+                <span class="material-icons">file_upload</span>
+                <span data-i18n="videoeditor.import_project">Import Project</span>
+            </button>
+            <button class="ve-btn ve-btn-primary" id="ve-new-project-btn">
+                <span class="material-icons">add</span>
+                <span data-i18n="videoeditor.new_project">New Project</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="ve-projects-grid" id="ve-projects-grid">
+        <!-- Project cards populated by JS -->
+    </div>
+
+    <div class="ve-empty-state" id="ve-empty-state" style="display: none;">
+        <span class="material-icons">videocam</span>
+        <h3 data-i18n="videoeditor.no_projects">No projects yet</h3>
+        <p data-i18n="videoeditor.create_first">Create your first video project</p>
+        <button class="ve-btn ve-btn-primary" id="ve-empty-new-btn">
+            <span class="material-icons">add</span>
+            <span data-i18n="videoeditor.new_project">New Project</span>
+        </button>
+    </div>
+</div>
+
+<!-- New Project Modal -->
+<div class="ve-modal-overlay" id="ve-new-project-modal" style="display: none;">
+    <div class="ve-modal">
+        <div class="ve-modal-header">
+            <h3 data-i18n="videoeditor.create_project">Create New Project</h3>
+            <button class="ve-modal-close" id="ve-modal-close-btn">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="ve-modal-body">
+            <div class="ve-form-group">
+                <label data-i18n="videoeditor.project_name">Project Name</label>
+                <input type="text" id="ve-project-name-input" placeholder="My Video Project" data-i18n-placeholder="videoeditor.project_name_placeholder">
+            </div>
+            <div class="ve-form-group">
+                <label data-i18n="videoeditor.resolution">Resolution</label>
+                <div class="ve-resolution-presets" id="ve-resolution-presets">
+                    <button class="ve-resolution-btn active" data-w="1080" data-h="1920" data-label="9:16">
+                        <span class="ve-res-icon ve-res-portrait"></span>
+                        <span class="ve-res-label">9:16</span>
+                        <span class="ve-res-detail">1080×1920</span>
+                    </button>
+                    <button class="ve-resolution-btn" data-w="1920" data-h="1080" data-label="16:9">
+                        <span class="ve-res-icon ve-res-landscape"></span>
+                        <span class="ve-res-label">16:9</span>
+                        <span class="ve-res-detail">1920×1080</span>
+                    </button>
+                    <button class="ve-resolution-btn" data-w="1080" data-h="1080" data-label="1:1">
+                        <span class="ve-res-icon ve-res-square"></span>
+                        <span class="ve-res-label">1:1</span>
+                        <span class="ve-res-detail">1080×1080</span>
+                    </button>
+                    <button class="ve-resolution-btn" data-w="1080" data-h="1350" data-label="4:5">
+                        <span class="ve-res-icon ve-res-four-five"></span>
+                        <span class="ve-res-label">4:5</span>
+                        <span class="ve-res-detail">1080×1350</span>
+                    </button>
+                    <button class="ve-resolution-btn" data-w="0" data-h="0" data-label="Custom">
+                        <span class="material-icons">tune</span>
+                        <span class="ve-res-label" data-i18n="videoeditor.custom">Custom</span>
+                    </button>
+                </div>
+            </div>
+            <div class="ve-form-group ve-custom-res" id="ve-custom-res" style="display: none;">
+                <div class="ve-custom-res-inputs">
+                    <input type="number" id="ve-custom-w" placeholder="1920" min="100" max="7680">
+                    <span>×</span>
+                    <input type="number" id="ve-custom-h" placeholder="1080" min="100" max="7680">
+                </div>
+            </div>
+
+        </div>
+        <div class="ve-modal-footer">
+            <button class="ve-btn ve-btn-secondary" id="ve-modal-cancel-btn" data-i18n="videoeditor.cancel">Cancel</button>
+            <button class="ve-btn ve-btn-primary" id="ve-modal-create-btn" data-i18n="videoeditor.create">Create</button>
+        </div>
+    </div>
+</div>
+
+<!-- Full Editor View (hidden until project opened) -->
+<div id="ve-editor" style="display: none;">
+    <!-- Top Header Bar -->
+    <div class="ve-header">
+        <div class="ve-header-left">
+            <button class="ve-header-btn" id="ve-back-btn" title="Back to projects" data-i18n-title="videoeditor.back_to_projects">
+                <span class="material-icons">arrow_back</span>
+            </button>
+            <input type="text" class="ve-project-title-input" id="ve-project-title" value="Untitled Project">
+        </div>
+        <div class="ve-header-center">
+            <button class="ve-header-btn" id="ve-undo-btn" title="Undo" data-i18n-title="videoeditor.undo">
+                <span class="material-icons">undo</span>
+            </button>
+            <button class="ve-header-btn" id="ve-redo-btn" title="Redo" data-i18n-title="videoeditor.redo">
+                <span class="material-icons">redo</span>
+            </button>
+        </div>
+        <div class="ve-header-right">
+            <button class="ve-header-btn" id="ve-save-btn" title="Save" data-i18n-title="videoeditor.save">
+                <span class="material-icons">save</span>
+                <span data-i18n="videoeditor.save">Save</span>
+            </button>
+            <button class="ve-header-btn" id="ve-export-project-btn" title="Export Project File" data-i18n-title="videoeditor.export_project">
+                <span class="material-icons">file_download</span>
+            </button>
+            <button class="ve-btn ve-btn-primary" id="ve-export-btn">
+                <span class="material-icons">download</span>
+                <span data-i18n="videoeditor.export">Export</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Editor Body -->
+    <div class="ve-body">
+        <!-- Left Sidebar (Icon Strip) -->
+        <div class="ve-sidebar">
+            <button class="ve-sidebar-btn active" data-panel="media" title="Media" data-i18n-title="videoeditor.media">
+                <span class="material-icons">perm_media</span>
+                <span data-i18n="videoeditor.media">Media</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="text" title="Text" data-i18n-title="videoeditor.text">
+                <span class="material-icons">title</span>
+                <span data-i18n="videoeditor.text">Text</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="elements" title="Elements" data-i18n-title="videoeditor.elements">
+                <span class="material-icons">category</span>
+                <span data-i18n="videoeditor.elements">Elements</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="musics" title="Musics" data-i18n-title="videoeditor.musics">
+                <span class="material-icons">music_note</span>
+                <span data-i18n="videoeditor.musics">Musics</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="filters" title="Filters" data-i18n-title="videoeditor.filters">
+                <span class="material-icons">auto_fix_high</span>
+                <span data-i18n="videoeditor.filters">Filters</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="ai" title="AI Tools" data-i18n-title="videoeditor.ai_tools">
+                <span class="material-icons">auto_awesome</span>
+                <span data-i18n="videoeditor.ai_tools">AI</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="subtitles" title="Subtitles" data-i18n-title="videoeditor.subtitles">
+                <span class="material-icons">subtitles</span>
+                <span data-i18n="videoeditor.subtitles">Subtitles</span>
+            </button>
+            <button class="ve-sidebar-btn" data-panel="placeholders" title="Placeholders" data-i18n-title="videoeditor.placeholders">
+                <span class="material-icons">extension</span>
+                <span data-i18n="videoeditor.placeholders">Placeholders</span>
+            </button>
+        </div>
+
+        <!-- Side Panel (Sliding Left Panel) -->
+        <div class="ve-side-panel" id="ve-side-panel">
+            <div class="ve-side-panel-header">
+                <h3 id="ve-panel-title" data-i18n="videoeditor.media">Media</h3>
+                <button class="ve-side-panel-close" id="ve-panel-close-btn">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="ve-side-panel-content" id="ve-panel-content">
+                <!-- Panel content populated dynamically by JS -->
+            </div>
+        </div>
+
+        <!-- Canvas Preview Area -->
+        <div class="ve-canvas-area">
+            <div class="ve-canvas-container" id="ve-canvas-container">
+                <canvas id="ve-preview-canvas"></canvas>
+            </div>
+            <div class="ve-playback-controls">
+                <div class="ve-playback-left"></div>
+                <div class="ve-playback-center">
+                    <button class="ve-playback-btn" id="ve-skip-start-btn" title="Go to start">
+                        <span class="material-icons">skip_previous</span>
+                    </button>
+                    <button class="ve-playback-btn ve-play-btn" id="ve-play-btn" title="Play/Pause">
+                        <span class="material-icons">play_arrow</span>
+                    </button>
+                    <button class="ve-playback-btn" id="ve-skip-end-btn" title="Go to end">
+                        <span class="material-icons">skip_next</span>
+                    </button>
+                    <div class="ve-time-display">
+                        <span id="ve-current-time">00:00.0</span>
+                        <span class="ve-time-sep">/</span>
+                        <span id="ve-total-time">00:00.0</span>
+                    </div>
+                </div>
+                <div class="ve-playback-right">
+                    <select class="ve-speed-select" id="ve-speed-select">
+                        <option value="0.25">0.25x</option>
+                        <option value="0.5">0.5x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                    <div class="ve-volume-control">
+                        <button class="ve-playback-btn" id="ve-mute-btn">
+                            <span class="material-icons">volume_up</span>
+                        </button>
+                        <input type="range" id="ve-volume-slider" min="0" max="100" value="100" class="ve-volume-slider">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Properties Panel -->
+        <div class="ve-properties" id="ve-properties">
+            <div class="ve-properties-header">
+                <h3 data-i18n="videoeditor.properties">Properties</h3>
+            </div>
+            <div class="ve-properties-content" id="ve-properties-content">
+                <div class="ve-no-selection">
+                    <span class="material-icons">touch_app</span>
+                    <p data-i18n="videoeditor.select_element">Select an element to edit its properties</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <div class="ve-timeline" id="ve-timeline">
+        <div class="ve-timeline-resize-handle" id="ve-timeline-resize"></div>
+        <div class="ve-timeline-toolbar">
+            <div class="ve-timeline-toolbar-left">
+                <button class="ve-tl-btn" id="ve-add-track-btn" title="Add Track" data-i18n-title="videoeditor.add_track">
+                    <span class="material-icons">add</span>
+                </button>
+                <button class="ve-tl-btn" id="ve-split-btn" title="Split at Playhead" data-i18n-title="videoeditor.split_at_playhead">
+                    <span class="material-icons">content_cut</span>
+                </button>
+                <button class="ve-tl-btn" id="ve-delete-clip-btn" title="Delete Selected" data-i18n-title="videoeditor.delete_selected">
+                    <span class="material-icons">delete</span>
+                </button>
+            </div>
+            <div class="ve-timeline-toolbar-right">
+                <button class="ve-tl-btn" id="ve-snap-btn" title="Snap to Grid" data-i18n-title="videoeditor.snap_to_grid">
+                    <span class="material-icons">grid_on</span>
+                </button>
+                <div class="ve-tl-zoom">
+                    <span class="material-icons">zoom_out</span>
+                    <input type="range" id="ve-tl-zoom-slider" min="5" max="300" value="100" class="ve-tl-zoom-slider">
+                    <span class="material-icons">zoom_in</span>
+                </div>
+            </div>
+        </div>
+        <div class="ve-timeline-body" id="ve-timeline-body">
+            <div class="ve-timeline-ruler" id="ve-timeline-ruler">
+                <!-- Time ruler rendered by JS -->
+            </div>
+            <div class="ve-timeline-tracks-wrapper">
+                <div class="ve-track-headers" id="ve-track-headers">
+                    <!-- Track header controls rendered by JS -->
+                </div>
+                <div class="ve-timeline-tracks-scroll" id="ve-timeline-tracks-scroll">
+                    <div class="ve-playhead" id="ve-playhead">
+                        <div class="ve-playhead-handle"></div>
+                        <div class="ve-playhead-line"></div>
+                    </div>
+                    <div class="ve-timeline-tracks" id="ve-timeline-tracks">
+                        <!-- Track lanes and clips rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="ve-modal-overlay" id="ve-export-modal" style="display: none;">
+    <div class="ve-modal ve-modal-lg">
+        <div class="ve-modal-header">
+            <h3 data-i18n="videoeditor.export_video">Export Video</h3>
+            <button class="ve-modal-close" id="ve-export-close-btn">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="ve-modal-body">
+            <!-- FFmpeg status -->
+            <div class="ve-ffmpeg-status" id="ve-ffmpeg-status" style="display: none;">
+                <div class="ve-ffmpeg-downloading">
+                    <span class="material-icons ve-spin">downloading</span>
+                    <div>
+                        <p data-i18n="videoeditor.downloading_ffmpeg">Downloading FFmpeg (required for first export)...</p>
+                        <div class="ve-progress-bar">
+                            <div class="ve-progress-fill" id="ve-ffmpeg-progress"></div>
+                        </div>
+                        <span class="ve-progress-text" id="ve-ffmpeg-progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export settings -->
+            <div class="ve-export-settings" id="ve-export-settings">
+                <div class="ve-form-group">
+                    <label data-i18n="videoeditor.format">Format</label>
+                    <div class="ve-format-btns">
+                        <button class="ve-format-btn active" data-format="mp4">
+                            <span class="material-icons">movie</span>
+                            <span>MP4</span>
+                            <small>H.264</small>
+                        </button>
+                        <button class="ve-format-btn" data-format="webm">
+                            <span class="material-icons">web</span>
+                            <span>WebM</span>
+                            <small>VP9</small>
+                        </button>
+                    </div>
+                </div>
+                <div class="ve-form-group">
+                    <label data-i18n="videoeditor.quality">Quality</label>
+                    <select class="ve-select" id="ve-export-quality">
+                        <option value="low" data-i18n="videoeditor.quality_low">Low (fast)</option>
+                        <option value="medium" data-i18n="videoeditor.quality_medium">Medium</option>
+                        <option value="high" selected data-i18n="videoeditor.quality_high">High</option>
+                        <option value="ultra" data-i18n="videoeditor.quality_ultra">Ultra (slow)</option>
+                    </select>
+                </div>
+                <div class="ve-form-group">
+                    <label data-i18n="videoeditor.export_resolution">Resolution</label>
+                    <select class="ve-select" id="ve-export-resolution">
+                        <option value="original" data-i18n="videoeditor.original">Original</option>
+                        <option value="720p" data-i18n="videoeditor.res_720p">720p (HD)</option>
+                        <option value="1080p" selected data-i18n="videoeditor.res_1080p">1080p (Full HD)</option>
+                        <option value="2k" data-i18n="videoeditor.res_2k">2K (1440p)</option>
+                        <option value="4k" data-i18n="videoeditor.res_4k">4K (2160p)</option>
+                    </select>
+                </div>
+                <div class="ve-form-group">
+                    <label data-i18n="videoeditor.export_fps">FPS</label>
+                    <select class="ve-select" id="ve-export-fps">
+                        <option value="24">24 FPS</option>
+                        <option value="30" selected>30 FPS</option>
+                        <option value="60">60 FPS</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Export progress -->
+            <div class="ve-export-progress" id="ve-export-progress" style="display: none;">
+                <div class="ve-export-progress-info">
+                    <span class="material-icons ve-spin" id="ve-export-progress-info-icon">sync</span>
+                    <div>
+                        <p id="ve-export-status-text" data-i18n="videoeditor.exporting">Exporting video...</p>
+                        <div class="ve-progress-bar">
+                            <div class="ve-progress-fill" id="ve-export-progress-bar"></div>
+                        </div>
+                        <span class="ve-progress-text" id="ve-export-progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ve-modal-footer">
+            <button class="ve-btn ve-btn-secondary" id="ve-export-cancel-btn" data-i18n="videoeditor.cancel">Cancel</button>
+            <button class="ve-btn ve-btn-primary" id="ve-export-start-btn">
+                <span class="material-icons">download</span>
+                <span data-i18n="videoeditor.start_export">Start Export</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Context Menu for Clips -->
+<div class="ve-context-menu" id="ve-context-menu" style="display: none;">
+    <button class="ve-ctx-item" data-action="duplicate">
+        <span class="material-icons">content_copy</span>
+        <span data-i18n="videoeditor.duplicate">Duplicate</span>
+    </button>
+    <button class="ve-ctx-item" data-action="split">
+        <span class="material-icons">content_cut</span>
+        <span data-i18n="videoeditor.split">Split</span>
+    </button>
+    <button class="ve-ctx-item" data-action="delete">
+        <span class="material-icons">delete</span>
+        <span data-i18n="videoeditor.delete">Delete</span>
+    </button>
+    <div class="ve-ctx-separator"></div>
+    <button class="ve-ctx-item" data-action="bring-front">
+        <span class="material-icons">flip_to_front</span>
+        <span data-i18n="videoeditor.bring_to_front">Bring to Front</span>
+    </button>
+    <button class="ve-ctx-item" data-action="send-back">
+        <span class="material-icons">flip_to_back</span>
+        <span data-i18n="videoeditor.send_to_back">Send to Back</span>
+    </button>
+</div>
+
+<script src="assets/js/videoeditor/subtitle-templates.js"></script>
+<script src="assets/js/videoeditor/preview-engine.js"></script>
+<script src="assets/js/videoeditor/timeline.js"></script>
+<script src="assets/js/videoeditor/export-dialog.js"></script>
+<script src="assets/js/pages/videoeditor.js"></script>

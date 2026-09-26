@@ -6,8 +6,6 @@ ViralCloner runs locally without a ViralCloner account. Local tools are freely a
 
 [Windows releases](https://github.com/viralcloner/Windows-ViralCloner/releases) | [VCBrowser releases](https://github.com/viralcloner/VCBrowser/releases) | [Report an issue](https://github.com/viralcloner/Windows-ViralCloner/issues)
 
-> **Publication status:** This repository currently contains the project README. The application source and compiled release assets are separate publication steps. The development commands below require the complete source checkout.
-
 ## Features
 
 - **Visual workflows:** Connect content inputs, processing tools, and publishing outputs in a node editor.
@@ -58,9 +56,11 @@ Internet access is still required for GitHub downloads and online integrations. 
 
 Use Windows, Node.js 22 or newer, and npm. Native dependencies may require Python and Visual Studio C++ Build Tools.
 
-From the complete application source directory, containing `package.json` and `package-lock.json`:
+Clone this repository and install the locked dependencies:
 
 ```powershell
+git clone https://github.com/viralcloner/Windows-ViralCloner.git
+cd Windows-ViralCloner
 npm ci
 npm start
 ```
@@ -93,6 +93,8 @@ ViralCloner-Setup-VERSION-x64.exe
 ```
 
 Browser builds belong in the separate VCBrowser repository, using an asset name such as `VCBrowser-win-x64.zip`. Both download types require a matching size and GitHub-provided SHA-256 asset digest. Draft releases and prereleases are ignored by the downloader.
+
+For migration of encrypted data from older installations, the previous encryption key can be supplied privately through `VIRALCLONER_LEGACY_ENCRYPTION_KEY`. Fresh installations do not need it. Never commit this value. Portable workflow exports are shareable files; their format does not protect confidential contents.
 
 ## Contributing and support
 

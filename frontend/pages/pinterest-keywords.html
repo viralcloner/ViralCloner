@@ -1,0 +1,162 @@
+<!-- Pinterest Keyword Research page -->
+<div class="kw-container">
+
+  <!-- ── Hero / Search ──────────────────────────────────── -->
+  <div class="kw-hero">
+    <h1 data-i18n="pinterestKeywords.title">Pinterest Keyword Research</h1>
+    <p data-i18n="pinterestKeywords.subtitle">Discover search volume, keyword difficulty and related keywords for Pinterest.</p>
+    <div class="kw-search-row">
+      <div class="kw-input-wrap">
+        <span class="kw-input-icon material-icons">search</span>
+        <input id="kwInput" class="kw-input" type="text" autocomplete="off"
+               data-i18n-placeholder="pinterestKeywords.input_placeholder"
+               placeholder="Enter a keyword…" />
+        <div id="kwDropdown" class="kw-dropdown" style="display:none"></div>
+      </div>
+      <select id="kwCountry" class="kw-country">
+        <option value="US">US</option>
+        <option value="GB">GB</option>
+        <option value="CA">CA</option>
+        <option value="AU">AU</option>
+        <option value="FR">FR</option>
+        <option value="DE">DE</option>
+        <option value="BR">BR</option>
+        <option value="IN">IN</option>
+        <option value="MX">MX</option>
+        <option value="IT">IT</option>
+        <option value="ES">ES</option>
+      </select>
+      <button id="kwBtn" class="kw-btn" data-i18n="pinterestKeywords.analyze">Analyze</button>
+    </div>
+  </div>
+
+  <!-- ── Placeholder ────────────────────────────────────── -->
+  <div id="kwPlaceholder" class="kw-placeholder">
+    <div class="kw-placeholder-icon"><span class="material-icons">trending_up</span></div>
+    <p data-i18n="pinterestKeywords.placeholder_title">Search for a keyword to see insights</p>
+    <small data-i18n="pinterestKeywords.placeholder_sub">Volume, keyword difficulty, related terms, demographics and top pins</small>
+  </div>
+
+  <!-- ── Loading ────────────────────────────────────────── -->
+  <div id="kwLoading" class="kw-loading" style="display:none">
+    <div class="spinner"></div>
+    <span id="kwLoadingText" data-i18n="pinterestKeywords.loading">Analyzing keyword…</span>
+  </div>
+
+  <!-- ── Cache indicator ────────────────────────────────── -->
+  <div id="kwCacheBar" class="cache-indicator" style="display:none"></div>
+
+  <!-- ── Results ────────────────────────────────────────── -->
+  <div id="kwResults" style="display:none">
+
+    <!-- Stat cards -->
+    <div class="kw-stat-cards">
+      <div class="kw-stat-card" id="kwVolCard">
+        <div class="kw-stat-label" data-i18n="pinterestKeywords.volume">Monthly Impressions</div>
+        <div class="kw-stat-value" id="kwVolValue"><span class="inline-spinner"></span></div>
+        <div class="kw-stat-sub" id="kwVolSub"></div>
+      </div>
+      <div class="kw-stat-card" id="kwKdCard">
+        <div class="kw-stat-label" data-i18n="pinterestKeywords.kd">Keyword Difficulty</div>
+        <div class="kw-stat-value" id="kwKdValue"><span class="inline-spinner"></span></div>
+        <div class="kw-stat-sub" id="kwKdSub"></div>
+      </div>
+      <div class="kw-stat-card" id="kwOppCard">
+        <div class="kw-stat-label" data-i18n="pinterestKeywords.opportunity">Opportunity Score</div>
+        <div class="kw-stat-value" id="kwOppValue">—</div>
+        <div class="kw-stat-sub" id="kwOppSub"></div>
+      </div>
+    </div>
+
+    <!-- Opportunity detail -->
+    <div id="kwOppDetail" class="opp-wrap" style="display:none">
+      <div class="opp-wrap-inner">
+        <div class="opp-score-circle" id="kwOppCircle">
+          <div class="score-num" id="kwOppCircleNum">—</div>
+        </div>
+        <div class="opp-info">
+          <div class="opp-title" id="kwOppTitle"></div>
+          <div class="opp-desc" id="kwOppDesc"></div>
+        </div>
+      </div>
+      <div class="opp-bar-track">
+        <div class="opp-bar-fill" id="kwOppBarFill"></div>
+      </div>
+      <div class="opp-bar-labels">
+        <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+      </div>
+    </div>
+
+    <!-- Two-column: Related + Autotype -->
+    <div class="kw-two-col">
+      <div class="kw-col-main">
+        <h3 class="kw-section-title" data-i18n="pinterestKeywords.related_keywords">Related Keywords</h3>
+        <div class="kw-table-wrap">
+          <table class="kw-table" id="kwRelatedTable">
+            <thead>
+              <tr>
+                <th data-i18n="pinterestKeywords.col_keyword">Keyword</th>
+                <th data-i18n="pinterestKeywords.col_volume">Volume</th>
+                <th data-i18n="pinterestKeywords.col_kd">KD</th>
+                <th data-i18n="pinterestKeywords.col_opp">Opportunity</th>
+                <th data-i18n="pinterestKeywords.col_trend">Trend</th>
+                <th data-i18n="pinterestKeywords.col_demo">Demographics</th>
+              </tr>
+            </thead>
+            <tbody id="kwRelatedBody">
+              <tr><td colspan="6" class="kw-table-empty"><span class="inline-spinner"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="kw-col-side">
+        <h3 class="kw-section-title" data-i18n="pinterestKeywords.suggestions">Pinterest Suggestions</h3>
+        <div id="kwAutoType" class="kw-autotype-pills"></div>
+      </div>
+    </div>
+
+    <!-- Top Pins -->
+    <div id="kwTopPinsSection">
+      <h3 class="kw-section-title" data-i18n="pinterestKeywords.top_pins">Top Performing Pins</h3>
+      <div id="kwTopPins" class="top-pins-grid"></div>
+    </div>
+
+    <!-- Score guide -->
+    <div class="kw-score-guide">
+      <h4 data-i18n="pinterestKeywords.score_guide">Opportunity Score Guide</h4>
+      <div class="kw-score-guide-row">
+        <span class="kd-badge kd-easy">Easy</span>
+        <span data-i18n="pinterestKeywords.guide_great">75–100 · High volume, low competition → great opportunity</span>
+      </div>
+      <div class="kw-score-guide-row">
+        <span class="kd-badge kd-medium">Medium</span>
+        <span data-i18n="pinterestKeywords.guide_good">50–74 · Good balance of volume and competition</span>
+      </div>
+      <div class="kw-score-guide-row">
+        <span class="kd-badge kd-hard">Hard</span>
+        <span data-i18n="pinterestKeywords.guide_fair">25–49 · Moderate competition, may need strong content</span>
+      </div>
+      <div class="kw-score-guide-row">
+        <span class="kd-badge kd-vhard">Very Hard</span>
+        <span data-i18n="pinterestKeywords.guide_tough">0–24 · High competition, tough to rank without authority</span>
+      </div>
+    </div>
+
+  </div><!-- #kwResults -->
+  <!-- Trend Modal -->
+  <div id="kwTrendModal" class="kw-trend-modal" style="display:none" role="dialog" aria-modal="true">
+    <div class="kw-trend-modal-bg" id="kwTrendModalBg"></div>
+    <div class="kw-trend-modal-box">
+      <div class="kw-trend-modal-header">
+        <div>
+          <div class="kw-trend-modal-title" id="kwTrendModalTitle"></div>
+          <div class="kw-trend-modal-sub" id="kwTrendModalSub"></div>
+        </div>
+        <button class="kw-trend-modal-close" id="kwTrendModalClose" aria-label="Close">&times;</button>
+      </div>
+      <div id="kwTrendModalContent" class="kw-trend-modal-content"></div>
+    </div>
+  </div>
+
+</div><!-- .kw-container -->
+<script src="assets/js/pages/pinterest-keywords.js"></script>

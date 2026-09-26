@@ -1,0 +1,410 @@
+﻿/* Marketplace Page Styles */
+.marketplace-container {
+  padding: 0;
+}
+
+.marketplace-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 0;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.marketplace-header .page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.marketplace-header .page-subtitle {
+  margin: 0.5rem 0 0 0;
+  opacity: 0.9;
+}
+
+.marketplace-filters {
+  margin-bottom: 2rem;
+}
+
+.marketplace-filters .filter-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.marketplace-filters .filter-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  color: #374151;
+}
+
+.marketplace-filters .filter-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.marketplace-filters .filter-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.marketplace-filters .search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  max-width: 400px;
+}
+
+.marketplace-filters .search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 0.95rem;
+  background: transparent;
+  color: inherit;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.items-grid .loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  grid-column: 1 / -1;
+}
+
+.items-grid .loading-state p {
+  margin-top: 1rem;
+}
+
+.item-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.item-card-thumbnail {
+  width: 100%;
+  height: 440px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.item-card-body {
+  padding: 1.25rem;
+}
+
+.item-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+}
+
+.item-card-description {
+  color: #718096;
+  font-size: 0.875rem;
+  margin: 0 0 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.item-type-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.item-type-badge.template {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.item-type-badge.automation {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.item-price {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.item-price.free {
+  color: #10b981;
+}
+
+.price-tag {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: #10b981;
+  color: white;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.item-modal-description {
+  color: #666;
+  margin-top: 1rem;
+}
+
+.item-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.meta-item .material-icons {
+  font-size: 1.25rem;
+}
+
+.item-modal-actions {
+  margin-top: 2rem;
+}
+
+.item-modal-actions #itemModalDownloadBtn {
+  margin-top: 1rem;
+}
+
+.item-modal-actions .download-hint {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+#itemModalThumbnail {
+  width: 100%;
+  object-fit: cover;
+}
+
+.purchases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.purchase-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.purchase-card-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.purchase-card-info {
+  flex: 1;
+}
+
+.purchase-card-title {
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.purchase-card-date {
+  font-size: 0.75rem;
+  color: #718096;
+}
+
+.no-items {
+  text-align: center;
+  padding: 3rem;
+  color: #718096;
+}
+
+.no-items .material-icons {
+  font-size: 4rem;
+  opacity: 0.3;
+  margin-bottom: 1rem;
+}
+
+/* Dark theme: Marketplace page */
+html[data-theme="dark"] .marketplace-header {
+  background: linear-gradient(135deg, #352f68 0%, #281540 100%);
+}
+
+html[data-theme="dark"] .marketplace-header #viewPurchasesBtn,
+.marketplace-header #viewPurchasesBtn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+html[data-theme="dark"] .marketplace-header #viewPurchasesBtn:hover,
+.marketplace-header #viewPurchasesBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+html[data-theme="dark"] .marketplace-filters .filter-btn {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .marketplace-filters .filter-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+html[data-theme="dark"] .marketplace-filters .filter-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+html[data-theme="dark"] .marketplace-filters .search-box {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .marketplace-filters .search-box input {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .marketplace-filters .search-box input::placeholder {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .items-grid .loading-state {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .item-card {
+  background: var(--bg-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .item-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] .item-card-thumbnail {
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+}
+
+html[data-theme="dark"] .item-card-title {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .item-card-description {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .item-card-footer {
+  border-top-color: var(--border-color);
+}
+
+html[data-theme="dark"] .item-type-badge.template {
+  background: rgba(254, 243, 199, 0.15);
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .item-type-badge.automation {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .item-modal-description {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .item-meta {
+  border-top-color: var(--border-color);
+}
+
+html[data-theme="dark"] .meta-item {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .purchase-card {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .purchase-card-thumbnail {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+}
+
+html[data-theme="dark"] .purchase-card-title {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .purchase-card-date {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .no-items {
+  color: var(--text-secondary);
+}
+

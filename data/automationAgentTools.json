@@ -1,0 +1,1085 @@
+{
+  "version": "1.0",
+  "description": "Tool definitions for AI automation agent",
+  "tools": [
+    {
+      "name": "add_node",
+      "description": "Add a new processing node to the canvas (Step 2 of workflow building). Returns the node's exact 'ports' map: {inputs:[{id,type,label}...], outputs:[...]}. Read these port IDs before calling connect_nodes.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nodeType": {
+            "type": "string",
+            "description": "Node type",
+            "enum": [
+              "openai",
+              "openrouter",
+              "googleai",
+              "anthropic",
+              "chineseai",
+              "chatgptchat",
+              "midjourney",
+              "chatgptimage",
+              "gptimage",
+              "googleaiimage",
+              "geminiimage",
+              "metaaiimage",
+              "metaaivideo",
+              "googledocsveo",
+              "soraimage",
+              "minicanvas",
+              "imageupload",
+              "videoupload",
+              "imagedownloader",
+              "videotoimage",
+              "googlesites",
+              "wordpress",
+              "wordpressget",
+              "wprecipemaker",
+              "variables",
+              "jsonparser",
+              "splitter",
+              "curl",
+              "advancedcurl",
+              "serpapi",
+              "amazoncrawl",
+              "amazonafflink",
+              "vctts",
+              "videoeditor",
+              "deepseekbrowser",
+              "qwenbrowser",
+              "subautomation"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "description": "Display label"
+          },
+          "configValues": {
+            "type": "object",
+            "description": "Config: prompt (for AI/image nodes), text (for variables node template), model, deepThink, webSearch",
+            "properties": {
+              "prompt": {
+                "type": "string"
+              },
+              "temperature": {
+                "type": "number"
+              },
+              "model": {
+                "type": "string"
+              },
+              "maxTokens": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "splitSymbol": {
+                "type": "string"
+              },
+              "deepThink": {
+                "type": "string",
+                "description": "'true' or 'false', deepseekbrowser only"
+              },
+              "webSearch": {
+                "type": "string",
+                "description": "'true' or 'false', deepseekbrowser/qwenbrowser only"
+              }
+            }
+          },
+          "positionHint": {
+            "type": "string",
+            "default": "auto"
+          }
+        },
+        "required": [
+          "nodeType"
+        ]
+      }
+    },
+    {
+      "name": "edit_node",
+      "description": "Edit node config (prompt, model, etc). Get nodeId from get_canvas_state first.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string",
+            "description": "Node ID to edit"
+          },
+          "label": {
+            "type": "string"
+          },
+          "configValues": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string"
+              },
+              "temperature": {
+                "type": "number"
+              },
+              "model": {
+                "type": "string"
+              },
+              "maxTokens": {
+                "type": "string"
+              },
+              "template": {
+                "type": "string"
+              },
+              "website": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "fieldPath": {
+                "type": "string"
+              },
+              "splitSymbol": {
+                "type": "string"
+              },
+              "trackingId": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "quality": {
+                "type": "string"
+              },
+              "variants": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "nodeId"
+        ]
+      }
+    },
+    {
+      "name": "delete_node",
+      "description": "Delete node and its connections",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nodeId"
+        ]
+      }
+    },
+    {
+      "name": "connect_nodes",
+      "description": "Connect two nodes. Only use when user asks to connect nodes or when building a new workflow. Check node signatures first to avoid type mismatches!",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fromNodeId": {
+            "type": "string"
+          },
+          "fromOutput": {
+            "type": "string",
+            "description": "e.g. output_1"
+          },
+          "toNodeId": {
+            "type": "string"
+          },
+          "toInput": {
+            "type": "string",
+            "description": "e.g. input_1, input_2"
+          }
+        },
+        "required": [
+          "fromNodeId",
+          "fromOutput",
+          "toNodeId",
+          "toInput"
+        ]
+      }
+    },
+    {
+      "name": "disconnect_nodes",
+      "description": "Remove connection between nodes",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fromNodeId": {
+            "type": "string"
+          },
+          "fromOutput": {
+            "type": "string"
+          },
+          "toNodeId": {
+            "type": "string"
+          },
+          "toInput": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fromNodeId",
+          "fromOutput",
+          "toNodeId",
+          "toInput"
+        ]
+      }
+    },
+    {
+      "name": "get_node_info",
+      "description": "Returns exact port spec for any node type before you add it. Call this BEFORE planning if you are unsure about a node's inputs/outputs. Returns ports with exact IDs, types, and labels.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nodeType": {
+            "type": "string",
+            "description": "The node type to look up (e.g. 'wordpress', 'deepseekbrowser', 'midjourney', 'variables')"
+          }
+        },
+        "required": [
+          "nodeType"
+        ]
+      }
+    },
+    {
+      "name": "get_canvas_state",
+      "description": "Get current canvas nodes and connections. Call first!",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get_node_details",
+      "description": "Get node config values",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nodeId"
+        ]
+      }
+    },
+    {
+      "name": "clear_canvas",
+      "description": "Clear all nodes except input. Use with caution!",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keepInputNode": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "auto_layout",
+      "description": "Auto-arrange nodes left-to-right. Only use when user explicitly asks to 'arrange', 'layout', or 'organize' the canvas. Never use automatically!",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
+  "nodeTypeInfo": {
+    "input": {
+      "category": "source",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "output_2",
+          "type": "text",
+          "label": "Text/Title"
+        }
+      ],
+      "inputs": [],
+      "configInputs": [],
+      "description": "Starting node. OUTPUT_1=image URL, OUTPUT_2=text/caption. For TEXT automations (recipes, articles), connect OUTPUT_2 to AI text nodes!",
+      "canDelete": false
+    },
+    "vcai": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "temperature",
+        "model",
+        "maxTokens"
+      ],
+      "description": "ViralCloner AI - free built-in AI, no API key needed!"
+    },
+    "openai": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Generated Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL (for vision)"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text Input"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "temperature",
+        "model"
+      ],
+      "description": "GPT text processing. Output TEXT can go to image gen (soraimage input_1) or facebook (input_2)."
+    },
+    "openrouter": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "temperature",
+        "model",
+        "maxTokens"
+      ],
+      "description": "Access 100+ AI models via OpenRouter"
+    },
+    "googleai": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "temperature",
+        "model",
+        "maxTokens"
+      ],
+      "description": "Google Gemini models"
+    },
+    "anthropic": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "temperature",
+        "model",
+        "maxTokens"
+      ],
+      "description": "Anthropic Claude models"
+    },
+    "chineseai": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "temperature",
+        "model",
+        "maxTokens"
+      ],
+      "description": "Chinese AI models (DeepSeek, Qwen, etc.)"
+    },
+    "deepseekbrowser": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "deepThink",
+        "webSearch"
+      ],
+      "description": "DeepSeek browser chat with optional local image analysis"
+    },
+    "chatgptchat": {
+      "category": "ai-text",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt"
+      ],
+      "description": "ChatGPT browser-based chat - no API key needed, accepts LOCAL images"
+    },
+    "midjourney": {
+      "category": "ai-image",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "images",
+          "label": "4 Images (ARRAY)"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL (style ref)"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text Prompt"
+        }
+      ],
+      "configInputs": [
+        "prompt"
+      ],
+      "description": "Midjourney generates 4 LOCAL images. Configure prompt: \"{INPUT_2} --sref {INPUT_1} --ar 4:5 --v 7\". Outputs ARRAY - add variables with text=\"{INPUT_1}[0]\"!"
+    },
+    "chatgptimage": {
+      "category": "ai-image",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt"
+      ],
+      "description": "ChatGPT image generation - returns LOCAL image path"
+    },
+    "gptimage": {
+      "category": "ai-image",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "model",
+        "size",
+        "quality"
+      ],
+      "description": "OpenAI GPT-Image - returns LOCAL image path"
+    },
+    "googleaiimage": {
+      "category": "ai-image",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "model"
+      ],
+      "description": "Google Imagen - returns LOCAL image path"
+    },
+    "soraimage": {
+      "category": "ai-image",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "images",
+          "label": "Generated Images (ARRAY)"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text Prompt - connect AI text output here!"
+        },
+        {
+          "id": "input_2",
+          "type": "image",
+          "label": "Reference Image (optional, for img2img)"
+        }
+      ],
+      "configInputs": [
+        "prompt",
+        "variants",
+        "size"
+      ],
+      "description": "Sora image gen. MUST set prompt=\"{INPUT_1}\" or similar. Outputs ARRAY - add variables node with text=\"{INPUT_1}[0]\" before facebook!"
+    },
+    "minicanvas": {
+      "category": "design",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "images",
+          "label": "Images"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text 1"
+        },
+        {
+          "id": "input_3",
+          "type": "text",
+          "label": "Text 2"
+        },
+        {
+          "id": "input_4",
+          "type": "text",
+          "label": "Text 3"
+        },
+        {
+          "id": "input_5",
+          "type": "text",
+          "label": "Text 4"
+        }
+      ],
+      "configInputs": [
+        "template"
+      ],
+      "description": "Apply design templates to images"
+    },
+    "imageupload": {
+      "category": "media",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Image URL"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image"
+        }
+      ],
+      "configInputs": [],
+      "description": "LOCAL path → URL using the default image provider from Settings > Media Hosting. Use for Pinterest (needs URLs)"
+    },
+    "videoupload": {
+      "category": "media",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Video URL"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "video",
+          "label": "Video"
+        }
+      ],
+      "configInputs": [],
+      "description": "LOCAL video path → URL using the default video provider from Settings > Media Hosting"
+    },
+    "imagedownloader": {
+      "category": "media",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image Path"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        }
+      ],
+      "configInputs": [],
+      "description": "URL → LOCAL path. NOT needed after Midjourney (already local)!"
+    },
+    "vctts": {
+      "category": "media",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "audio",
+          "label": "Audio Path"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "locale",
+        "voice"
+      ],
+      "description": "Text to Speech using Microsoft Edge voices. Converts text to MP3 audio file."
+    },
+    "googlesites": {
+      "category": "publishing",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "URL"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "HTML"
+        }
+      ],
+      "configInputs": [
+        "profile"
+      ],
+      "description": "Create Google Sites page"
+    },
+    "wordpress": {
+      "category": "publishing",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "URL"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Content"
+        },
+        {
+          "id": "input_3",
+          "type": "url",
+          "label": "Featured Image URL"
+        },
+        {
+          "id": "input_4",
+          "type": "text",
+          "label": "Categories"
+        }
+      ],
+      "configInputs": [
+        "website"
+      ],
+      "description": "Publish to WordPress. Input 4 accepts comma-separated category IDs (e.g. 1,5,12)."
+    },
+    "variables": {
+      "category": "utility",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "all",
+          "label": "Output"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "all",
+          "label": "Var 1"
+        },
+        {
+          "id": "input_2",
+          "type": "all",
+          "label": "Var 2"
+        },
+        {
+          "id": "input_3",
+          "type": "all",
+          "label": "Var 3"
+        }
+      ],
+      "configInputs": [
+        "text"
+      ],
+      "description": "Template/pick from inputs. Connect image gen to input_1, set text={INPUT_1}[0] to pick first image. For Pinterest: add imageupload after this."
+    },
+    "jsonparser": {
+      "category": "utility",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Value"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "JSON"
+        }
+      ],
+      "configInputs": [
+        "fieldPath"
+      ],
+      "description": "Extract value from JSON"
+    },
+    "splitter": {
+      "category": "utility",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Part 1"
+        },
+        {
+          "id": "output_2",
+          "type": "text",
+          "label": "Part 2"
+        },
+        {
+          "id": "output_3",
+          "type": "text",
+          "label": "Part 3"
+        },
+        {
+          "id": "output_4",
+          "type": "text",
+          "label": "Part 4"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text"
+        }
+      ],
+      "configInputs": [
+        "splitSymbol"
+      ],
+      "description": "Split text by delimiter"
+    },
+    "curl": {
+      "category": "utility",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Response"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Data"
+        }
+      ],
+      "configInputs": [],
+      "description": "Make HTTP request"
+    },
+    "amazoncrawl": {
+      "category": "utility",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "JSON Data"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Product URL"
+        }
+      ],
+      "configInputs": [],
+      "description": "Scrape Amazon product data"
+    },
+    "amazonafflink": {
+      "category": "utility",
+      "outputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Affiliate URL"
+        }
+      ],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Product URL"
+        }
+      ],
+      "configInputs": [
+        "trackingId"
+      ],
+      "description": "Add affiliate tracking to Amazon URL"
+    },
+    "pinterest-output": {
+      "category": "output",
+      "outputs": [],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "id": "input_3",
+          "type": "text",
+          "label": "Description"
+        },
+        {
+          "id": "input_4",
+          "type": "url",
+          "label": "Link URL"
+        }
+      ],
+      "configInputs": [],
+      "description": "Post to Pinterest. REQUIRES URLs - use imageupload after AI image generators!",
+      "canDelete": true
+    },
+    "facebook-output": {
+      "category": "output",
+      "outputs": [],
+      "inputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image (LOCAL path or images array)"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Caption Text (connect openai output here!)"
+        },
+        {
+          "id": "input_5",
+          "type": "text",
+          "label": "Title (optional, used in test/export and image filename slug)"
+        }
+      ],
+      "configInputs": [],
+      "description": "Post to Facebook. input_1=image from AI generators, input_2=text caption from AI text nodes, input_5=optional title. Accepts LOCAL images and images arrays.",
+      "canDelete": true
+    }
+  },
+  "typeCompatibility": {
+    "image": [
+      "image",
+      "images",
+      "all"
+    ],
+    "url": [
+      "url",
+      "all"
+    ],
+    "text": [
+      "text",
+      "all"
+    ],
+    "images": [
+      "images",
+      "image",
+      "all"
+    ],
+    "audio": [
+      "audio",
+      "all"
+    ],
+    "all": [
+      "image",
+      "url",
+      "text",
+      "audio",
+      "images",
+      "all"
+    ]
+  },
+  "systemPromptTemplate": "Build automation workflows using tools. Use {INPUT_2} for text, {INPUT_1} for images in prompts. Output nodes already exist - connect to them. Call get_canvas_state() to see current state."
+}

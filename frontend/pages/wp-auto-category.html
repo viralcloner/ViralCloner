@@ -1,0 +1,94 @@
+<div class="wp-auto-category-page">
+    <!-- Header -->
+    <div class="page-header-row">
+        <div>
+            <h2 class="page-title" data-i18n="wp_auto_category.title">WP Auto Category</h2>
+            <p class="page-subtitle" data-i18n="wp_auto_category.subtitle">Automatically categorize uncategorized WordPress posts using AI</p>
+        </div>
+    </div>
+
+    <!-- Site Selection -->
+    <div class="wpac-config-card">
+        <div class="wpac-config-header">
+            <span class="material-icons">language</span>
+            <h3 data-i18n="wp_auto_category.select_site">Select WordPress Site</h3>
+        </div>
+        <div class="wpac-config-body">
+            <select id="wpacSiteSelect" class="wpac-select">
+                <option value="" data-i18n="wp_auto_category.choose_site">-- Choose a connected site --</option>
+            </select>
+            <button id="wpacFetchBtn" class="wpac-btn wpac-btn-primary" disabled>
+                <span class="material-icons">download</span>
+                <span data-i18n="wp_auto_category.fetch_posts">Fetch Uncategorized Posts</span>
+            </button>
+        </div>
+        <p class="wpac-hint" data-i18n="wp_auto_category.no_sites_hint">No sites connected? Go to Settings → WordPress to add one.</p>
+    </div>
+
+    <!-- Status / Progress -->
+    <div id="wpacStatusBar" class="wpac-status-bar" style="display:none;">
+        <div class="wpac-status-icon">
+            <span class="material-icons" id="wpacStatusIcon">hourglass_empty</span>
+        </div>
+        <div class="wpac-status-text">
+            <span id="wpacStatusText">Loading...</span>
+        </div>
+        <div class="wpac-progress-wrap">
+            <div class="wpac-progress-bar">
+                <div class="wpac-progress-fill" id="wpacProgressFill" style="width:0%"></div>
+            </div>
+            <span class="wpac-progress-label" id="wpacProgressLabel">0%</span>
+        </div>
+    </div>
+
+    <!-- Posts Table -->
+    <div id="wpacPostsSection" class="wpac-posts-section" style="display:none;">
+        <div class="wpac-posts-header">
+            <h3>
+                <span data-i18n="wp_auto_category.uncategorized_posts">Uncategorized Posts</span>
+                <span class="wpac-badge" id="wpacPostCount">0</span>
+            </h3>
+            <div class="wpac-posts-actions">
+                <button id="wpacSelectAll" class="wpac-btn wpac-btn-outline wpac-btn-sm">
+                    <span class="material-icons">select_all</span>
+                    <span data-i18n="wp_auto_category.select_all">Select All</span>
+                </button>
+                <button id="wpacCategorizeBtn" class="wpac-btn wpac-btn-success" disabled>
+                    <span class="material-icons">auto_fix_high</span>
+                    <span data-i18n="wp_auto_category.categorize_selected">Categorize Selected</span>
+                </button>
+            </div>
+        </div>
+        <div class="wpac-table-wrap">
+            <table class="wpac-table">
+                <thead>
+                    <tr>
+                        <th style="width:40px;"><input type="checkbox" id="wpacCheckAll"></th>
+                        <th data-i18n="wp_auto_category.post_title">Title</th>
+                        <th data-i18n="wp_auto_category.current_category">Current Category</th>
+                        <th data-i18n="wp_auto_category.ai_suggestion">AI Suggestion</th>
+                        <th data-i18n="wp_auto_category.status">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="wpacPostsBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Results Summary -->
+    <div id="wpacResultsSummary" class="wpac-results-summary" style="display:none;">
+        <div class="wpac-result-stat wpac-result-success">
+            <span class="material-icons">check_circle</span>
+            <span id="wpacSuccessCount">0</span>
+            <span data-i18n="wp_auto_category.categorized">Categorized</span>
+        </div>
+        <div class="wpac-result-stat wpac-result-fail">
+            <span class="material-icons">error</span>
+            <span id="wpacFailCount">0</span>
+            <span data-i18n="wp_auto_category.failed">Failed</span>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/pages/wp-auto-category.js"></script>

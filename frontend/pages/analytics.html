@@ -1,0 +1,440 @@
+﻿<div class="analytics-container">
+    <!-- Header Section -->
+    <div class="analytics-header">
+        <div class="container-fluid">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="material-icons">analytics</i>
+                        <span data-i18n="analytics.title">Workflow Analytics</span>
+                    </h1>
+                    <p class="page-subtitle" data-i18n="analytics.subtitle">Monitor workflow performance, success rates, costs, and execution times</p>
+                </div>
+                <div class="header-right">
+                    <!-- Automation Filter -->
+                    <div class="automation-filter">
+                        <select id="automation-filter" class="form-select">
+                            <option value="" data-i18n="analytics.all_automations">All Automations</option>
+                        </select>
+                    </div>
+                    <!-- Time Range Selector -->
+                    <div class="time-range-selector">
+                        <button class="time-range-btn" data-range="1h">1h</button>
+                        <button class="time-range-btn active" data-range="24h">24h</button>
+                        <button class="time-range-btn" data-range="7d">7d</button>
+                        <button class="time-range-btn" data-range="30d">30d</button>
+                        <button class="time-range-btn" data-range="1y">1y</button>
+                        <button class="time-range-btn" data-range="all" data-i18n="analytics.all_time_btn">All</button>
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="header-actions">
+                        <button class="btn-reset" id="reset-analytics-btn" data-i18n-title="analytics.reset_data">
+                            <i class="material-icons">restart_alt</i>
+                        </button>
+                        <button class="btn-export" id="export-analytics-btn" data-i18n-title="analytics.export_data">
+                            <i class="material-icons">download</i>
+                        </button>
+                        <button class="btn-refresh" id="refresh-analytics-btn" data-i18n-title="analytics.refresh">
+                            <i class="material-icons">refresh</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards Section -->
+    <div class="analytics-summary">
+        <div class="container-fluid">
+            <div class="summary-cards">
+                <!-- Workflows Card -->
+                <div class="summary-card">
+                    <div class="card-icon workflows">
+                        <i class="material-icons">account_tree</i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value-row">
+                            <span class="card-value" id="total-workflows">-</span>
+                            <canvas id="sparkline-workflows" class="sparkline"></canvas>
+                        </div>
+                        <div class="card-label" data-i18n="analytics.total_workflows">Total Workflows</div>
+                        <div class="card-sublabel">
+                            <span class="success-text" id="completed-workflows">-</span> <span data-i18n="analytics.completed">completed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts Card -->
+                <div class="summary-card">
+                    <div class="card-icon posts">
+                        <i class="material-icons">image</i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value-row">
+                            <span class="card-value" id="total-posts">-</span>
+                            <canvas id="sparkline-posts" class="sparkline"></canvas>
+                        </div>
+                        <div class="card-label" data-i18n="analytics.total_posts">Total Posts</div>
+                        <div class="card-sublabel">
+                            <span class="success-rate" id="posts-success-rate">-</span> <span data-i18n="analytics.success_rate">success rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node Executions Card -->
+                <div class="summary-card">
+                    <div class="card-icon nodes">
+                        <i class="material-icons">hub</i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value-row">
+                            <span class="card-value" id="total-nodes">-</span>
+                            <canvas id="sparkline-nodes" class="sparkline"></canvas>
+                        </div>
+                        <div class="card-label" data-i18n="analytics.node_executions">Node Executions</div>
+                        <div class="card-sublabel">
+                            <span class="success-rate" id="nodes-success-rate">-</span> <span data-i18n="analytics.success_rate">success rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duration Card -->
+                <div class="summary-card">
+                    <div class="card-icon duration">
+                        <i class="material-icons">speed</i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value-row">
+                            <span class="card-value" id="avg-duration">-</span>
+                        </div>
+                        <div class="card-label" data-i18n="analytics.avg_node_duration">Avg Node Duration</div>
+                        <div class="card-sublabel" data-i18n="analytics.per_execution">per execution</div>
+                    </div>
+                </div>
+
+                <!-- Total Cost Card -->
+                <div class="summary-card">
+                    <div class="card-icon cost">
+                        <i class="material-icons">payments</i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value-row">
+                            <span class="card-value" id="total-cost">$0</span>
+                            <canvas id="sparkline-cost" class="sparkline"></canvas>
+                        </div>
+                        <div class="card-label" data-i18n="analytics.total_cost">Total Cost</div>
+                        <div class="card-sublabel" data-i18n="analytics.ai_usage">AI usage</div>
+                    </div>
+                </div>
+
+                <!-- Platform Outputs Card -->
+                <div class="summary-card">
+                    <div class="card-icon platforms">
+                        <i class="material-icons">share</i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value-row">
+                            <span class="card-value" id="total-outputs">-</span>
+                        </div>
+                        <div class="card-label" data-i18n="analytics.total_outputs">Total Outputs</div>
+                        <div class="card-sublabel">
+                            <span id="pinterest-count">-</span> Pinterest / <span id="facebook-count">-</span> Facebook
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lifetime Stats Banner -->
+    <div class="analytics-lifetime">
+        <div class="container-fluid">
+            <div class="lifetime-banner">
+                <div class="lifetime-stat">
+                    <i class="material-icons">all_inclusive</i>
+                    <span class="lifetime-label" data-i18n="analytics.lifetime">Lifetime:</span>
+                    <span class="lifetime-value" id="lifetime-workflows">-</span>
+                    <span class="lifetime-unit" data-i18n="analytics.workflows_unit">workflows</span>
+                </div>
+                <div class="lifetime-divider"></div>
+                <div class="lifetime-stat">
+                    <span class="lifetime-value" id="lifetime-posts">-</span>
+                    <span class="lifetime-unit" data-i18n="analytics.posts_unit">posts</span>
+                </div>
+                <div class="lifetime-divider"></div>
+                <div class="lifetime-stat">
+                    <span class="lifetime-value" id="lifetime-nodes">-</span>
+                    <span class="lifetime-unit" data-i18n="analytics.nodes_unit">nodes</span>
+                </div>
+                <div class="lifetime-divider"></div>
+                <div class="lifetime-stat">
+                    <span class="lifetime-value" id="lifetime-cost">$0</span>
+                    <span class="lifetime-unit" data-i18n="analytics.spent">spent</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section Row 1 -->
+    <div class="analytics-charts">
+        <div class="container-fluid">
+            <div class="charts-row">
+                <!-- Node Success Rate Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">pie_chart</i>
+                            <span data-i18n="analytics.node_success_rates">Node Success Rates</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="nodeSuccessChart"></canvas>
+                        <div class="chart-empty" id="nodeChartEmpty" style="display: none;">
+                            <i class="material-icons">bar_chart</i>
+                            <p data-i18n="analytics.no_data">No data available for this time range</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completion Trend Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">trending_up</i>
+                            <span data-i18n="analytics.completion_trend">Completion Trend</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="completionTrendChart"></canvas>
+                        <div class="chart-empty" id="trendChartEmpty" style="display: none;">
+                            <i class="material-icons">show_chart</i>
+                            <p data-i18n="analytics.no_data">No data available for this time range</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Platform Performance Chart -->
+                <div class="chart-container chart-small">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">donut_large</i>
+                            <span data-i18n="analytics.platform_performance">Platform Performance</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="platformChart"></canvas>
+                        <div class="chart-empty" id="platformChartEmpty" style="display: none;">
+                            <i class="material-icons">share</i>
+                            <p data-i18n="analytics.no_data">No data available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section Row 2 -->
+            <div class="charts-row">
+                <!-- Cost Over Time Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">attach_money</i>
+                            <span data-i18n="analytics.cost_trend">Cost Over Time</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="costTrendChart"></canvas>
+                        <div class="chart-empty" id="costChartEmpty" style="display: none;">
+                            <i class="material-icons">payments</i>
+                            <p data-i18n="analytics.no_cost_data">No cost data available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peak Usage Heatmap -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">schedule</i>
+                            <span data-i18n="analytics.peak_usage">Peak Usage Times</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body heatmap-body">
+                        <div class="heatmap-container" id="peakUsageHeatmap"></div>
+                        <div class="chart-empty" id="peakChartEmpty" style="display: none;">
+                            <i class="material-icons">schedule</i>
+                            <p data-i18n="analytics.no_data">No usage data available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Categories Chart -->
+                <div class="chart-container chart-small">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">error</i>
+                            <span data-i18n="analytics.error_categories">Error Categories</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="errorCategoriesChart"></canvas>
+                        <div class="chart-empty" id="errorChartEmpty" style="display: none;">
+                            <i class="material-icons">check_circle</i>
+                            <p data-i18n="analytics.no_errors">No errors recorded</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node Duration Chart -->
+            <div class="charts-row">
+                <div class="chart-container full-width">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="material-icons">timer</i>
+                            <span data-i18n="analytics.node_durations">Node Execution Times</span>
+                        </h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="nodeDurationChart"></canvas>
+                        <div class="chart-empty" id="durationChartEmpty" style="display: none;">
+                            <i class="material-icons">access_time</i>
+                            <p data-i18n="analytics.no_data">No data available for this time range</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Executions and Recent Failures Row -->
+    <div class="analytics-tables">
+        <div class="container-fluid">
+            <div class="tables-row">
+                <!-- Live Executions Section -->
+                <div class="table-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span class="live-indicator"></span>
+                            <span data-i18n="analytics.live_executions">Live Executions</span>
+                        </h3>
+                        <span class="live-count" id="live-count">0 <span data-i18n="analytics.active">active</span></span>
+                    </div>
+                    <div class="table-content">
+                        <table class="analytics-table" id="live-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="analytics.workflow">Workflow</th>
+                                    <th data-i18n="analytics.status">Status</th>
+                                    <th data-i18n="analytics.progress">Progress</th>
+                                    <th data-i18n="analytics.started">Started</th>
+                                </tr>
+                            </thead>
+                            <tbody id="live-table-body"></tbody>
+                        </table>
+                        <div class="table-empty" id="live-empty">
+                            <i class="material-icons">check_circle</i>
+                            <p data-i18n="analytics.no_active">No active executions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Failures Section -->
+                <div class="table-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="material-icons">error_outline</i>
+                            <span data-i18n="analytics.recent_failures">Recent Failures</span>
+                        </h3>
+                    </div>
+                    <div class="table-content">
+                        <table class="analytics-table" id="failures-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="analytics.node_type">Node</th>
+                                    <th data-i18n="analytics.category">Category</th>
+                                    <th data-i18n="analytics.error_message">Error</th>
+                                    <th data-i18n="analytics.workflow">Workflow</th>
+                                    <th data-i18n="analytics.time">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="failures-table-body"></tbody>
+                        </table>
+                        <div class="table-empty" id="failures-empty">
+                            <i class="material-icons">thumb_up</i>
+                            <p data-i18n="analytics.no_failures">No recent failures</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Failure Log Files Section -->
+    <div class="analytics-failure-logs">
+        <div class="container-fluid">
+            <div class="failure-logs-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <i class="material-icons">description</i>
+                        <span data-i18n="analytics.failure_logs">Detailed Failure Logs</span>
+                        <span class="live-indicator" id="log-live-indicator"></span>
+                    </h3>
+                    <div class="section-actions">
+                        <select id="error-category-filter" class="form-select form-select-sm">
+                            <option value="" data-i18n="analytics.all_categories">All Categories</option>
+                            <option value="timeout" data-i18n="analytics.error_timeout">Timeout</option>
+                            <option value="rate_limit" data-i18n="analytics.error_rate_limit">Rate Limit</option>
+                            <option value="auth" data-i18n="analytics.error_auth">Authentication</option>
+                            <option value="network" data-i18n="analytics.error_network">Network</option>
+                            <option value="api_error" data-i18n="analytics.error_api">API Error</option>
+                            <option value="invalid_input" data-i18n="analytics.error_input">Invalid Input</option>
+                            <option value="content_policy" data-i18n="analytics.error_policy">Content Policy</option>
+                            <option value="other" data-i18n="analytics.error_other">Other</option>
+                        </select>
+                        <button class="btn-clear-logs" id="clear-logs-btn" data-i18n-title="analytics.clear_all_logs">
+                            <i class="material-icons">delete_sweep</i>
+                            <span data-i18n="analytics.clear_all">Clear All</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="failure-logs-content">
+                    <div class="failure-logs-list" id="failure-logs-list"></div>
+                    <div class="failure-logs-empty" id="failure-logs-empty">
+                        <i class="material-icons">check_circle</i>
+                        <p data-i18n="analytics.no_failure_logs">No failure logs recorded</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="export-modal" id="export-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" data-i18n="analytics.export_title">Export Analytics</h3>
+                <button class="modal-close"><i class="material-icons">close</i></button>
+            </div>
+            <div class="export-formats">
+                <button class="export-format-btn" data-format="json">
+                    <i class="material-icons">code</i>
+                    <div class="format-info">
+                        <span class="format-name" data-i18n="analytics.export_json">JSON</span>
+                        <span class="format-desc" data-i18n="analytics.export_json_desc">Full data export for developers</span>
+                    </div>
+                </button>
+                <button class="export-format-btn" data-format="csv">
+                    <i class="material-icons">table_chart</i>
+                    <div class="format-info">
+                        <span class="format-name" data-i18n="analytics.export_csv">CSV</span>
+                        <span class="format-desc" data-i18n="analytics.export_csv_desc">Spreadsheet compatible format</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="assets/css/analytics.css">
+<script src="assets/js/pages/analytics.js"></script>

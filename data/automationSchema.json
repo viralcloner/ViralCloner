@@ -1,0 +1,2890 @@
+{
+  "version": "1.0",
+  "description": "Schema for AI-powered automation generation in ViralClonerSoftware",
+  "connectionTypes": {
+    "image": "A direct image file or binary data",
+    "url": "A URL pointing to an image or web resource",
+    "text": "Plain text content",
+    "audio": "An audio file path (MP3)",
+    "video": "A video file path",
+    "images": "Multiple images (array of 4 images from Midjourney)",
+    "wprecipe": "A WP Recipe Maker recipe ID",
+    "all": "Universal type - compatible with any other type"
+  },
+  "typeCompatibility": {
+    "image": [
+      "image",
+      "all"
+    ],
+    "url": [
+      "url",
+      "all"
+    ],
+    "text": [
+      "text",
+      "all"
+    ],
+    "images": [
+      "images",
+      "all"
+    ],
+    "wprecipe": [
+      "wprecipe",
+      "all"
+    ],
+    "audio": [
+      "audio",
+      "all"
+    ],
+    "video": [
+      "video",
+      "all"
+    ],
+    "all": [
+      "image",
+      "url",
+      "text",
+      "audio",
+      "video",
+      "images",
+      "wprecipe",
+      "all"
+    ]
+  },
+  "nodes": {
+    "input": {
+      "label": "Input",
+      "description": "The starting node that receives the initial image, text and URL from spy posts or manual input. Every automation must have exactly one input node.",
+      "category": "source",
+      "configInputs": [],
+      "connectionInputs": [],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image"
+        },
+        {
+          "id": "output_2",
+          "type": "text",
+          "label": "Text"
+        },
+        {
+          "id": "output_3",
+          "type": "text",
+          "label": "URL"
+        }
+      ],
+      "required": true,
+      "maxCount": 1
+    },
+    "openai": {
+      "label": "OpenAI (API)",
+      "description": "Uses OpenAI GPT models to process text. Can analyze images if an image URL is provided. Great for rewriting content, generating descriptions, translating, summarizing, or any text transformation. API keys are automatically rotated from your saved keys in Settings.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The instruction for the AI. Use {INPUT_1} for image URL and {INPUT_2} for text input",
+          "required": true,
+          "placeholder": "Rewrite the following text: {INPUT_2}"
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls randomness. Lower = more focused, Higher = more creative",
+          "min": 0.2,
+          "max": 2,
+          "default": 1
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The GPT model to use",
+          "default": "gpt-5-nano",
+          "options": [
+            "gpt-5-nano"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL",
+          "description": "Optional image URL for vision models"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to process"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The AI-generated response"
+        }
+      ],
+      "useCases": [
+        "Rewrite post text",
+        "Translate content",
+        "Generate descriptions",
+        "Summarize text",
+        "Analyze images",
+        "Generate titles"
+      ]
+    },
+    "midjourney": {
+      "label": "Midjourney (Browser)",
+      "description": "Generates 4 AI images using Midjourney based on a text prompt. Can reference an input image URL for style transfer or image-to-image generation.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} for image URL reference and {INPUT_2} for text",
+          "required": true,
+          "placeholder": "A beautiful sunset over mountains --ar 16:9"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL",
+          "description": "Reference image URL for style/content guidance"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text to include in prompt"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "images",
+          "label": "4 Images",
+          "description": "Array of 4 generated images"
+        }
+      ],
+      "useCases": [
+        "Generate new images from descriptions",
+        "Create variations of existing images",
+        "Style transfer"
+      ]
+    },
+    "chatgptimage": {
+      "label": "ChatGPT Image (Browser)",
+      "description": "Generates an AI image using ChatGPT's image generation (DALL-E). Can reference an input image to generate similar content. Returns a single high-quality image.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} for image reference and {INPUT_2} for text",
+          "required": true,
+          "placeholder": "Generate a similar image with a sunset theme"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Reference image for generating similar content"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text to include in prompt"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Generated image file path"
+        }
+      ],
+      "useCases": [
+        "Generate photorealistic images",
+        "Create AI artwork",
+        "Generate similar images",
+        "Create variations of existing images"
+      ]
+    },
+    "chatgptchat": {
+      "label": "ChatGPT Chat (Browser)",
+      "description": "Sends a message to ChatGPT and returns the text response. Can optionally include an image for vision analysis. Uses your connected ChatGPT profiles.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The chat message to send. Use {INPUT_1} for image reference and {INPUT_2} for text",
+          "required": true,
+          "placeholder": "Analyze this image and describe what you see: {INPUT_1}"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Optional image for vision analysis"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text to include in prompt"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Response",
+          "description": "ChatGPT's text response"
+        }
+      ],
+      "useCases": [
+        "Analyze images with vision",
+        "Generate text content",
+        "Translate text",
+        "Summarize content",
+        "Answer questions about images"
+      ]
+    },
+    "gptimage": {
+      "label": "GPT Image (API)",
+      "description": "Generates images using OpenAI's GPT-Image models (gpt-image-1, gpt-image-1.5). Advanced image generation with excellent instruction following. Uses your OpenAI API keys.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} and {INPUT_2} for dynamic text",
+          "required": true,
+          "placeholder": "A futuristic city skyline at sunset, detailed and cyberpunk style"
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The GPT-Image model to use",
+          "default": "gpt-image-1",
+          "options": [
+            "gpt-image-1",
+            "gpt-image-1-mini",
+            "gpt-image-1.5"
+          ]
+        },
+        {
+          "id": "size",
+          "type": "select",
+          "title": "Size",
+          "description": "Image dimensions",
+          "default": "1024x1024",
+          "options": [
+            "1024x1024",
+            "1536x1024",
+            "1024x1536",
+            "auto"
+          ]
+        },
+        {
+          "id": "quality",
+          "type": "select",
+          "title": "Quality",
+          "description": "Image quality level",
+          "default": "standard",
+          "options": [
+            "low",
+            "standard",
+            "high"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text 1",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text 2",
+          "description": "Additional dynamic text"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Generated image (base64)"
+        }
+      ],
+      "useCases": [
+        "Generate high-quality images from text",
+        "Create marketing visuals",
+        "Generate product images",
+        "Create artistic content"
+      ]
+    },
+    "soraimage": {
+      "label": "Sora Image (Browser)",
+      "description": "Generate images using OpenAI's Sora model via browser automation. Supports multiple variants per prompt with user selection. Uses your connected OpenAI browser profiles.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} for dynamic text",
+          "required": true,
+          "placeholder": "A Pinterest pin for a hamburger recipe, professional food photography"
+        },
+        {
+          "id": "n_variants",
+          "type": "select",
+          "title": "Variants",
+          "description": "Number of image variants to generate per prompt (1-4)",
+          "default": "1",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "id": "size",
+          "type": "select",
+          "title": "Size",
+          "description": "Image dimensions (width x height)",
+          "default": "480x720",
+          "options": [
+            "480x720",
+            "720x480",
+            "720x720",
+            "1024x1024"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "image",
+          "label": "Image",
+          "description": "Reference image for remix-style generation"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "images",
+          "label": "Generated Images",
+          "description": "Array of generated images (user selects which to keep)"
+        }
+      ],
+      "useCases": [
+        "Generate Pinterest pins",
+        "Create multiple image variants for A/B testing",
+        "Generate social media visuals",
+        "Create marketing images with Sora AI"
+      ]
+    },
+    "openrouter": {
+      "label": "OpenRouter (API)",
+      "description": "Access 100+ AI models through OpenRouter's unified API. Includes GPT-4, Claude, Gemini, Llama, Mistral, and many more. Great for comparing models or using specialized ones.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The instruction for the AI. Use {INPUT_1} for image URL and {INPUT_2} for text input",
+          "required": true,
+          "placeholder": "Rewrite the following text: {INPUT_2}"
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls randomness. Lower = more focused, Higher = more creative",
+          "min": 0,
+          "max": 2,
+          "default": 1
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The AI model to use (via OpenRouter)",
+          "default": "openai/gpt-5-nano",
+          "options": [
+            "openai/gpt-5-nano",
+            "anthropic/claude-3.5-sonnet",
+            "anthropic/claude-3-opus",
+            "anthropic/claude-3-haiku",
+            "google/gemini-pro-1.5",
+            "google/gemini-flash-1.5",
+            "meta-llama/llama-3.1-405b-instruct",
+            "meta-llama/llama-3.1-70b-instruct",
+            "meta-llama/llama-3.1-8b-instruct",
+            "mistralai/mistral-large",
+            "mistralai/mixtral-8x22b-instruct",
+            "deepseek/deepseek-chat",
+            "deepseek/deepseek-coder",
+            "qwen/qwen-2.5-72b-instruct",
+            "cohere/command-r-plus"
+          ]
+        },
+        {
+          "id": "maxTokens",
+          "type": "input",
+          "title": "Max Tokens",
+          "description": "Maximum tokens in response",
+          "default": "4096",
+          "placeholder": "4096"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL",
+          "description": "Optional image URL for vision models"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to process"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The AI-generated response"
+        }
+      ],
+      "useCases": [
+        "Access multiple AI providers",
+        "Compare model outputs",
+        "Use specialized models",
+        "Cost optimization"
+      ]
+    },
+    "googleai": {
+      "label": "Google AI (API)",
+      "description": "Uses Google's Gemini models for text processing and Imagen for image generation. Excellent for multimodal tasks and long context.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The instruction for the AI. Use {INPUT_1} for image and {INPUT_2} for text input",
+          "required": true,
+          "placeholder": "Analyze this image and describe: {INPUT_2}"
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls randomness. Lower = more focused, Higher = more creative",
+          "min": 0,
+          "max": 2,
+          "default": 1
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The Gemini model to use",
+          "default": "gemini-2.0-flash",
+          "options": [
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-lite",
+            "gemini-1.5-pro",
+            "gemini-1.5-flash",
+            "gemini-1.5-flash-8b"
+          ]
+        },
+        {
+          "id": "maxTokens",
+          "type": "input",
+          "title": "Max Tokens",
+          "description": "Maximum tokens in response",
+          "default": "8192",
+          "placeholder": "8192"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image",
+          "description": "Optional image for vision processing"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to process"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The AI-generated response"
+        }
+      ],
+      "useCases": [
+        "Process long documents",
+        "Analyze images with Gemini Vision",
+        "Multilingual content",
+        "Complex reasoning tasks"
+      ]
+    },
+    "googleaiimage": {
+      "label": "Google Imagen (API)",
+      "description": "Generates images using Google's Imagen 3 model. High-quality photorealistic and artistic image generation.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} and {INPUT_2} for dynamic text",
+          "required": true,
+          "placeholder": "A serene mountain landscape at golden hour"
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The Imagen model to use",
+          "default": "imagen-3.0-generate-001",
+          "options": [
+            "imagen-3.0-generate-001",
+            "imagen-3.0-fast-generate-001"
+          ]
+        },
+        {
+          "id": "aspectRatio",
+          "type": "select",
+          "title": "Aspect Ratio",
+          "description": "Image aspect ratio",
+          "default": "1:1",
+          "options": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text 1",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text 2",
+          "description": "Additional dynamic text"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Generated image (base64)"
+        }
+      ],
+      "useCases": [
+        "Generate photorealistic images",
+        "Create artistic content",
+        "Product visualization",
+        "Marketing materials"
+      ]
+    },
+    "geminiimage": {
+      "label": "Gemini Image (Browser)",
+      "description": "Generates images using Google Gemini via browser automation. Can reference an input image. Uses your connected Google profiles with automatic load balancing and rotation.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} for image reference and {INPUT_2} for text",
+          "required": true,
+          "placeholder": "Generate a similar image with a sunset theme"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Reference image for generating similar content"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text to include in prompt"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Generated image file path"
+        }
+      ],
+      "useCases": [
+        "Generate images using Google Gemini",
+        "Create AI artwork with Google account",
+        "Free image generation via browser",
+        "Generate social media visuals"
+      ]
+    },
+    "metaaiimage": {
+      "label": "Meta AI Image",
+      "description": "Generates images using Meta AI via connected browser profiles. Supports orientation selection (square, vertical, horizontal). Returns generated images.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} for dynamic text",
+          "required": true,
+          "placeholder": "A beautiful landscape painting in oil on canvas style"
+        },
+        {
+          "id": "orientation",
+          "type": "select",
+          "title": "Orientation",
+          "description": "Image orientation/aspect ratio",
+          "default": "VERTICAL",
+          "options": [
+            "SQUARE",
+            "VERTICAL",
+            "HORIZONTAL"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "images",
+          "label": "Attachment Image",
+          "description": "Optional image to attach with the prompt"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "images",
+          "label": "Generated Images",
+          "description": "Array of generated images (4 images per prompt)"
+        }
+      ],
+      "useCases": [
+        "Generate images using Meta AI",
+        "Create AI artwork with Meta account",
+        "Free image generation via Meta AI",
+        "Generate social media visuals"
+      ]
+    },
+    "tiktokadsimage": {
+      "label": "TikTok Ads Image (Browser)",
+      "description": "Generates images using the TikTok Ads Creative Studio image generation mini-app via connected TikTok Ads browser profiles. Returns multiple generated images per prompt.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The image generation prompt. Use {INPUT_1} for dynamic text",
+          "required": true,
+          "placeholder": "A cute golden retriever puppy playing in a field"
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The TikTok Ads image generation model",
+          "default": "gemini",
+          "options": [
+            "gemini"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "image",
+          "label": "Attachment Image",
+          "description": "Optional reference image for image-to-image generation"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "images",
+          "label": "Generated Images",
+          "description": "Array of generated images"
+        }
+      ],
+      "useCases": [
+        "Generate images using TikTok Ads Creative Studio",
+        "Free AI image generation via TikTok Ads accounts",
+        "Create social media visuals"
+      ]
+    },
+    "tiktokadsvideo": {
+      "label": "TikTok Ads Video (Browser)",
+      "description": "Generates videos using the TikTok Ads Creative Studio Reference-to-Video (image-to-video) mini-app via connected TikTok Ads browser profiles. Returns one generated video per prompt.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The video generation prompt. Use {INPUT_1} for dynamic text",
+          "required": true,
+          "placeholder": "Animate this image"
+        },
+        {
+          "id": "mode",
+          "type": "select",
+          "title": "Mode",
+          "description": "Reference to Video incorporates the attached image into the video; Image to Video animates the attached image directly; Text to Video generates from the prompt only (no image)",
+          "default": "reference",
+          "options": [
+            "reference",
+            "image",
+            "text"
+          ]
+        },
+        {
+          "id": "duration",
+          "type": "select",
+          "title": "Duration",
+          "description": "The length of the generated video in seconds",
+          "default": "12",
+          "options": [
+            "5",
+            "10",
+            "12"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "image",
+          "label": "Attachment Image",
+          "description": "Optional reference image. In Reference to Video mode, multiple images can be connected and all are used as references"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "video",
+          "label": "Generated Video",
+          "description": "The generated video file path"
+        }
+      ],
+      "useCases": [
+        "Generate videos using TikTok Ads Creative Studio",
+        "Animate a reference image into a short video",
+        "Free AI video generation via TikTok Ads accounts"
+      ]
+    },
+    "metaaivideo": {
+      "label": "Meta AI Video",
+      "description": "Generates videos using Meta AI via connected browser profiles. Fixed 9:16 vertical orientation. Supports image attachment for animation.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The video generation prompt. Use {INPUT_1} for dynamic text",
+          "required": true,
+          "placeholder": "Describe your animation..."
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "images",
+          "label": "Attachment Image",
+          "description": "Optional image to attach for video animation"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "videos",
+          "label": "Generated Videos",
+          "description": "Array of generated videos"
+        }
+      ],
+      "useCases": [
+        "Generate videos using Meta AI",
+        "Create AI animations with Meta account",
+        "Free video generation via Meta AI",
+        "Animate images with Meta AI"
+      ]
+    },
+    "googledocsveo": {
+      "label": "Google Docs Veo 3.1",
+      "description": "Generates videos using Google Veo 3.1 via browser automation on docs.google.com/videos. Supports text-to-video and image+text-to-video modes. Uses connected Google browser profiles with automatic rotation.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The video generation prompt. Use {INPUT_1} for dynamic text",
+          "required": true,
+          "placeholder": "A cinematic slow-motion shot of a butterfly landing on a flower..."
+        },
+        {
+          "id": "aspect_ratio",
+          "type": "select",
+          "title": "Aspect Ratio",
+          "description": "Video aspect ratio",
+          "default": "landscape",
+          "options": [
+            "landscape",
+            "portrait"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text for prompt"
+        },
+        {
+          "id": "input_2",
+          "type": "image",
+          "label": "Image",
+          "description": "Reference image for image+text-to-video mode"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "video",
+          "label": "Video",
+          "description": "Path to the generated MP4 video file"
+        }
+      ],
+      "useCases": [
+        "Generate videos using Google Veo 3.1",
+        "Create AI videos with Google account",
+        "Text-to-video generation via Google Docs",
+        "Image-to-video animation with Veo 3.1"
+      ]
+    },
+    "anthropic": {
+      "label": "Anthropic (API)",
+      "description": "Uses Anthropic's Claude models for text processing. Known for nuanced understanding, safety, and excellent writing quality.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The instruction for the AI. Use {INPUT_1} for image and {INPUT_2} for text input",
+          "required": true,
+          "placeholder": "Rewrite the following text professionally: {INPUT_2}"
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls randomness. Lower = more focused, Higher = more creative",
+          "min": 0,
+          "max": 1,
+          "default": 1
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The Claude model to use",
+          "default": "claude-3-5-sonnet-20241022",
+          "options": [
+            "claude-3-5-sonnet-20241022",
+            "claude-3-5-haiku-20241022",
+            "claude-3-opus-20240229",
+            "claude-3-sonnet-20240229",
+            "claude-3-haiku-20240307"
+          ]
+        },
+        {
+          "id": "maxTokens",
+          "type": "input",
+          "title": "Max Tokens",
+          "description": "Maximum tokens in response",
+          "default": "4096",
+          "placeholder": "4096"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image",
+          "description": "Optional image for vision processing"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to process"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The AI-generated response"
+        }
+      ],
+      "useCases": [
+        "High-quality writing",
+        "Complex analysis",
+        "Image understanding",
+        "Safe content generation"
+      ]
+    },
+    "chineseai": {
+      "label": "Chinese AI (API)",
+      "description": "Access popular Chinese AI models: DeepSeek, Qwen, GLM, and Moonshot. Excellent for Chinese content and competitive pricing.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The instruction for the AI. Use {INPUT_1} for image and {INPUT_2} for text input",
+          "required": true,
+          "placeholder": "Rewrite the following text: {INPUT_2}"
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls randomness. Lower = more focused, Higher = more creative",
+          "min": 0,
+          "max": 2,
+          "default": 1
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The Chinese AI model to use",
+          "default": "deepseek-chat",
+          "options": [
+            "deepseek-chat",
+            "deepseek-coder",
+            "deepseek-reasoner",
+            "qwen-max",
+            "qwen-max-longcontext",
+            "qwen-plus",
+            "qwen-turbo",
+            "qwen-vl-max",
+            "qwen-vl-plus",
+            "glm-4",
+            "glm-4v",
+            "glm-4-flash",
+            "moonshot-v1-8k",
+            "moonshot-v1-32k",
+            "moonshot-v1-128k"
+          ]
+        },
+        {
+          "id": "maxTokens",
+          "type": "input",
+          "title": "Max Tokens",
+          "description": "Maximum tokens in response",
+          "default": "4096",
+          "placeholder": "4096"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image",
+          "description": "Optional image for vision models (qwen-vl, glm-4v)"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to process"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The AI-generated response"
+        }
+      ],
+      "useCases": [
+        "Chinese content creation",
+        "Cost-effective AI processing",
+        "Code generation (DeepSeek)",
+        "Long context processing"
+      ]
+    },
+    "deepseekbrowser": {
+      "label": "DeepSeek (Browser)",
+      "description": "Access DeepSeek chat via saved browser accounts. Supports image analysis, deep-think reasoning, and web search. Requires connecting DeepSeek accounts in Settings.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The message to send to DeepSeek. Use {INPUT_1} for image and {INPUT_2} for text.",
+          "required": true,
+          "placeholder": "Describe this image: {INPUT_1}. Context: {INPUT_2}"
+        },
+        {
+          "id": "thinkingEnabled",
+          "type": "select",
+          "title": "Deep Think",
+          "description": "Enable DeepSeek's deep-think reasoning mode (slower but more thorough)",
+          "default": "false",
+          "options": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "id": "searchEnabled",
+          "type": "select",
+          "title": "Web Search",
+          "description": "Enable DeepSeek's built-in web search for up-to-date information",
+          "default": "false",
+          "options": [
+            "false",
+            "true"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Optional local image to analyze"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Text input to use in the prompt via {INPUT_2}"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The DeepSeek response text"
+        }
+      ],
+      "useCases": [
+        "Image analysis",
+        "AI text generation",
+        "Deep reasoning tasks",
+        "Research with web search",
+        "Content creation"
+      ]
+    },
+    "qwenbrowser": {
+      "label": "Qwen AI (Browser)",
+      "description": "Access Qwen AI chat via saved browser accounts. Supports image input, thinking mode, temperature control, and web search. Requires connecting Qwen AI accounts in Settings.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The message to send to Qwen. Use {INPUT_1} for image and {INPUT_2} for text.",
+          "required": true,
+          "placeholder": "Describe this image: {INPUT_1}. Context: {INPUT_2}"
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "Qwen model to use",
+          "default": "qwen3.7-plus",
+          "options": [
+            "qwen3.7-plus"
+          ]
+        },
+        {
+          "id": "thinkingEnabled",
+          "type": "select",
+          "title": "Enable Thinking",
+          "description": "Enable Qwen's extended thinking mode for deeper reasoning (slower)",
+          "default": "false",
+          "options": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls response randomness (0 = deterministic, 2 = creative)",
+          "default": 0.7,
+          "min": 0,
+          "max": 2
+        },
+        {
+          "id": "maxTokens",
+          "type": "input",
+          "title": "Max Tokens",
+          "description": "Maximum tokens in the response",
+          "default": "4096"
+        },
+        {
+          "id": "searchEnabled",
+          "type": "select",
+          "title": "Web Search",
+          "description": "Enable Qwen's built-in web search tool",
+          "default": "false",
+          "options": [
+            "false",
+            "true"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image",
+          "description": "Optional image to analyze (local file path)",
+          "optional": true
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Optional text input to use in the prompt via {INPUT_2}",
+          "optional": true
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The Qwen AI response text"
+        }
+      ],
+      "useCases": [
+        "AI text generation",
+        "Image analysis and description",
+        "Deep reasoning tasks",
+        "Multilingual content",
+        "Research with web search"
+      ]
+    },
+    "vcai": {
+      "label": "ViralCloner AI (API)",
+      "description": "Retired hosted provider. Use a directly configured AI provider node instead.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "prompt",
+          "type": "textarea",
+          "title": "Prompt",
+          "description": "The instruction for the AI. Use {INPUT_1} for image and {INPUT_2} for text input",
+          "required": true,
+          "placeholder": "Rewrite the following text: {INPUT_2}"
+        },
+        {
+          "id": "temperature",
+          "type": "range",
+          "title": "Temperature",
+          "description": "Controls randomness. Lower = more focused, Higher = more creative",
+          "min": 0,
+          "max": 2,
+          "default": 0.7
+        },
+        {
+          "id": "model",
+          "type": "select",
+          "title": "Model",
+          "description": "The ViralCloner AI model to use",
+          "default": "deepseek-chat",
+          "options": [
+            "deepseek-chat",
+            "deepseek-coder",
+            "deepseek-reasoner"
+          ]
+        },
+        {
+          "id": "maxTokens",
+          "type": "input",
+          "title": "Max Tokens",
+          "description": "Maximum tokens in response",
+          "default": "4096",
+          "placeholder": "4096"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to process"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The AI-generated response"
+        }
+      ],
+      "useCases": [
+        "No API keys required",
+        "Uses plan token allocation",
+        "Text rewriting",
+        "Content generation",
+        "Code assistance"
+      ],
+      "deprecated": true
+    },
+    "vctts": {
+      "label": "VC Text To Speech",
+      "description": "Converts text to speech using Microsoft Edge TTS voices. Choose a locale and voice to generate realistic MP3 audio from any text input.",
+      "category": "media",
+      "configInputs": [
+        {
+          "id": "locale",
+          "type": "select",
+          "title": "Locale",
+          "description": "Select a country/language to filter available voices",
+          "required": true,
+          "default": "en-US"
+        },
+        {
+          "id": "voice",
+          "type": "select",
+          "title": "Voice",
+          "description": "Select a TTS voice. Options are filtered by the selected locale.",
+          "required": true,
+          "default": "en-US-EmmaMultilingualNeural"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to convert to speech"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "audio",
+          "label": "Audio Path",
+          "description": "Local file path of the generated MP3 audio"
+        }
+      ],
+      "useCases": [
+        "Generate voiceovers for videos",
+        "Create audio content from text",
+        "Add narration to automated workflows",
+        "Multi-language speech synthesis"
+      ]
+    },
+    "minicanvas": {
+      "label": "Mini Canvas",
+      "description": "Applies a design template to images and text. Uses pre-made templates to create formatted graphics like Pinterest pins, social media posts, etc.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "template",
+          "type": "select",
+          "title": "Template",
+          "description": "Select a Mini Canvas template",
+          "required": true,
+          "source": "maskTemplates"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "images",
+          "label": "Images",
+          "description": "Images from Midjourney or other source"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text 1",
+          "description": "First text field for template"
+        },
+        {
+          "id": "input_3",
+          "type": "text",
+          "label": "Text 2",
+          "description": "Second text field for template"
+        },
+        {
+          "id": "input_4",
+          "type": "text",
+          "label": "Text 3",
+          "description": "Third text field for template"
+        },
+        {
+          "id": "input_5",
+          "type": "text",
+          "label": "Text 4",
+          "description": "Fourth text field for template"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image",
+          "description": "The rendered template image"
+        }
+      ],
+      "useCases": [
+        "Create Pinterest pins with text overlays",
+        "Design social media graphics",
+        "Add branding to images"
+      ]
+    },
+    "videoeditor": {
+      "label": "Video Editor",
+      "description": "Creates a video from a saved video template by replacing placeholder clips with actual media inputs. Supports image, video, and text placeholders. Optionally adds background music.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "template",
+          "type": "select",
+          "title": "Template",
+          "description": "Select a Video Editor template",
+          "required": true,
+          "source": "videoTemplates"
+        },
+        {
+          "id": "music",
+          "type": "music-picker",
+          "title": "Music",
+          "description": "Background music for the video. Choose a specific track from the music library or random.",
+          "required": false,
+          "source": "musicLibrary"
+        },
+        {
+          "id": "fps",
+          "type": "select",
+          "title": "FPS",
+          "description": "Frames per second for the exported video",
+          "required": false,
+          "default": "30",
+          "options": [
+            {
+              "value": "24",
+              "text": "24 FPS"
+            },
+            {
+              "value": "30",
+              "text": "30 FPS"
+            },
+            {
+              "value": "60",
+              "text": "60 FPS"
+            }
+          ]
+        },
+        {
+          "id": "quality",
+          "type": "select",
+          "title": "Quality",
+          "description": "Video encoding quality",
+          "required": false,
+          "default": "high",
+          "options": [
+            {
+              "value": "low",
+              "text": "Low (Fast)"
+            },
+            {
+              "value": "medium",
+              "text": "Medium"
+            },
+            {
+              "value": "high",
+              "text": "High"
+            },
+            {
+              "value": "ultra",
+              "text": "Ultra (Slow)"
+            }
+          ]
+        },
+        {
+          "id": "resolution",
+          "type": "select",
+          "title": "Resolution",
+          "description": "Output video resolution",
+          "required": false,
+          "default": "original",
+          "options": [
+            {
+              "value": "original",
+              "text": "Original"
+            },
+            {
+              "value": "720p",
+              "text": "720p (HD)"
+            },
+            {
+              "value": "1080p",
+              "text": "1080p (Full HD)"
+            },
+            {
+              "value": "2k",
+              "text": "2K (1440p)"
+            },
+            {
+              "value": "4k",
+              "text": "4K (2160p)"
+            }
+          ]
+        },
+        {
+          "id": "subtitles",
+          "type": "select",
+          "title": "Auto Subtitles",
+          "description": "Automatically generate subtitles for all video clips using speech recognition. Select a subtitle style template or disable.",
+          "required": false,
+          "default": "disabled",
+          "options": [
+            {
+              "value": "disabled",
+              "text": "Disabled"
+            },
+            {
+              "value": "classic",
+              "text": "Classic Bold"
+            },
+            {
+              "value": "pop",
+              "text": "Pop"
+            },
+            {
+              "value": "neon",
+              "text": "Neon Glow"
+            },
+            {
+              "value": "karaoke",
+              "text": "Karaoke"
+            },
+            {
+              "value": "highlight",
+              "text": "Highlight"
+            },
+            {
+              "value": "typewriter",
+              "text": "Typewriter"
+            },
+            {
+              "value": "wave",
+              "text": "Wave"
+            },
+            {
+              "value": "shadow3d",
+              "text": "3D Shadow"
+            }
+          ]
+        },
+        {
+          "id": "subtitlesLanguage",
+          "type": "select",
+          "title": "Subtitles Language",
+          "description": "Language for subtitle transcription. Auto Detect uses Whisper's language detection.",
+          "required": false,
+          "default": "",
+          "options": [
+            {
+              "value": "",
+              "text": "Auto Detect"
+            },
+            {
+              "value": "en",
+              "text": "English"
+            },
+            {
+              "value": "fr",
+              "text": "Français"
+            },
+            {
+              "value": "ar",
+              "text": "العربية"
+            },
+            {
+              "value": "es",
+              "text": "Español"
+            },
+            {
+              "value": "de",
+              "text": "Deutsch"
+            },
+            {
+              "value": "pt",
+              "text": "Português"
+            },
+            {
+              "value": "zh",
+              "text": "中文"
+            },
+            {
+              "value": "ja",
+              "text": "日本語"
+            },
+            {
+              "value": "ko",
+              "text": "한국어"
+            },
+            {
+              "value": "hi",
+              "text": "हिन्दी"
+            }
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "all",
+          "label": "Input 1",
+          "description": "Media or text for Placeholder 1"
+        },
+        {
+          "id": "input_2",
+          "type": "all",
+          "label": "Input 2",
+          "description": "Media or text for Placeholder 2"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "video",
+          "label": "Video",
+          "description": "The exported video file"
+        }
+      ],
+      "dynamicInputs": true,
+      "useCases": [
+        "Create videos from templates",
+        "Generate multiple videos with different content",
+        "Automate video production"
+      ]
+    },
+    "imageupload": {
+      "label": "Image Upload",
+      "description": "Uploads an image with the default image provider selected in Settings > Media Hosting and returns a public URL. ViralCloner-hosted files expire after the configured retention period.",
+      "category": "processing",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image",
+          "description": "The image to upload"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Image URL",
+          "description": "Public URL of the uploaded image"
+        }
+      ],
+      "useCases": [
+        "Get shareable URL for generated images",
+        "Prepare images for Pinterest posting"
+      ]
+    },
+    "videoupload": {
+      "label": "Video Upload",
+      "description": "Uploads a video with the default video provider selected in Settings > Media Hosting and returns a public URL. ViralCloner-hosted files expire after the configured retention period.",
+      "category": "processing",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "video",
+          "label": "Video",
+          "description": "The video to upload"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Video URL",
+          "description": "Public URL of the uploaded video"
+        }
+      ],
+      "useCases": [
+        "Get shareable URL for generated videos",
+        "Upload videos for social media posting"
+      ]
+    },
+    "googlesites": {
+      "label": "Google Sites",
+      "description": "Creates a Google Sites page from HTML content. Useful for creating landing pages or article pages that can be linked from social posts.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "profile",
+          "type": "select",
+          "title": "Profile",
+          "description": "Optional Google profile to use",
+          "required": false,
+          "source": "googleProfiles"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "HTML",
+          "description": "HTML content for the page"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "URL",
+          "description": "URL of the created Google Sites page"
+        }
+      ],
+      "useCases": [
+        "Create landing pages",
+        "Generate article pages for Pinterest links"
+      ]
+    },
+    "wordpress": {
+      "label": "WordPress POST",
+      "description": "Publishes a post to a WordPress website. Requires a configured WordPress site connection.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "website",
+          "type": "select",
+          "title": "Website",
+          "description": "Select a WordPress website",
+          "required": true,
+          "source": "wordpressWebsites"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Title",
+          "description": "Post title"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Post content/body"
+        },
+        {
+          "id": "input_3",
+          "type": "url",
+          "label": "Featured Image URL",
+          "description": "URL for the featured image"
+        },
+        {
+          "id": "input_4",
+          "type": "text",
+          "label": "Categories",
+          "description": "Comma-separated category IDs (e.g. 1,5,12)"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "URL",
+          "description": "URL of the published post"
+        }
+      ],
+      "useCases": [
+        "Auto-publish blog posts",
+        "Create SEO content"
+      ]
+    },
+    "wordpressget": {
+      "label": "WordPress GET",
+      "description": "Fetches resources from a WordPress site using the REST API. Supports posts, pages, categories, tags, media, comments, users, and WooCommerce resources (products, orders, coupons). Returns JSON data that can be parsed with the JSON Parser node.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "website",
+          "type": "select",
+          "title": "Website",
+          "description": "Select a WordPress website",
+          "required": true,
+          "source": "wordpressWebsites"
+        },
+        {
+          "id": "resourceType",
+          "type": "select",
+          "title": "Resource",
+          "description": "Type of resource to fetch",
+          "required": true,
+          "default": "posts",
+          "options": [
+            "posts",
+            "pages",
+            "categories",
+            "tags",
+            "media",
+            "comments",
+            "users",
+            "products",
+            "orders",
+            "coupons"
+          ]
+        },
+        {
+          "id": "perPage",
+          "type": "input",
+          "title": "Per Page",
+          "description": "Number of results per page (1-100)",
+          "default": "10"
+        },
+        {
+          "id": "sortBy",
+          "type": "select",
+          "title": "Sort By",
+          "description": "Order results by a field and direction. Use 'rand' for random order.",
+          "default": "date_desc",
+          "options": [
+            "date_desc",
+            "date_asc",
+            "title_asc",
+            "title_desc",
+            "modified_desc",
+            "modified_asc",
+            "id_asc",
+            "id_desc",
+            "slug_asc",
+            "slug_desc",
+            "include",
+            "relevance",
+            "rand"
+          ]
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Search Query",
+          "description": "Optional search term to filter results"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Resource ID",
+          "description": "Optional specific resource ID to fetch a single item"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Result (JSON)",
+          "description": "JSON response from WordPress REST API"
+        }
+      ],
+      "useCases": [
+        "Fetch existing posts or pages for repurposing",
+        "Get product listings from WooCommerce",
+        "Retrieve categories or tags for content organization",
+        "Look up specific resources by ID"
+      ]
+    },
+    "wprecipemaker": {
+      "label": "WP Recipe Maker",
+      "description": "Creates a recipe using WP Recipe Maker WordPress plugin. Outputs a recipe ID that can be embedded in WordPress posts. You can either connect individual fields OR use the Recipe JSON input to pass all data at once from an AI node.",
+      "category": "processing",
+      "configInputs": [
+        {
+          "id": "website",
+          "type": "select",
+          "title": "Website",
+          "description": "Select a WordPress website with WP Recipe Maker",
+          "required": true,
+          "source": "wordpressWebsites"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Recipe JSON",
+          "description": "JSON containing all recipe data. When provided, overrides individual inputs. Use this AI prompt to generate: 'Generate a recipe in JSON format with these exact fields: name (string, required), summary (string), ingredients (string with each ingredient on new line), instructions (string with each step on new line), prepTime (string like 30 min), cookTime (string like 1 hour), servings (string), notes (string), cuisine (string like Italian), course (string like Main Dish), equipment (string, comma or newline separated), imageUrl (string URL or empty). Output ONLY valid JSON, no markdown.'"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Recipe Name",
+          "description": "Recipe title (required if no JSON provided)"
+        },
+        {
+          "id": "input_3",
+          "type": "text",
+          "label": "Summary",
+          "description": "Recipe description/summary"
+        },
+        {
+          "id": "input_4",
+          "type": "text",
+          "label": "Ingredients",
+          "description": "Ingredients list (one per line)"
+        },
+        {
+          "id": "input_5",
+          "type": "text",
+          "label": "Instructions",
+          "description": "Step-by-step instructions (one per line)"
+        },
+        {
+          "id": "input_6",
+          "type": "text",
+          "label": "Prep Time",
+          "description": "Preparation time (e.g., 30 min, 1 hour)"
+        },
+        {
+          "id": "input_7",
+          "type": "text",
+          "label": "Cook Time",
+          "description": "Cooking time (e.g., 45 min, 2 hours)"
+        },
+        {
+          "id": "input_8",
+          "type": "text",
+          "label": "Servings",
+          "description": "Number of servings"
+        },
+        {
+          "id": "input_9",
+          "type": "text",
+          "label": "Notes",
+          "description": "Additional recipe notes or tips"
+        },
+        {
+          "id": "input_10",
+          "type": "text",
+          "label": "Cuisine",
+          "description": "Cuisine type (e.g., Italian, Mexican)"
+        },
+        {
+          "id": "input_11",
+          "type": "text",
+          "label": "Course",
+          "description": "Course type (e.g., Main Dish, Dessert)"
+        },
+        {
+          "id": "input_12",
+          "type": "text",
+          "label": "Equipment",
+          "description": "Equipment needed (one per line or comma-separated)"
+        },
+        {
+          "id": "input_13",
+          "type": "url",
+          "label": "Image URL",
+          "description": "Recipe image URL"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Recipe ID",
+          "description": "The created recipe ID for embedding in posts using [wprm-recipe id=\"X\"]"
+        }
+      ],
+      "useCases": [
+        "Auto-publish recipes from AI content",
+        "Create recipe blog posts with structured data",
+        "Build recipe websites automatically"
+      ]
+    },
+    "variables": {
+      "label": "Variables",
+      "description": "Combines multiple inputs into a single output using a text template. Use {INPUT_1}, {INPUT_2}, {INPUT_3} as placeholders.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "text",
+          "type": "textarea",
+          "title": "Text",
+          "description": "Template text with {INPUT_1}, {INPUT_2}, {INPUT_3} placeholders",
+          "required": true,
+          "placeholder": "{INPUT_1} - {INPUT_2}"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "all",
+          "label": "Var 1",
+          "description": "First variable"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "all",
+          "label": "Out",
+          "description": "Combined output"
+        }
+      ],
+      "useCases": [
+        "Combine text pieces",
+        "Format prompts",
+        "Merge data from multiple sources"
+      ]
+    },
+    "advancedcurl": {
+      "label": "Advanced Curl",
+      "description": "Full HTTP request builder with structured URL, method, headers, body, and authentication fields. Supports {INPUT_1}, {INPUT_2}, etc. placeholders in URL, headers, and body for dynamic data from connected nodes.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "url",
+          "type": "input",
+          "title": "URL",
+          "description": "API endpoint URL. Supports {INPUT_1} placeholders.",
+          "required": true,
+          "placeholder": "https://api.example.com/endpoint"
+        },
+        {
+          "id": "method",
+          "type": "select",
+          "title": "Method",
+          "description": "HTTP method",
+          "default": "GET",
+          "options": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "HEAD"
+          ]
+        },
+        {
+          "id": "contentType",
+          "type": "select",
+          "title": "Content Type",
+          "description": "Request body content type",
+          "default": "application/json",
+          "options": [
+            "application/json",
+            "application/x-www-form-urlencoded",
+            "text/plain",
+            "none"
+          ]
+        },
+        {
+          "id": "headers",
+          "type": "textarea",
+          "title": "Headers",
+          "description": "Custom headers, one per line in Key: Value format. Supports {INPUT_1} placeholders.",
+          "placeholder": "X-Api-Key: your-key\nAccept: application/json"
+        },
+        {
+          "id": "body",
+          "type": "textarea",
+          "title": "Body",
+          "description": "Request body. Use {INPUT_1}, {INPUT_2} for dynamic data from connected nodes.",
+          "placeholder": "{\"title\": \"{INPUT_1}\", \"content\": \"{INPUT_2}\"}"
+        },
+        {
+          "id": "authType",
+          "type": "select",
+          "title": "Auth Type",
+          "description": "Authentication method",
+          "default": "none",
+          "options": [
+            "none",
+            "bearer",
+            "basic"
+          ]
+        },
+        {
+          "id": "authValue",
+          "type": "input",
+          "title": "Auth Value",
+          "description": "Bearer token or username:password for Basic auth",
+          "placeholder": "Token or username:password"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Input 1",
+          "description": "Dynamic data available as {INPUT_1} in URL, headers, and body"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Input 2",
+          "description": "Dynamic data available as {INPUT_2} in URL, headers, and body"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Response",
+          "description": "Raw response body from the API"
+        }
+      ],
+      "dynamicInputs": true,
+      "useCases": [
+        "Call REST APIs with structured parameters",
+        "Post data to webhooks",
+        "Integrate with third-party services",
+        "Fetch data from authenticated APIs"
+      ]
+    },
+    "serpapi": {
+      "label": "SerpAPI Search",
+      "description": "Searches the web using SerpAPI with 20+ search engines (Google, Bing, YouTube, Amazon, etc.). Requires a SerpAPI key configured in Settings.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "query",
+          "type": "input",
+          "title": "Search Query",
+          "description": "The search query. Use {INPUT_1} to insert dynamic text from connected nodes.",
+          "required": true,
+          "placeholder": "best restaurants in {INPUT_1}"
+        },
+        {
+          "id": "engine",
+          "type": "select",
+          "title": "Engine",
+          "description": "Search engine to use",
+          "required": true,
+          "options": [
+            "google",
+            "google_images",
+            "google_news",
+            "google_videos",
+            "google_shopping",
+            "google_maps",
+            "google_scholar",
+            "google_trends",
+            "google_jobs",
+            "google_autocomplete",
+            "google_local",
+            "google_finance",
+            "youtube",
+            "bing",
+            "duckduckgo",
+            "yahoo",
+            "yandex",
+            "amazon",
+            "ebay",
+            "walmart"
+          ],
+          "default": "google"
+        },
+        {
+          "id": "location",
+          "type": "input",
+          "title": "City / Region",
+          "description": "City or region for local results (optional, more specific than Country)",
+          "required": false,
+          "placeholder": "Austin, Texas"
+        },
+        {
+          "id": "hl",
+          "type": "select",
+          "title": "Language",
+          "description": "Results language",
+          "required": false,
+          "options": [
+            "auto",
+            "en",
+            "fr",
+            "ar",
+            "es",
+            "de",
+            "it",
+            "pt",
+            "ja",
+            "ko",
+            "zh-CN",
+            "ru",
+            "nl",
+            "pl",
+            "tr",
+            "hi"
+          ],
+          "default": "auto"
+        },
+        {
+          "id": "gl",
+          "type": "select",
+          "title": "Country",
+          "description": "Country for localized results",
+          "required": false,
+          "options": [
+            "auto",
+            "us",
+            "gb",
+            "fr",
+            "de",
+            "sa",
+            "es",
+            "it",
+            "br",
+            "in",
+            "jp",
+            "ca",
+            "au",
+            "ru",
+            "nl",
+            "mx",
+            "kr"
+          ],
+          "default": "auto"
+        },
+        {
+          "id": "device",
+          "type": "select",
+          "title": "Device",
+          "description": "Device type for results",
+          "required": false,
+          "options": [
+            "desktop",
+            "tablet",
+            "mobile"
+          ],
+          "default": "desktop"
+        },
+        {
+          "id": "num",
+          "type": "number",
+          "title": "Results Count",
+          "description": "Number of results to return (1-100)",
+          "required": false,
+          "default": 10
+        },
+        {
+          "id": "start",
+          "type": "number",
+          "title": "Offset",
+          "description": "Result offset for pagination (0 = first page)",
+          "required": false,
+          "default": 0
+        },
+        {
+          "id": "safe",
+          "type": "select",
+          "title": "Safe Search",
+          "description": "Safe search filtering",
+          "required": false,
+          "options": [
+            "off",
+            "active"
+          ],
+          "default": "off"
+        },
+        {
+          "id": "tbm",
+          "type": "select",
+          "title": "Google Search Type",
+          "description": "Google-specific search type parameter (tbm)",
+          "required": false,
+          "options": [
+            "",
+            "isch",
+            "vid",
+            "nws",
+            "shop",
+            "pts"
+          ],
+          "default": ""
+        },
+        {
+          "id": "advancedParams",
+          "type": "textarea",
+          "title": "Advanced Params",
+          "description": "Extra SerpAPI parameters as JSON object. These are merged into the API request.",
+          "required": false,
+          "placeholder": "{\"tbs\":\"qdr:d\",\"nfpr\":1}"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Dynamic text available as {INPUT_1} in the Search Query field"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Results (JSON)",
+          "description": "Full SerpAPI JSON response with organic results, knowledge graph, ads, etc."
+        }
+      ],
+      "useCases": [
+        "Search Google, Bing, YouTube and 20+ engines programmatically",
+        "Scrape Google Shopping, News, Images, Videos results",
+        "Monitor keyword rankings across search engines",
+        "Research competitor content and SEO data",
+        "Find trending topics via Google Trends API"
+      ]
+    },
+    "curl": {
+      "label": "Curl Request",
+      "description": "Makes an HTTP request to an external API. Configure the URL, method, and JSON body template. Use {INPUT_1} in the body template to include data from connected nodes.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "url",
+          "type": "input",
+          "title": "URL",
+          "description": "The API endpoint URL",
+          "required": true,
+          "placeholder": "https://example.com/api"
+        },
+        {
+          "id": "method",
+          "type": "select",
+          "title": "Method",
+          "description": "HTTP method",
+          "default": "POST",
+          "options": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+          ]
+        },
+        {
+          "id": "body",
+          "type": "textarea",
+          "title": "Body Template",
+          "description": "JSON body template. Use {INPUT_1} for input data",
+          "placeholder": "{\"title\": \"{INPUT_1}\", \"content\": \"...\"}"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Data",
+          "description": "Data to include in the request body"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Response",
+          "description": "Response from the API"
+        }
+      ],
+      "useCases": [
+        "Call external APIs",
+        "Post to custom websites",
+        "Webhook triggers",
+        "Send data to third-party services"
+      ]
+    },
+    "amazoncrawl": {
+      "label": "Amazon Crawler",
+      "description": "Scrapes product information from an Amazon product page including title, price (USD), high-resolution images, description, features, availability, rating, and review count.",
+      "category": "utility",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Product URL",
+          "description": "Amazon product page URL to scrape"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Product Data",
+          "description": "JSON object containing scraped product information (title, price, images, description, features, availability, rating, reviewCount)"
+        }
+      ],
+      "useCases": [
+        "Extract product details for comparison",
+        "Get high-res product images for content creation",
+        "Monitor pricing information",
+        "Collect product data for dropshipping"
+      ]
+    },
+    "imagedownloader": {
+      "label": "Image Downloader",
+      "description": "Downloads an image from a URL and saves it locally. Returns the local file path of the downloaded image.",
+      "category": "utility",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL",
+          "description": "URL of the image to download"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image Path",
+          "description": "Local file path of the downloaded image"
+        }
+      ],
+      "useCases": [
+        "Download images for local processing",
+        "Save images from web sources",
+        "Convert URL to local file for upload nodes"
+      ]
+    },
+    "jsonparser": {
+      "label": "JSON Parser",
+      "description": "Parses JSON, navigates to a path, and optionally picks specific fields from objects or arrays of objects.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "fieldPath",
+          "type": "input",
+          "title": "Field Path",
+          "description": "Navigate to a specific part of the JSON. Leave empty to use the root. Supports dot notation (e.g., 'data.items') and brackets (e.g., '[0]').",
+          "required": false,
+          "placeholder": "e.g. data.items, [0].title (empty = root)"
+        },
+        {
+          "id": "pickFields",
+          "type": "input",
+          "title": "Pick Fields",
+          "description": "Comma-separated field names to keep from each object (e.g., 'id, name'). Leave empty to keep all fields.",
+          "required": false,
+          "placeholder": "e.g. id, name, slug"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "JSON Text",
+          "description": "The JSON string to parse"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Value",
+          "description": "The extracted value as text (objects/arrays are stringified)"
+        }
+      ],
+      "useCases": [
+        "Extract specific fields from API responses",
+        "Parse Amazon Crawler output",
+        "Get individual values from complex JSON"
+      ]
+    },
+    "humanize": {
+      "label": "Humanize",
+      "description": "Rewrites AI-generated text so it sounds more natural using the AI Humanize service. Takes one text input and produces one text output.",
+      "category": "utility",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "The text to humanize (minimum 30 words)"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Humanized Text",
+          "description": "The rewritten, humanized text"
+        }
+      ],
+      "useCases": [
+        "Make AI-generated post captions sound more natural",
+        "Humanize text before publishing to Facebook or Pinterest",
+        "Lower originality detection scores on generated copy"
+      ]
+    },
+    "amazonafflink": {
+      "label": "Amazon Aff Link",
+      "description": "Converts an Amazon product URL to an affiliate link by adding your Amazon Associates tracking ID. Cleans up existing tracking parameters for a cleaner URL.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "trackingId",
+          "type": "input",
+          "title": "Tracking ID",
+          "description": "Your Amazon Associates tracking ID (e.g., mystore-20)",
+          "required": true,
+          "placeholder": "mystore-20"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Product URL",
+          "description": "Amazon product URL to convert"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "url",
+          "label": "Affiliate URL",
+          "description": "Amazon URL with your affiliate tracking ID"
+        }
+      ],
+      "useCases": [
+        "Generate affiliate links for product recommendations",
+        "Convert scraped Amazon URLs to affiliate links",
+        "Monetize product content"
+      ]
+    },
+    "splitter": {
+      "label": "Splitter",
+      "description": "Splits a text string into multiple parts based on a delimiter. Outputs up to 4 separate text values.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "symbol",
+          "type": "input",
+          "title": "Split Symbol",
+          "description": "The character(s) to split on",
+          "default": "|",
+          "placeholder": "|"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "text",
+          "label": "Text",
+          "description": "Text to split"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "text",
+          "label": "Output 1",
+          "description": "First part"
+        }
+      ],
+      "useCases": [
+        "Parse delimited data",
+        "Extract multiple values from AI response",
+        "Split title from description"
+      ]
+    },
+    "firstelement": {
+      "label": "First Element",
+      "description": "Returns a single element from a list/array input. Acts like a Variables node with {INPUT_1}[0]. Use the Index config to pick a different position (0 = first).",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "index",
+          "type": "input",
+          "title": "Index",
+          "description": "Zero-based index of the element to return",
+          "default": "0",
+          "placeholder": "0"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "all",
+          "label": "List",
+          "description": "A list/array (or array-like value) to pick an element from"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "all",
+          "label": "Item",
+          "description": "The element at the chosen index"
+        }
+      ],
+      "useCases": [
+        "Get the first image from a list of generated images",
+        "Pick a single value from an array output",
+        "Feed one element of a list into a single-input node"
+      ]
+    },
+    "grouplist": {
+      "label": "Group List",
+      "description": "Collects multiple connected inputs into a single list/array output. Useful to combine several single-image outputs and feed them into a node that accepts multiple images (e.g. TikTok Ads Video reference attachment).",
+      "category": "utility",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "all",
+          "label": "Item 1",
+          "description": "An item to add to the list"
+        },
+        {
+          "id": "input_2",
+          "type": "all",
+          "label": "Item 2",
+          "description": "An item to add to the list"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "all",
+          "label": "List",
+          "description": "All connected inputs combined into a single array"
+        }
+      ],
+      "useCases": [
+        "Combine multiple images into one list for a reference attachment",
+        "Merge several outputs into a single array",
+        "Group items for a node that accepts multiple inputs"
+      ]
+    },
+    "pinterest-output": {
+      "label": "Pinterest",
+      "description": "Posts content to Pinterest. This is an output node - the final destination for Pinterest automation workflows.",
+      "category": "output",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "url",
+          "label": "Image URL",
+          "description": "URL of the image to pin"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Title",
+          "description": "Pin title"
+        },
+        {
+          "id": "input_3",
+          "type": "text",
+          "label": "Description",
+          "description": "Pin description"
+        },
+        {
+          "id": "input_4",
+          "type": "url",
+          "label": "URL",
+          "description": "Destination link URL"
+        },
+        {
+          "id": "input_5",
+          "type": "url",
+          "label": "Video URL",
+          "description": "URL of the video to pin"
+        }
+      ],
+      "connectionOutputs": [],
+      "required": false,
+      "useCases": [
+        "Post to Pinterest",
+        "Share images with links",
+        "Post videos to Pinterest"
+      ]
+    },
+    "videotoimage": {
+      "label": "Video to Image",
+      "description": "Extracts a frame from a video and saves it as an image. Supports first frame, last frame, or a specific frame number.",
+      "category": "utility",
+      "configInputs": [
+        {
+          "id": "frameMode",
+          "type": "select",
+          "title": "Frame Selection",
+          "description": "Choose which frame to extract from the video",
+          "default": "first",
+          "options": [
+            "first",
+            "last",
+            "specific"
+          ]
+        },
+        {
+          "id": "frameNumber",
+          "type": "text",
+          "title": "Frame Number",
+          "description": "Frame number to extract (only used when Frame Selection is 'specific')",
+          "default": "1",
+          "placeholder": "e.g. 30"
+        }
+      ],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "video",
+          "label": "Video",
+          "description": "Video file to extract a frame from"
+        }
+      ],
+      "connectionOutputs": [
+        {
+          "id": "output_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Extracted frame saved as an image file"
+        }
+      ],
+      "useCases": [
+        "Extract thumbnail from a video",
+        "Get first or last frame for preview",
+        "Convert video frame to image for further processing"
+      ]
+    },
+    "facebook-output": {
+      "label": "Facebook",
+      "description": "Posts content to Facebook. This is an output node - the final destination for Facebook automation workflows.",
+      "category": "output",
+      "configInputs": [],
+      "connectionInputs": [
+        {
+          "id": "input_1",
+          "type": "image",
+          "label": "Image",
+          "description": "Image to post"
+        },
+        {
+          "id": "input_2",
+          "type": "text",
+          "label": "Text",
+          "description": "Post text/caption"
+        },
+        {
+          "id": "input_3",
+          "type": "video",
+          "label": "Video",
+          "description": "Video to post"
+        },
+        {
+          "id": "input_4",
+          "type": "url",
+          "label": "URL (optional)",
+          "description": "Link URL — used for first-comment posting or viral monitor trigger"
+        },
+        {
+          "id": "input_5",
+          "type": "text",
+          "label": "Title (optional)",
+          "description": "Post title — shown in test/export and usable as image filename slug"
+        }
+      ],
+      "connectionOutputs": [],
+      "required": false,
+      "useCases": [
+        "Post to Facebook",
+        "Share images with captions",
+        "Post videos to Facebook"
+      ]
+    }
+  },
+  "defaultLayout": {
+    "input": {
+      "pos_x": 50,
+      "pos_y": 200
+    },
+    "pinterest-output": {
+      "pos_x": 1100,
+      "pos_y": 50
+    },
+    "facebook-output": {
+      "pos_x": 1100,
+      "pos_y": 400
+    }
+  },
+  "exampleWorkflows": [
+    {
+      "name": "Simple Pinterest Repost",
+      "description": "Takes spy input, uploads image, and posts to Pinterest with original text",
+      "nodes": [
+        "input",
+        "imageupload",
+        "pinterest-output"
+      ],
+      "flow": "input.image -> imageupload -> pinterest.imageUrl; input.text -> pinterest.title,description"
+    },
+    {
+      "name": "AI Rewrite for Pinterest",
+      "description": "Takes spy input, rewrites text with AI, uploads image, posts to Pinterest",
+      "nodes": [
+        "input",
+        "openai",
+        "imageupload",
+        "pinterest-output"
+      ],
+      "flow": "input.image -> imageupload -> pinterest.imageUrl; input.text -> openai -> splitter -> pinterest.title,description"
+    },
+    {
+      "name": "Midjourney Image Generation",
+      "description": "Uses input text as prompt basis, generates new images, applies template, uploads and posts",
+      "nodes": [
+        "input",
+        "openai",
+        "midjourney",
+        "minicanvas",
+        "imageupload",
+        "pinterest-output"
+      ],
+      "flow": "input.text -> openai(generate prompt) -> midjourney -> minicanvas -> imageupload -> pinterest"
+    }
+  ],
+  "aiInstructions": {
+    "systemPrompt": "You are an automation builder assistant for ViralClonerSoftware. You help users create automation workflows that process social media content (images and text) through various nodes and publish to Pinterest or Facebook.",
+    "rules": [
+      "Every automation MUST have exactly one 'input' node",
+      "Every automation MUST connect to at least one output node (pinterest-output or facebook-output)",
+      "Connections must respect type compatibility - check typeCompatibility rules",
+      "When user doesn't specify output platform, ask them or default to Pinterest",
+      "When user doesn't specify which APIs to use, select the first available from their saved keys",
+      "For OpenAI nodes, always include {INPUT_2} in prompts to reference incoming text",
+      "For image-to-Pinterest flows, an imageupload node is required to convert image to URL",
+      "Node IDs must be unique integers starting from 1",
+      "Position nodes left-to-right based on data flow"
+    ],
+    "clarifyingQuestions": {
+      "missingOutput": "Which platform would you like to post to? Pinterest, Facebook, or both?",
+      "missingApiKey": "I'll use your first saved {service} API key. You can change this in the node settings after generation.",
+      "ambiguousFlow": "I want to make sure I understand: {clarification question}",
+      "missingTemplate": "Which Mini Canvas template would you like to use? I'll select the first available one for now."
+    }
+  }
+}

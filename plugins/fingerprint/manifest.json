@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Fingerprint Spoofing",
+  "version": "1.2",
+  "description": "Stealthy fingerprint spoofing with navigator platform override using main world injection.",
+  "permissions": [
+    "scripting",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

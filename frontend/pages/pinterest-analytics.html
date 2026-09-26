@@ -1,0 +1,191 @@
+<div class="pa-container">
+    <!-- Warning: No Pinterest Accounts -->
+    <div id="paWarningNoAccounts" class="pa-warning-banner pa-warning-error" style="display:none;">
+        <i class="material-icons">account_circle</i>
+        <div class="pa-warning-text">
+            <strong data-i18n="pinterest_analytics.no_accounts_title">No Pinterest Accounts Connected</strong>
+            <span data-i18n="pinterest_analytics.no_accounts_desc">You need to connect at least one Pinterest account before you can view analytics.</span>
+        </div>
+        <button id="paGoToAccounts" class="pa-warning-btn" data-i18n="pinterest_analytics.connect_account">Connect Account</button>
+    </div>
+
+    <!-- Warning: Collection Disabled -->
+    <div id="paWarningDisabled" class="pa-warning-banner pa-warning-warn" style="display:none;">
+        <i class="material-icons">warning</i>
+        <div class="pa-warning-text">
+            <strong data-i18n="pinterest_analytics.collection_disabled_title">Analytics Collection is Disabled</strong>
+            <span data-i18n="pinterest_analytics.collection_disabled_desc">Enable automatic collection to keep your analytics data up to date.</span>
+        </div>
+        <button id="paEnableCollection" class="pa-warning-btn" data-i18n="pinterest_analytics.enable_collection">Enable Collection</button>
+    </div>
+
+    <!-- Header -->
+    <div class="pa-header">
+        <div class="pa-header-left">
+            <h1 class="pa-title">
+                <i class="material-icons" style="color: #e60023;">analytics</i>
+                <span data-i18n="pinterest_analytics.title">Pinterest Analytics</span>
+            </h1>
+            <p class="pa-subtitle" data-i18n="pinterest_analytics.subtitle">Track impressions, engagement, clicks, saves and more for your Pinterest accounts</p>
+        </div>
+        <div class="pa-header-right">
+            <!-- Account Selector -->
+            <div class="pa-account-selector">
+                <label data-i18n="pinterest_analytics.account">Account</label>
+                <select id="paAccountSelect" class="pa-select">
+                    <option value="" data-i18n="pinterest_analytics.select_account">Select an account</option>
+                </select>
+            </div>
+            <!-- Date Range -->
+            <div class="pa-date-range">
+                <button class="pa-range-btn active" data-days="7">7d</button>
+                <button class="pa-range-btn" data-days="30">30d</button>
+                <button class="pa-range-btn" data-days="60">60d</button>
+                <button class="pa-range-btn" data-days="90">90d</button>
+            </div>
+            <!-- Refresh -->
+            <button id="paRefreshBtn" class="pa-icon-btn" title="Refresh">
+                <i class="material-icons">refresh</i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="pa-summary-cards">
+        <div class="pa-card pa-card-impression">
+            <div class="pa-card-icon"><i class="material-icons">visibility</i></div>
+            <div class="pa-card-body">
+                <div class="pa-card-value" id="paSummaryImpression">—</div>
+                <div class="pa-card-label" data-i18n="pinterest_analytics.impressions">Impressions</div>
+            </div>
+        </div>
+        <div class="pa-card pa-card-engagement">
+            <div class="pa-card-icon"><i class="material-icons">touch_app</i></div>
+            <div class="pa-card-body">
+                <div class="pa-card-value" id="paSummaryEngagement">—</div>
+                <div class="pa-card-label" data-i18n="pinterest_analytics.engagements">Engagements</div>
+            </div>
+        </div>
+        <div class="pa-card pa-card-pinclick">
+            <div class="pa-card-icon"><i class="material-icons">ads_click</i></div>
+            <div class="pa-card-body">
+                <div class="pa-card-value" id="paSummaryPinClick">—</div>
+                <div class="pa-card-label" data-i18n="pinterest_analytics.pin_clicks">Pin Clicks</div>
+            </div>
+        </div>
+        <div class="pa-card pa-card-outbound">
+            <div class="pa-card-icon"><i class="material-icons">open_in_new</i></div>
+            <div class="pa-card-body">
+                <div class="pa-card-value" id="paSummaryOutbound">—</div>
+                <div class="pa-card-label" data-i18n="pinterest_analytics.outbound_clicks">Outbound Clicks</div>
+            </div>
+        </div>
+        <div class="pa-card pa-card-save">
+            <div class="pa-card-icon"><i class="material-icons">bookmark</i></div>
+            <div class="pa-card-body">
+                <div class="pa-card-value" id="paSummarySave">—</div>
+                <div class="pa-card-label" data-i18n="pinterest_analytics.saves">Saves</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="pa-charts-section">
+        <div class="pa-chart-row">
+            <div class="pa-chart-box">
+                <div class="pa-chart-header">
+                    <h3 data-i18n="pinterest_analytics.impressions_over_time">Impressions Over Time</h3>
+                </div>
+                <div class="pa-chart-canvas-wrap">
+                    <canvas id="paChartImpression"></canvas>
+                </div>
+            </div>
+            <div class="pa-chart-box">
+                <div class="pa-chart-header">
+                    <h3 data-i18n="pinterest_analytics.engagements_over_time">Engagements Over Time</h3>
+                </div>
+                <div class="pa-chart-canvas-wrap">
+                    <canvas id="paChartEngagement"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="pa-chart-row">
+            <div class="pa-chart-box">
+                <div class="pa-chart-header">
+                    <h3 data-i18n="pinterest_analytics.pin_clicks_over_time">Pin Clicks Over Time</h3>
+                </div>
+                <div class="pa-chart-canvas-wrap">
+                    <canvas id="paChartPinClick"></canvas>
+                </div>
+            </div>
+            <div class="pa-chart-box">
+                <div class="pa-chart-header">
+                    <h3 data-i18n="pinterest_analytics.outbound_clicks_over_time">Outbound Clicks Over Time</h3>
+                </div>
+                <div class="pa-chart-canvas-wrap">
+                    <canvas id="paChartOutbound"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="pa-chart-row pa-chart-row-single">
+            <div class="pa-chart-box">
+                <div class="pa-chart-header">
+                    <h3 data-i18n="pinterest_analytics.saves_over_time">Saves Over Time</h3>
+                </div>
+                <div class="pa-chart-canvas-wrap">
+                    <canvas id="paChartSave"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Pins Section -->
+    <div class="pa-top-pins-section">
+        <div class="pa-top-pins-header">
+            <h2 data-i18n="pinterest_analytics.top_pins">Top Pins</h2>
+            <div class="pa-metric-tabs">
+                <button class="pa-metric-tab active" data-metric="IMPRESSION" data-i18n="pinterest_analytics.by_impressions">By Impressions</button>
+                <button class="pa-metric-tab" data-metric="ENGAGEMENT" data-i18n="pinterest_analytics.by_engagements">By Engagements</button>
+                <button class="pa-metric-tab" data-metric="PIN_CLICK" data-i18n="pinterest_analytics.by_pin_clicks">By Pin Clicks</button>
+                <button class="pa-metric-tab" data-metric="OUTBOUND_CLICK" data-i18n="pinterest_analytics.by_outbound">By Outbound Clicks</button>
+                <button class="pa-metric-tab" data-metric="SAVE" data-i18n="pinterest_analytics.by_saves">By Saves</button>
+            </div>
+        </div>
+        <div id="paTopPinsGrid" class="pa-pins-grid">
+            <!-- Rendered dynamically -->
+        </div>
+        <div id="paTopPinsEmpty" class="pa-empty-state" style="display: none;">
+            <i class="material-icons">push_pin</i>
+            <p data-i18n="pinterest_analytics.no_top_pins">No top pins data available. Select an account and wait for analytics collection.</p>
+        </div>
+    </div>
+
+    <!-- Fetch History -->
+    <div class="pa-fetch-history">
+        <h2 data-i18n="pinterest_analytics.collection_history">Collection History</h2>
+        <div id="paFetchLogTable" class="pa-fetch-log-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th data-i18n="pinterest_analytics.date">Date</th>
+                        <th data-i18n="pinterest_analytics.type">Type</th>
+                        <th data-i18n="pinterest_analytics.status">Status</th>
+                        <th data-i18n="pinterest_analytics.metrics_saved">Metrics</th>
+                        <th data-i18n="pinterest_analytics.pins_saved">Pins</th>
+                        <th data-i18n="pinterest_analytics.error">Error</th>
+                    </tr>
+                </thead>
+                <tbody id="paFetchLogBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Empty State (no account selected) -->
+    <div id="paEmptyState" class="pa-empty-state pa-empty-main">
+        <i class="material-icons" style="font-size: 64px; color: #e60023; opacity: 0.3;">analytics</i>
+        <h3 data-i18n="pinterest_analytics.select_account_prompt">Select a Pinterest Account</h3>
+        <p data-i18n="pinterest_analytics.select_account_desc">Choose an account from the dropdown above to view its analytics data.</p>
+    </div>
+</div>
+
+<script src="assets/js/pages/pinterest-analytics.js"></script>

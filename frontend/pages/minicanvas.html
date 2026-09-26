@@ -1,0 +1,40 @@
+<div id="mini-canvas-container">
+  <div id="mini-canvas-editor" style="display: none"></div>
+  <div id="canvas-container">
+    <!-- Header Section -->
+    <div class="minicanvas-header">
+      <div class="header-content">
+        <div class="header-title">
+          <div class="title-icon">
+            <i class="material-icons">dashboard_customize</i>
+          </div>
+          <div class="title-text">
+            <h1 data-i18n="minicanvas.title">Template Studio</h1>
+            <p data-i18n="minicanvas.subtitle">Create and manage your visual templates</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button data-role="newTemplate" class="action-btn primary">
+            <i class="material-icons">add_circle</i>
+            <span data-i18n="minicanvas.new_template">New Template</span>
+          </button>
+          <button data-role="importTemplates" class="action-btn secondary">
+            <i class="material-icons">cloud_upload</i>
+            <span data-i18n="minicanvas.import">Import</span>
+          </button>
+          <button data-role="exportAllTemplates" class="action-btn tertiary">
+            <i class="material-icons">cloud_download</i>
+            <span data-i18n="minicanvas.export_all">Export All</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Templates Grid -->
+    <div class="templates-section">
+      <div class="templates"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/pages/minicanvas.js"></script>

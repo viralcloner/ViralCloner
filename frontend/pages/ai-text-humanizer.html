@@ -1,0 +1,119 @@
+<div class="ath-container">
+  <header class="ath-header">
+    <div class="ath-heading">
+      <div class="ath-title-icon">
+        <i class="material-icons">edit_note</i>
+      </div>
+      <div>
+        <h1 data-i18n="text_humanizer.title">AI Text Humanizer</h1>
+        <p data-i18n="text_humanizer.subtitle">Rewrite AI-generated text so it sounds clearer and more natural</p>
+      </div>
+    </div>
+    <div class="ath-status" id="ath-status" aria-live="polite">
+      <span class="ath-status-dot"></span>
+      <span data-i18n="text_humanizer.ready">Ready</span>
+    </div>
+  </header>
+
+  <main class="ath-workspace">
+    <section class="ath-editor-card">
+      <div class="ath-card-header">
+        <div class="ath-card-title">
+          <i class="material-icons">article</i>
+          <span data-i18n="text_humanizer.original_text">Original text</span>
+        </div>
+        <div class="ath-input-actions">
+          <div class="ath-score-badge ath-originality-badge" id="ath-input-originality-score" hidden>
+            <i class="material-icons">fact_check</i>
+            <span></span>
+          </div>
+          <button type="button" class="ath-icon-button" id="ath-clear" data-i18n-title="text_humanizer.clear" title="Clear">
+            <i class="material-icons">delete_outline</i>
+          </button>
+        </div>
+      </div>
+      <textarea id="ath-input" maxlength="50000" data-i18n-placeholder="text_humanizer.input_placeholder" placeholder="Paste AI-generated text here..."></textarea>
+      <div class="ath-card-footer">
+        <span id="ath-input-words">0 <span data-i18n="text_humanizer.words">words</span></span>
+        <span id="ath-input-chars">0 / 50,000</span>
+      </div>
+    </section>
+
+    <div class="ath-center-action">
+      <div class="ath-retry-option">
+        <label class="ath-check-label" for="ath-auto-retry">
+          <input type="checkbox" id="ath-auto-retry">
+          <span data-i18n="text_humanizer.auto_retry">Auto re-humanize</span>
+        </label>
+        <label class="ath-attempt-label" for="ath-max-attempts">
+          <span data-i18n="text_humanizer.max_attempts">Maximum attempts</span>
+          <select id="ath-max-attempts" disabled>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6" selected>6</option>
+          </select>
+        </label>
+        <small data-i18n="text_humanizer.retry_threshold">Stops when the originality score is below 10%</small>
+      </div>
+      <button type="button" id="ath-humanize" class="ath-primary-button" disabled>
+        <span class="ath-button-idle">
+          <i class="material-icons">auto_awesome</i>
+          <span data-i18n="text_humanizer.humanize">Humanize text</span>
+        </span>
+        <span class="ath-button-loading">
+          <span class="ath-spinner"></span>
+          <span data-i18n="text_humanizer.processing">Humanizing...</span>
+        </span>
+      </button>
+      <button type="button" id="ath-check-originality" class="ath-secondary-button" disabled>
+        <i class="material-icons">fact_check</i>
+        <span data-i18n="text_humanizer.check_originality">Check originality</span>
+      </button>
+      <p data-i18n="text_humanizer.processing_note">Long texts may take a little longer</p>
+    </div>
+
+    <section class="ath-editor-card ath-output-card">
+      <div class="ath-card-header">
+        <div class="ath-card-title">
+          <i class="material-icons">record_voice_over</i>
+          <span data-i18n="text_humanizer.humanized_text">Humanized text</span>
+        </div>
+        <div class="ath-output-actions">
+          <div class="ath-score-badge ath-originality-badge" id="ath-originality-score" hidden>
+            <i class="material-icons">fact_check</i>
+            <span></span>
+          </div>
+          <div class="ath-score-badge" id="ath-score" hidden>
+            <i class="material-icons">verified</i>
+            <span></span>
+          </div>
+          <button type="button" class="ath-copy-button" id="ath-copy" disabled>
+            <i class="material-icons">content_copy</i>
+            <span data-i18n="text_humanizer.copy">Copy</span>
+          </button>
+        </div>
+      </div>
+      <div class="ath-output-wrap">
+        <textarea id="ath-output" readonly data-i18n-placeholder="text_humanizer.output_placeholder" placeholder="Your humanized text will appear here..."></textarea>
+        <div class="ath-output-empty" id="ath-output-empty">
+          <div class="ath-empty-icon"><i class="material-icons">auto_awesome</i></div>
+          <strong data-i18n="text_humanizer.output_empty_title">Your result will appear here</strong>
+          <span data-i18n="text_humanizer.output_empty_text">Add text on the left, then select Humanize text</span>
+        </div>
+      </div>
+      <div class="ath-card-footer">
+        <span id="ath-output-words">0 <span data-i18n="text_humanizer.words">words</span></span>
+        <div class="ath-result-meta" id="ath-result-meta">
+          <span id="ath-language"></span>
+          <span id="ath-attempt-count"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="ath-message" id="ath-message" role="alert" aria-live="assertive"></div>
+</div>
+
+<script src="assets/js/pages/ai-text-humanizer.js"></script>

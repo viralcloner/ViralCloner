@@ -1,0 +1,126 @@
+<div class="ps-container">
+
+  <!-- Header & Search -->
+  <div class="ps-header">
+    <h1 data-i18n="pinterestScanner.title">Pinterest Profile Scanner</h1>
+    <p data-i18n="pinterestScanner.subtitle">Enter a Pinterest username to fetch their profile, all boards, and all pins.</p>
+    <div class="ps-search-row">
+      <input
+        id="ps-username-input"
+        class="ps-username-input"
+        type="text"
+        placeholder="e.g. recipesbylina1"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button id="ps-scan-btn" class="ps-scan-btn">
+        <span class="material-icons ps-btn-spinner" style="font-size:14px"></span>
+        <span class="ps-btn-label" data-i18n="pinterestScanner.scan_btn">Scan</span>
+      </button>
+    </div>
+    <div id="ps-error" class="ps-error" style="display:none">
+      <span class="material-icons" style="font-size:16px;flex-shrink:0">error_outline</span>
+      <span id="ps-error-text"></span>
+    </div>
+    <div id="ps-progress-wrap" class="ps-progress-wrap">
+      <div id="ps-progress-label" class="ps-progress-label" data-i18n="pinterestScanner.starting">Starting…</div>
+      <div class="ps-progress-track">
+        <div id="ps-progress-fill" class="ps-progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="ps-results" class="ps-results">
+
+    <!-- Profile card -->
+    <div id="ps-profile-card" class="ps-profile-card">
+      <div id="ps-profile-cover-wrap" class="ps-profile-cover-wrap"></div>
+      <div class="ps-profile-body">
+        <div id="ps-profile-avatar-wrap" class="ps-profile-avatar-wrap"></div>
+        <div class="ps-profile-info">
+          <div class="ps-profile-top-row">
+            <div>
+              <div id="ps-profile-name" class="ps-profile-name"></div>
+              <div id="ps-profile-handle" class="ps-profile-handle"></div>
+            </div>
+            <div class="ps-profile-actions">
+              <button id="ps-export-btn" class="ps-btn-export">
+                <span class="material-icons" style="font-size:16px">download</span>
+                <span data-i18n="pinterestScanner.export_json">Export JSON</span>
+              </button>
+              <button id="ps-new-scan-btn" class="ps-btn-export">
+                <span class="material-icons" style="font-size:16px">refresh</span>
+                <span data-i18n="pinterestScanner.new_scan">New Scan</span>
+              </button>
+            </div>
+          </div>
+          <div id="ps-profile-bio" class="ps-profile-bio"></div>
+          <div id="ps-profile-website"></div>
+          <div id="ps-profile-stats" class="ps-profile-stats"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="ps-tabs">
+      <button class="ps-tab active" data-tab="boards">
+        <span data-i18n="pinterestScanner.boards">Boards</span>
+        <span id="ps-boards-count" class="ps-tab-count">0</span>
+      </button>
+      <button class="ps-tab" data-tab="pins">
+        <span data-i18n="pinterestScanner.all_pins">All Pins</span>
+        <span id="ps-pins-count" class="ps-tab-count">0</span>
+      </button>
+    </div>
+
+    <!-- Boards panel -->
+    <div id="ps-tab-boards" class="ps-tab-panel">
+      <div id="ps-boards-grid" class="ps-boards-grid"></div>
+    </div>
+
+    <!-- Pins panel -->
+    <div id="ps-tab-pins" class="ps-tab-panel" style="display:none">
+      <div class="ps-pins-toolbar">
+        <input
+          id="ps-pins-filter"
+          class="ps-pins-filter-input"
+          type="text"
+          data-i18n-placeholder="pinterestScanner.filter_pins"
+          placeholder="Filter pins…"
+        />
+        <select id="ps-pins-sort" class="ps-sort-select">
+          <option value="default"        data-i18n="pinterestScanner.sort_default"       >Default order</option>
+          <option value="date_desc"      data-i18n="pinterestScanner.sort_date_desc"     >Newest first</option>
+          <option value="date_asc"       data-i18n="pinterestScanner.sort_date_asc"      >Oldest first</option>
+          <option value="saves_desc"     data-i18n="pinterestScanner.sort_saves_desc"    >Most saves</option>
+          <option value="saves_asc"      data-i18n="pinterestScanner.sort_saves_asc"     >Least saves</option>
+          <option value="reactions_desc" data-i18n="pinterestScanner.sort_reactions_desc">Most reactions</option>
+          <option value="reactions_asc"  data-i18n="pinterestScanner.sort_reactions_asc" >Least reactions</option>
+          <option value="repins_desc"    data-i18n="pinterestScanner.sort_repins_desc"   >Most repins</option>
+          <option value="repins_asc"     data-i18n="pinterestScanner.sort_repins_asc"    >Least repins</option>
+          <option value="shares_desc"    data-i18n="pinterestScanner.sort_shares_desc"   >Most shares</option>
+          <option value="shares_asc"     data-i18n="pinterestScanner.sort_shares_asc"    >Least shares</option>
+          <option value="comments_desc"  data-i18n="pinterestScanner.sort_comments_desc" >Most comments</option>
+          <option value="comments_asc"   data-i18n="pinterestScanner.sort_comments_asc"  >Least comments</option>
+          <option value="title_asc"      data-i18n="pinterestScanner.sort_title_asc"     >Title A→Z</option>
+          <option value="title_desc"     data-i18n="pinterestScanner.sort_title_desc"    >Title Z→A</option>
+        </select>
+        <span id="ps-pins-count-badge" class="ps-pins-count-badge"></span>
+        <span id="ps-pins-hidden-msg" class="ps-pins-hidden-msg"></span>
+      </div>
+      <div id="ps-board-filter-bar" class="ps-board-filter-bar" style="display:none">
+        <span class="material-icons" style="font-size:14px">filter_list</span>
+        <span id="ps-board-filter-name" class="ps-board-filter-name"></span>
+        <button id="ps-board-filter-clear" class="ps-board-filter-clear" title="Clear board filter">
+          <span class="material-icons" style="font-size:14px">close</span>
+        </button>
+      </div>
+      <div id="ps-pins-grid" class="ps-pins-grid"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="assets/js/pages/pinterest-scanner.js"></script>

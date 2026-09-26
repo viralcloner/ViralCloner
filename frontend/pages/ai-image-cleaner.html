@@ -1,0 +1,299 @@
+<div class="ai-cleaner-container">
+
+  <!-- Header -->
+  <div class="ai-cleaner-header">
+    <div class="header-content">
+      <div class="header-title">
+        <div class="title-icon">
+          <i class="material-icons">auto_fix_high</i>
+        </div>
+        <div class="title-text">
+          <h1 data-i18n="ai_cleaner.title">AI Image Cleaner</h1>
+          <p data-i18n="ai_cleaner.subtitle">Strip embedded metadata and safely re-encode images</p>
+          <p class="aic-disclaimer" data-i18n="ai_cleaner.disclaimer">This does not change an image's origin or guarantee AI-detector results.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="aic-import-btn" class="aic-btn aic-btn-primary">
+          <i class="material-icons">upload_file</i>
+          <span data-i18n="ai_cleaner.import_image">Import Image</span>
+        </button>
+        <button id="aic-export-btn" class="aic-btn aic-btn-success" disabled>
+          <i class="material-icons">download</i>
+          <span data-i18n="ai_cleaner.export_image">Export Cleaned</span>
+        </button>
+        <button id="aic-batch-import-btn" class="aic-btn aic-btn-secondary">
+          <i class="material-icons">folder_open</i>
+          <span data-i18n="ai_cleaner.batch_import">Batch Import</span>
+        </button>
+        <button id="aic-batch-export-btn" class="aic-btn aic-btn-secondary" disabled>
+          <i class="material-icons">folder_zip</i>
+          <span data-i18n="ai_cleaner.batch_export">Export All</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="ai-cleaner-body">
+
+    <!-- Left Panel: Options -->
+    <div class="aic-panel aic-options-panel">
+      <div class="aic-panel-header">
+        <i class="material-icons">tune</i>
+        <span data-i18n="ai_cleaner.cleaning_options">Cleaning Options</span>
+      </div>
+      <div class="aic-panel-body">
+
+        <!-- Strip Metadata -->
+        <div class="aic-option-group">
+          <div class="aic-option-row">
+            <label class="aic-toggle-label">
+              <input type="checkbox" id="opt-strip-metadata" checked>
+              <span class="aic-toggle-switch"></span>
+              <div class="aic-option-info">
+                <span class="aic-option-title" data-i18n="ai_cleaner.opt_strip_metadata">Strip All Metadata</span>
+                <span class="aic-option-desc" data-i18n="ai_cleaner.opt_strip_metadata_desc">Remove EXIF, XMP, IPTC, C2PA &amp; AI tags</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Pixel Perturbation -->
+        <div class="aic-option-group">
+          <div class="aic-option-row">
+            <label class="aic-toggle-label">
+              <input type="checkbox" id="opt-perturb-pixels" checked>
+              <span class="aic-toggle-switch"></span>
+              <div class="aic-option-info">
+                <span class="aic-option-title" data-i18n="ai_cleaner.opt_perturb">Light Pixel Resampling</span>
+                <span class="aic-option-desc" data-i18n="ai_cleaner.opt_perturb_desc">Apply subtle blur and sharpening during re-encoding</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Micro Crop -->
+        <div class="aic-option-group">
+          <div class="aic-option-row">
+            <label class="aic-toggle-label">
+              <input type="checkbox" id="opt-micro-crop" checked>
+              <span class="aic-toggle-switch"></span>
+              <div class="aic-option-info">
+                <span class="aic-option-title" data-i18n="ai_cleaner.opt_micro_crop">Micro-Crop &amp; Resize</span>
+                <span class="aic-option-desc" data-i18n="ai_cleaner.opt_micro_crop_desc">Random 1–2px crop to shift pixel grid alignment</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Humanize (camera realism) -->
+        <div class="aic-option-group">
+          <div class="aic-option-row">
+            <label class="aic-toggle-label">
+              <input type="checkbox" id="opt-humanize" checked>
+              <span class="aic-toggle-switch"></span>
+              <div class="aic-option-info">
+                <span class="aic-option-title" data-i18n="ai_cleaner.opt_humanize">Camera Realism (Humanize)</span>
+                <span class="aic-option-desc" data-i18n="ai_cleaner.opt_humanize_desc">FFT phase scramble, chromatic aberration, vignette and sensor noise. Outputs JPEG.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Inject Fake EXIF -->
+        <div class="aic-option-group">
+          <div class="aic-option-row">
+            <label class="aic-toggle-label">
+              <input type="checkbox" id="opt-inject-exif">
+              <span class="aic-toggle-switch"></span>
+              <div class="aic-option-info">
+                <span class="aic-option-title" data-i18n="ai_cleaner.opt_inject_exif">Add Simulated Device EXIF</span>
+                <span class="aic-option-desc" data-i18n="ai_cleaner.opt_inject_exif_desc">Optional compatibility metadata; not proof of camera origin</span>
+              </div>
+            </label>
+          </div>
+          <!-- Device preset selector (shown when inject EXIF is on) -->
+          <div class="aic-sub-option" id="aic-device-options" style="display:none">
+            <label class="aic-label" data-i18n="ai_cleaner.device_preset">Device Preset</label>
+            <select id="opt-device-preset" class="aic-select">
+              <option value="iphone13promax" data-i18n="ai_cleaner.preset_iphone13pm">iPhone 13 Pro Max</option>
+              <option value="iphone15pro" data-i18n="ai_cleaner.preset_iphone15pro">iPhone 15 Pro</option>
+              <option value="galaxys23ultra" data-i18n="ai_cleaner.preset_galaxy">Samsung Galaxy S23 Ultra</option>
+              <option value="pixel8pro" data-i18n="ai_cleaner.preset_pixel">Google Pixel 8 Pro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Output Format -->
+        <div class="aic-option-group">
+          <label class="aic-label" data-i18n="ai_cleaner.output_format">Output Format</label>
+          <select id="opt-format" class="aic-select">
+            <option value="" data-i18n="ai_cleaner.format_auto">Auto (preserve type)</option>
+            <option value="jpeg" data-i18n="ai_cleaner.format_jpeg">JPEG</option>
+            <option value="png" data-i18n="ai_cleaner.format_png">PNG</option>
+            <option value="webp" data-i18n="ai_cleaner.format_webp">WebP</option>
+          </select>
+        </div>
+
+        <!-- Quality -->
+        <div class="aic-option-group" id="aic-quality-group">
+          <label class="aic-label">
+            <span data-i18n="ai_cleaner.quality">Quality</span>
+            <span id="aic-quality-val">96</span>%
+          </label>
+          <input type="range" id="opt-quality" class="aic-range" min="60" max="100" value="96">
+        </div>
+
+        <!-- Process Button -->
+        <button id="aic-process-btn" class="aic-btn aic-btn-accent aic-btn-full" disabled>
+          <i class="material-icons">auto_fix_high</i>
+          <span data-i18n="ai_cleaner.process">Clean Image</span>
+        </button>
+
+        <!-- Batch Process Button -->
+        <button id="aic-batch-process-btn" class="aic-btn aic-btn-accent aic-btn-full" style="display:none" disabled>
+          <i class="material-icons">batch_prediction</i>
+          <span data-i18n="ai_cleaner.batch_process">Clean All Images</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Center Panel: Preview -->
+    <div class="aic-panel aic-preview-panel">
+      <div class="aic-panel-header">
+        <i class="material-icons">compare</i>
+        <span data-i18n="ai_cleaner.preview">Preview</span>
+        <div class="aic-preview-tabs">
+          <button class="aic-tab-btn active" id="tab-single" data-i18n="ai_cleaner.tab_single">Single</button>
+          <button class="aic-tab-btn" id="tab-batch" data-i18n="ai_cleaner.tab_batch">Batch</button>
+        </div>
+      </div>
+      <div class="aic-panel-body">
+
+        <!-- Single Image View -->
+        <div id="aic-single-view">
+          <!-- Drop Zone (shown when no image) -->
+          <div id="aic-dropzone" class="aic-dropzone">
+            <div class="aic-dropzone-inner">
+              <i class="material-icons aic-drop-icon">cloud_upload</i>
+              <p class="aic-drop-title" data-i18n="ai_cleaner.drop_title">Drop an image here</p>
+              <p class="aic-drop-subtitle" data-i18n="ai_cleaner.drop_subtitle">or click Import Image above</p>
+              <p class="aic-drop-formats">JPEG · PNG · WebP · GIF</p>
+            </div>
+          </div>
+
+          <!-- Before / After compare (shown after image is loaded) -->
+          <div id="aic-compare" class="aic-compare" style="display:none">
+            <div class="aic-compare-side">
+              <div class="aic-compare-label" data-i18n="ai_cleaner.original">Original</div>
+              <img id="aic-img-before" class="aic-preview-img" alt="Original">
+              <div class="aic-img-info" id="aic-info-before"></div>
+            </div>
+            <div class="aic-compare-divider">
+              <div class="aic-compare-arrow">
+                <i class="material-icons">arrow_forward</i>
+              </div>
+            </div>
+            <div class="aic-compare-side">
+              <div class="aic-compare-label" data-i18n="ai_cleaner.cleaned">Cleaned</div>
+              <div id="aic-img-after-placeholder" class="aic-img-placeholder">
+                <i class="material-icons">hourglass_empty</i>
+                <span data-i18n="ai_cleaner.click_to_clean">Click "Clean Image" to process</span>
+              </div>
+              <img id="aic-img-after" class="aic-preview-img" style="display:none" alt="Cleaned">
+              <div class="aic-img-info" id="aic-info-after"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Batch View -->
+        <div id="aic-batch-view" style="display:none">
+          <div id="aic-batch-list" class="aic-batch-list"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Panel: Info -->
+    <div class="aic-panel aic-info-panel">
+      <div class="aic-panel-header">
+        <i class="material-icons">info</i>
+        <span data-i18n="ai_cleaner.info_title">Metadata Info</span>
+      </div>
+      <div class="aic-panel-body">
+
+        <!-- Status badge -->
+        <div id="aic-status-area" class="aic-status-area">
+          <div id="aic-status-idle" class="aic-status-badge idle">
+            <i class="material-icons">radio_button_unchecked</i>
+            <span data-i18n="ai_cleaner.status_idle">Idle</span>
+          </div>
+          <div id="aic-status-processing" class="aic-status-badge processing" style="display:none">
+            <div class="aic-spinner"></div>
+            <span data-i18n="ai_cleaner.status_processing">Processing…</span>
+          </div>
+          <div id="aic-status-done" class="aic-status-badge done" style="display:none">
+            <i class="material-icons">check_circle</i>
+            <span data-i18n="ai_cleaner.status_done">Cleaned</span>
+          </div>
+          <div id="aic-status-error" class="aic-status-badge error" style="display:none">
+            <i class="material-icons">error</i>
+            <span id="aic-status-error-msg"></span>
+          </div>
+        </div>
+
+        <!-- Detected metadata -->
+        <div class="aic-info-section" id="aic-meta-before-section" style="display:none">
+          <div class="aic-info-section-title">
+            <i class="material-icons">label</i>
+            <span data-i18n="ai_cleaner.meta_detected">Detected Metadata</span>
+          </div>
+          <div id="aic-meta-before" class="aic-meta-list"></div>
+        </div>
+
+        <!-- After metadata -->
+        <div class="aic-info-section" id="aic-meta-after-section" style="display:none">
+          <div class="aic-info-section-title">
+            <i class="material-icons">done_all</i>
+            <span data-i18n="ai_cleaner.meta_after">After Cleaning</span>
+          </div>
+          <div id="aic-meta-after" class="aic-meta-list"></div>
+        </div>
+
+        <!-- Techniques applied -->
+        <div class="aic-info-section" id="aic-techniques-section" style="display:none">
+          <div class="aic-info-section-title">
+            <i class="material-icons">build_circle</i>
+            <span data-i18n="ai_cleaner.techniques_applied">Techniques Applied</span>
+          </div>
+          <div id="aic-techniques-list" class="aic-techniques-list"></div>
+        </div>
+
+        <!-- Batch progress -->
+        <div class="aic-info-section" id="aic-batch-progress-section" style="display:none">
+          <div class="aic-info-section-title">
+            <i class="material-icons">batch_prediction</i>
+            <span data-i18n="ai_cleaner.batch_progress">Batch Progress</span>
+          </div>
+          <div class="aic-progress-wrap">
+            <div class="aic-progress-bar">
+              <div id="aic-progress-fill" class="aic-progress-fill" style="width:0%"></div>
+            </div>
+            <span id="aic-progress-label" class="aic-progress-label">0 / 0</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /ai-cleaner-body -->
+
+  <!-- Hidden file input -->
+  <input type="file" id="aic-file-input" accept="image/*" style="display:none">
+  <input type="file" id="aic-file-input-batch" accept="image/*" multiple style="display:none">
+
+</div>
+
+<script src="assets/js/pages/ai-image-cleaner.js"></script>

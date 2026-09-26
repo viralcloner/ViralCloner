@@ -1,0 +1,422 @@
+/* ============================================
+   WP Auto Category Page
+   ============================================ */
+
+.wp-auto-category-page {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.wp-auto-category-page .page-header-row {
+    margin-bottom: 30px;
+}
+
+.wp-auto-category-page .page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+}
+
+.wp-auto-category-page .page-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Config Card */
+.wpac-config-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.wpac-config-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.wpac-config-header .material-icons {
+    font-size: 22px;
+    color: var(--accent-color);
+}
+
+.wpac-config-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.wpac-config-body {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.wpac-select {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.wpac-select:focus {
+    border-color: var(--accent-color);
+}
+
+.wpac-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    margin-bottom: 0;
+}
+
+/* Buttons */
+.wpac-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.wpac-btn .material-icons {
+    font-size: 18px;
+}
+
+.wpac-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.wpac-btn-primary {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.wpac-btn-primary:hover:not(:disabled) {
+    filter: brightness(1.1);
+}
+
+.wpac-btn-success {
+    background: #10b981;
+    color: #fff;
+}
+
+.wpac-btn-success:hover:not(:disabled) {
+    background: #059669;
+}
+
+.wpac-btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.wpac-btn-outline:hover:not(:disabled) {
+    background: var(--bg-secondary);
+}
+
+.wpac-btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+.wpac-btn-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.wpac-btn-loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: wpac-spin 0.6s linear infinite;
+    margin-left: 6px;
+}
+
+/* Status Bar */
+.wpac-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+
+.wpac-status-icon .material-icons {
+    font-size: 24px;
+    color: var(--accent-color);
+}
+
+.wpac-status-text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.wpac-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+}
+
+.wpac-progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.wpac-progress-fill {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.wpac-progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 40px;
+    text-align: right;
+}
+
+/* Posts Section */
+.wpac-posts-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.wpac-posts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.wpac-posts-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wpac-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 12px;
+    background: var(--accent-color);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.wpac-posts-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Table */
+.wpac-table-wrap {
+    overflow-x: auto;
+}
+
+.wpac-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wpac-table thead th {
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.wpac-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s;
+}
+
+.wpac-table tbody tr:hover {
+    background: var(--bg-primary);
+}
+
+.wpac-table tbody td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.wpac-post-title {
+    font-weight: 500;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Category Tags */
+.wpac-cat-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wpac-cat-uncategorized {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.wpac-cat-assigned {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+/* Status Indicators */
+.wpac-status-pending {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.wpac-status-processing {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent-color);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.wpac-status-success {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #10b981;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.wpac-status-success .material-icons {
+    font-size: 16px;
+}
+
+.wpac-status-error {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.wpac-status-error .material-icons {
+    font-size: 16px;
+}
+
+/* Spinner */
+.wpac-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: wpac-spin 0.6s linear infinite;
+}
+
+@keyframes wpac-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Results Summary */
+.wpac-results-summary {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.wpac-result-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.wpac-result-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.wpac-result-fail {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.wpac-result-stat .material-icons {
+    font-size: 20px;
+}
+
+/* Checkbox styling */
+.wpac-table input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--accent-color);
+}

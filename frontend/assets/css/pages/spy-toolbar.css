@@ -1,0 +1,697 @@
+﻿/* ========== Floating Spy Indicator ========== */
+.spy-floating-indicator {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.spy-floating-indicator.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Main indicator bar */
+.spy-indicator-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.35),
+              0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 200px;
+}
+
+.spy-indicator-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.45),
+              0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+/* Animated radar effect on icon */
+.spy-indicator-icon {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.spy-indicator-icon::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: spyRadar 2s ease-out infinite;
+}
+
+@keyframes spyRadar {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.spy-indicator-icon i {
+  font-size: 22px;
+}
+
+/* Post count badge */
+.spy-total-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.spy-total-count.pulse {
+  animation: countPulse 0.6s ease;
+}
+
+@keyframes countPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Info section */
+.spy-indicator-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.spy-indicator-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.spy-session-count {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* Expand button */
+.spy-indicator-expand {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.spy-indicator-expand:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.spy-floating-indicator.expanded .spy-indicator-expand i {
+  transform: rotate(180deg);
+}
+
+/* Expandable panel */
+.spy-indicator-panel {
+  margin-top: 8px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+              0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spy-floating-indicator.expanded .spy-indicator-panel {
+  max-height: 400px;
+  opacity: 1;
+}
+
+.spy-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.spy-stop-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.spy-stop-all-btn:hover {
+  background: #fee2e2;
+}
+
+.spy-stop-all-btn i {
+  font-size: 14px;
+}
+
+/* Sessions list */
+.spy-sessions-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.spy-session-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
+}
+
+.spy-session-item:last-child {
+  border-bottom: none;
+}
+
+.spy-session-item:hover {
+  background: #f8fafc;
+}
+
+.session-platform {
+  width: 36px;
+  height: 36px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.session-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.session-mode {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.session-time {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.session-count {
+  min-width: 36px;
+  height: 26px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.session-restore-btn,
+.session-stop-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.session-restore-btn {
+  background: #f0fdf4;
+  color: #22c55e;
+}
+
+.session-restore-btn:hover {
+  background: #dcfce7;
+}
+
+.session-stop-btn {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.session-stop-btn:hover {
+  background: #fee2e2;
+}
+
+.session-restore-btn i,
+.session-stop-btn i {
+  font-size: 18px;
+}
+
+/* Loading state for spy sessions */
+.spy-session-item.loading {
+  background: #f8fafc;
+}
+
+.spy-session-item.loading .session-time {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.session-loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Completed state for spy sessions */
+.spy-session-item.completed {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(16, 185, 129, 0.08) 100%);
+}
+
+.spy-session-item.completed .session-stop-btn {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.spy-session-item.completed .session-stop-btn:hover {
+  background: #e2e8f0;
+}
+
+/* Pages progress in floating indicator for specific pages mode */
+.session-pages-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.session-pages-progress .pages-text {
+  font-size: 10px;
+  color: #667eea;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.session-pages-progress .pages-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+  min-width: 40px;
+  max-width: 60px;
+}
+
+.session-pages-progress .pages-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Scrollbar for sessions */
+.spy-sessions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.spy-sessions-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.spy-sessions-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* ========== Spy Toolbar Actions ========== */
+.spy-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spy-toolbar-actions .btn-group {
+  display: flex;
+  gap: 6px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.spy-toolbar-actions .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+}
+
+.spy-toolbar-actions .btn:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.spy-toolbar-actions .btn i {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.spy-toolbar-actions .btn-outline-danger {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  color: #fca5a5 !important;
+}
+
+.spy-toolbar-actions .btn-outline-danger:hover {
+  background: rgba(239, 68, 68, 0.35) !important;
+  border-color: rgba(239, 68, 68, 0.7) !important;
+  color: #fff !important;
+}
+
+/* ========== Spy Session Switcher ========== */
+.spy-session-switcher {
+  position: relative;
+  margin-right: 12px;
+}
+
+.session-switcher-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.session-switcher-btn:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transform: translateY(-1px);
+}
+
+.session-switcher-btn i {
+  font-size: 18px;
+}
+
+.session-switcher-btn .dropdown-arrow {
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.spy-session-switcher.open .session-switcher-btn .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.session-switcher-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.spy-session-switcher.open .session-switcher-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.session-switcher-dropdown .session-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.session-switcher-dropdown .session-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.session-switcher-dropdown .session-item:last-child {
+  border-bottom: none;
+}
+
+.session-switcher-dropdown .session-item:hover {
+  background: #f8fafc;
+}
+
+.session-switcher-dropdown .session-item.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.session-switcher-dropdown .session-item .session-icon {
+  width: 32px;
+  height: 32px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.session-switcher-dropdown .session-item .session-details {
+  flex: 1;
+}
+
+.session-switcher-dropdown .session-item .session-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.session-switcher-dropdown .session-item .session-meta {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.session-switcher-dropdown .session-item .session-posts {
+  min-width: 32px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.session-switcher-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.session-switcher-hint i {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* ========== FB Groups Floating Indicator ========== */
+.fbg-floating-indicator {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #1877F2 0%, #0d5ed6 100%);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(24, 119, 242, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(16px) scale(0.95);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fbg-floating-indicator.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Offset above spy indicator when both are visible */
+.fbg-floating-indicator.above-spy {
+  bottom: 112px;
+}
+
+.fbg-floating-indicator:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 32px rgba(24, 119, 242, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+.fbg-float-icon {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fbg-float-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  background: #ff3b3b;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(255, 59, 59, 0.5);
+}
+
+.fbg-float-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fbg-float-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.fbg-float-sub {
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+.fbg-float-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-left: 4px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.fbg-float-close:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.fbg-float-close .material-icons {
+  font-size: 15px;
+  line-height: 1;
+}
+
+@keyframes fbgPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.fbg-floating-indicator.pulse-anim {
+  animation: fbgPulse 0.8s ease;
+}

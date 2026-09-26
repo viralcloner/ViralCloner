@@ -1,0 +1,535 @@
+﻿/* ========== ISE (Image Search Engines) Mode Styles ========== */
+.ise-container {
+  padding: 20px 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Search Panel */
+.ise-search-panel {
+  margin-bottom: 25px;
+}
+
+.ise-search-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.ise-search-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.ise-search-header i {
+  font-size: 24px;
+}
+
+.ise-search-header span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ise-search-body {
+  padding: 24px;
+}
+
+.ise-search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ise-keywords-input label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.ise-keywords-input textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ISE AI Query Generator */
+.ise-ai-generator {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.ise-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ise-ai-header:hover {
+  background: var(--bg-hover);
+}
+
+.ise-ai-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.ise-ai-header-left i {
+  color: #667eea;
+  font-size: 20px;
+}
+
+.ise-ai-chevron {
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.ise-ai-generator.expanded .ise-ai-chevron {
+  transform: rotate(180deg);
+}
+
+.ise-ai-body {
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.ise-ai-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255, 193, 7, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+.ise-ai-notice i {
+  color: #ffc107;
+  font-size: 20px;
+}
+
+.ise-ai-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.ise-ai-row:last-child {
+  margin-bottom: 0;
+}
+
+.ise-ai-field {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ise-ai-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.ise-ai-field-small {
+  flex: 0 0 100px;
+  min-width: 80px;
+}
+
+.ise-ai-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.ise-ai-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ise-ai-spinner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.ise-search-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-end;
+}
+
+.ise-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ise-option-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.ise-engine-toggles {
+  display: flex;
+  gap: 12px;
+}
+
+.ise-engine-toggle,
+.ise-safe-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+
+.ise-engine-toggle:hover,
+.ise-safe-toggle:hover {
+  background: var(--bg-hover);
+}
+
+.ise-engine-toggle input,
+.ise-safe-toggle input {
+  accent-color: #667eea;
+}
+
+.ise-search-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.ise-search-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Progress Panel */
+.ise-progress-panel {
+  margin-bottom: 25px;
+}
+
+.ise-progress-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  border: 1px solid var(--border-color);
+}
+
+/* Results Panel */
+.ise-results-panel {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.ise-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ise-results-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.ise-results-stats span:first-child,
+.ise-results-stats #iseSelectedCount {
+  font-weight: 700;
+  color: var(--accent-color);
+  font-size: 16px;
+}
+
+.ise-results-divider {
+  color: var(--border-color);
+  margin: 0 6px;
+}
+
+.ise-results-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ise-results-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+}
+
+.ise-results-actions .btn i {
+  font-size: 18px;
+}
+
+/* Results Grid */
+.ise-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  padding: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Image Card */
+.ise-image-card {
+  position: relative;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.ise-image-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.ise-image-card.selected {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+.ise-image-card .ise-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 aspect ratio */
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.ise-image-card .ise-image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.ise-image-card:hover .ise-image-wrapper img {
+  transform: scale(1.05);
+}
+
+.ise-image-card .ise-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ise-image-card:hover .ise-image-overlay,
+.ise-image-card.selected .ise-image-overlay {
+  opacity: 1;
+}
+
+.ise-image-card .ise-image-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ise-image-card .ise-image-actions button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ise-image-card .ise-btn-select {
+  background: #667eea;
+  color: white;
+}
+
+.ise-image-card.selected .ise-btn-select {
+  background: #22c55e;
+}
+
+.ise-image-card .ise-btn-select:hover {
+  transform: scale(1.1);
+}
+
+.ise-image-card .ise-btn-hide {
+  background: rgba(255, 255, 255, 0.9);
+  color: #ef4444;
+}
+
+.ise-image-card .ise-btn-hide:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.ise-image-card .ise-image-actions button i {
+  font-size: 18px;
+}
+
+/* Selection Checkbox Badge */
+.ise-image-card .ise-select-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.ise-image-card.selected .ise-select-badge {
+  background: #667eea;
+  border-color: #667eea;
+}
+
+.ise-image-card .ise-select-badge i {
+  font-size: 16px;
+  color: white;
+  opacity: 0;
+}
+
+.ise-image-card.selected .ise-select-badge i {
+  opacity: 1;
+}
+
+/* Used Image Badge - for images previously used in workflows */
+.ise-image-card.used {
+  opacity: 0.5;
+}
+
+.ise-image-card.used:hover {
+  opacity: 0.8;
+}
+
+.ise-image-card.used.selected {
+  opacity: 0.7;
+}
+
+.ise-image-card .ise-used-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(255, 165, 0, 0.9);
+  color: white;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ise-image-card .ise-used-badge i {
+  font-size: 10px;
+}
+
+/* Source Badge */
+.ise-image-card .ise-source-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  z-index: 2;
+}
+
+.ise-image-card .ise-source-badge.google {
+  background: rgba(66, 133, 244, 0.9);
+}
+
+.ise-image-card .ise-source-badge.bing {
+  background: rgba(0, 120, 215, 0.9);
+}
+
+/* Image Info */
+.ise-image-card .ise-image-info {
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty State */
+.ise-results-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.ise-results-empty i {
+  font-size: 64px;
+  color: var(--border-color);
+  margin-bottom: 16px;
+}
+
+.ise-results-empty p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* ========== Google Trends Mode Styles ========== */

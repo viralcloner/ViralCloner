@@ -1,0 +1,273 @@
+﻿/* Dark theme: Pinterest Accounts page */
+html[data-theme="dark"] .pinterest-titles-section .section-header h3 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .account-checkbox-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .account-checkbox-item:hover {
+  border-color: #e60023;
+  background: rgba(230, 0, 35, 0.1);
+}
+
+html[data-theme="dark"] .account-checkbox-item.disabled {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .account-checkbox-item .account-email-text {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .account-checkbox-item .account-boards-info {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .trends-keywords-preview {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterestTrendsOptions {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterestTrendsOptions .form-label {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .title-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-left-color: #e60023;
+}
+
+html[data-theme="dark"] .title-item.used {
+  opacity: 0.5;
+}
+
+html[data-theme="dark"] .title-text {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .title-meta {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .title-actions button {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .title-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .board-item {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .board-item input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] #pinterestAccountsTable thead {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .faq-item {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .faq-item strong {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .faq-item p {
+  color: var(--text-secondary) !important;
+}
+
+/* Dark theme: Settings cards and info boxes */
+html[data-theme="dark"] .setting-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .setting-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+html[data-theme="dark"] .setting-card-header {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .setting-info h5 {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .setting-info p {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .setting-card-body {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .setting-card .setting-card-body {
+  background: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] .setting-card-body div[style*="background: #f8f9fa"],
+html[data-theme="dark"] .setting-card-body > div {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+html[data-theme="dark"] .form-group label {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pexels-info-box {
+  background: rgba(76, 175, 80, 0.1) !important;
+  border-left-color: #4CAF50 !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pexels-info-box p,
+html[data-theme="dark"] .pexels-info-box li {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pexels-info-box a {
+  color: #4CAF50 !important;
+}
+
+html[data-theme="dark"] .openai-profile-info {
+  background: rgba(16, 163, 127, 0.1) !important;
+  border-left-color: #10a37f !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .openai-profile-info p,
+html[data-theme="dark"] .openai-profile-info li,
+html[data-theme="dark"] .openai-profile-info ol,
+html[data-theme="dark"] .openai-profile-info ul {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .openai-profile-info a {
+  color: #10a37f !important;
+}
+
+html[data-theme="dark"] .default-profile-selector {
+  background: rgba(114, 137, 218, 0.1) !important;
+  border-left-color: #7289da !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .default-profile-selector p,
+html[data-theme="dark"] .default-profile-selector li,
+html[data-theme="dark"] .default-profile-selector label {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] #pinterestAccountsTable th {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterestAccountsTable td {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterestAccountsTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Dark theme: Pinterest page - form elements */
+html[data-theme="dark"] .pinterest-titles-section label,
+html[data-theme="dark"] .pinterest-titles-section .form-label {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pinterest-titles-section .form-text,
+html[data-theme="dark"] .pinterest-titles-section .text-muted,
+html[data-theme="dark"] .pinterest-titles-section small {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .pinterest-titles-section .form-check-label {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pinterest-titles-section code {
+  background: rgba(255, 255, 255, 0.1);
+  color: #90cdf4;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+html[data-theme="dark"] .pinterest-titles-section .card-header h5 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pinterest-titles-section .alert-info {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pinterest-titles-section .alert-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pinterest-titles-section .text-info {
+  color: #60a5fa !important;
+}
+
+html[data-theme="dark"] .pinterest-accounts-section h3 {
+  color: var(--text-primary);
+}
+
+/* Dark theme: Pinterest page - section headers */
+html[data-theme="dark"] #pinterest-accounts-container .section-header {
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterest-accounts-container .section-header h3 {
+  color: #000 !important;
+}
+
+html[data-theme="dark"] .boards-table tbody td strong {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .account-email-cell strong {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] #pinterestAccountsTable {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] #pinterestAccountsTable thead {
+  background: linear-gradient(135deg, #c41e3a 0%, #a01828 100%);
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+

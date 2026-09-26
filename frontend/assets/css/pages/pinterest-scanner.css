@@ -1,0 +1,893 @@
+/* ============================================================
+   Pinterest Scanner page styles
+   ============================================================ */
+
+.ps-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ps-floating-tooltip {
+  position: fixed;
+  z-index: 2147483647;
+  max-width: 240px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(17, 24, 39, 0.97);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  pointer-events: none;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ── Header / search row ──────────────────────────────────── */
+.ps-header {
+  margin-bottom: 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ps-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--text-primary);
+}
+
+.ps-header p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+}
+
+.ps-search-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  align-items: center;
+}
+
+.ps-username-input {
+  flex: 1;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 50px;
+  font-size: 14px;
+  outline: none;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+
+.ps-username-input:focus {
+  border-color: #e60023;
+  background: var(--bg-primary);
+}
+
+.ps-scan-btn {
+  padding: 11px 22px;
+  background: #e60023;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, opacity 0.2s;
+  white-space: nowrap;
+}
+
+.ps-scan-btn:hover { background: #c0001d; }
+.ps-scan-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.ps-scan-btn .ps-btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ps-spin 0.7s linear infinite;
+  display: none;
+}
+
+.ps-scan-btn.scanning .ps-btn-spinner { display: block; }
+.ps-scan-btn.scanning .ps-btn-label { display: none; }
+
+@keyframes ps-spin { to { transform: rotate(360deg); } }
+
+/* ── Error banner ─────────────────────────────────────────── */
+.ps-error {
+  display: none;
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: #fff0f1;
+  border: 1px solid #ffc9cc;
+  border-radius: 10px;
+  color: #c0001d;
+  font-size: 13px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  max-width: 520px;
+}
+
+html[data-theme="dark"] .ps-error {
+  background: rgba(230, 0, 35, 0.12);
+  border-color: rgba(230, 0, 35, 0.3);
+  color: #ff6680;
+}
+
+/* ── Progress bar ─────────────────────────────────────────── */
+.ps-progress-wrap {
+  display: none;
+  margin-top: 18px;
+  max-width: 520px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.ps-progress-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.ps-progress-label strong {
+  color: var(--text-primary);
+}
+
+.ps-progress-track {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.ps-progress-fill {
+  height: 100%;
+  background: #e60023;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* ── Results ─────────────────────────────────────────────── */
+.ps-results {
+  display: none;
+  animation: ps-fadeIn 0.3s ease;
+}
+
+@keyframes ps-fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Profile card ─────────────────────────────────────────── */
+.ps-profile-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.ps-profile-cover-wrap { position: relative; }
+
+.ps-profile-cover {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.ps-profile-cover-placeholder {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, #e60023 0%, #ff6b6b 50%, #ffb347 100%);
+}
+
+.ps-profile-body {
+  padding: 0 28px 24px;
+  position: relative;
+}
+
+.ps-profile-avatar-wrap {
+  position: absolute;
+  top: -46px;
+  left: 28px;
+}
+
+.ps-profile-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--bg-primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: var(--border-color);
+  display: block;
+}
+
+.ps-profile-avatar-placeholder {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #e60023;
+  border: 4px solid var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ps-profile-info { padding-top: 56px; }
+
+.ps-profile-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ps-profile-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.ps-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #e60023;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ps-profile-handle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 2px 0 12px;
+}
+
+.ps-profile-bio {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.ps-profile-website {
+  margin-bottom: 16px;
+}
+
+.ps-profile-website a {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e60023;
+  text-decoration: none;
+}
+.ps-profile-website a:hover { text-decoration: underline; }
+
+/* Stats: stacked groups of bordered pills */
+.ps-profile-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.ps-stat-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: visible;
+}
+
+.ps-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  position: relative;
+  min-width: 65px;
+  cursor: help;
+}
+
+.ps-stat + .ps-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.ps-stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.ps-stat-accent { color: #e60023; }
+
+.ps-stat-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.ps-stat[data-tooltip]:hover,
+.ps-stat[data-tooltip]:focus-within,
+.ps-pin-stat[data-tooltip]:hover,
+.ps-pin-stat[data-tooltip]:focus-within,
+.ps-board-meta[data-tooltip]:hover,
+.ps-board-meta[data-tooltip]:focus-within {
+  z-index: 3;
+}
+
+.ps-stat[data-tooltip]:hover::after,
+.ps-stat[data-tooltip]:focus-within::after,
+.ps-pin-stat[data-tooltip]:hover::after,
+.ps-pin-stat[data-tooltip]:focus-within::after,
+.ps-board-meta[data-tooltip]:hover::after,
+.ps-board-meta[data-tooltip]:focus-within::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  min-width: 140px;
+  max-width: 230px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: rgba(17, 24, 39, 0.96);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 600;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.24);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ps-stat[data-tooltip]:hover::before,
+.ps-stat[data-tooltip]:focus-within::before,
+.ps-pin-stat[data-tooltip]:hover::before,
+.ps-pin-stat[data-tooltip]:focus-within::before,
+.ps-board-meta[data-tooltip]:hover::before,
+.ps-board-meta[data-tooltip]:focus-within::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(17, 24, 39, 0.96);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ps-profile-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ps-btn-export {
+  padding: 9px 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.ps-btn-export:hover {
+  border-color: #e60023;
+  background: var(--bg-primary);
+}
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.ps-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-secondary);
+  border-radius: 50px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 24px;
+  width: fit-content;
+}
+
+.ps-tab {
+  padding: 8px 22px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-tab.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+
+.ps-tab-count {
+  background: #e60023;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 50px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.ps-tab-panel { animation: ps-fadeIn 0.2s ease; }
+
+/* ── Boards grid ─────────────────────────────────────────── */
+.ps-boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.ps-board-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.ps-board-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* 2×2 mosaic thumb (like PHP reference) */
+.ps-board-thumb {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  height: 130px;
+  overflow: hidden;
+  background: var(--border-color);
+}
+
+.ps-board-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ps-board-thumb-single img {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.ps-board-thumb-placeholder {
+  grid-column: span 2;
+  grid-row: span 2;
+  background: linear-gradient(135deg, #e60023 0%, #ad081b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+}
+
+.ps-board-thumb-placeholder .material-icons { font-size: 36px; }
+
+.ps-board-info { padding: 10px 12px; }
+
+.ps-board-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+
+.ps-board-meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  position: relative;
+  width: fit-content;
+  cursor: help;
+}
+
+/* ── Pins toolbar ─────────────────────────────────────────── */
+.ps-pins-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.ps-pins-filter-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 9px 14px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 50px;
+  font-size: 13px;
+  outline: none;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+
+.ps-pins-filter-input:focus {
+  border-color: #e60023;
+  background: var(--bg-primary);
+}
+
+.ps-sort-select {
+  padding: 8px 14px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 50px;
+  font-size: 13px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  white-space: nowrap;
+}
+
+.ps-sort-select:focus { border-color: #e60023; }
+
+.ps-pins-count-badge {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.ps-pins-hidden-msg {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ── Board filter bar ─────────────────────────────────────── */
+.ps-board-filter-bar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 7px 14px;
+  background: var(--bg-primary);
+  border: 1.5px solid #e60023;
+  border-radius: 50px;
+  width: fit-content;
+  color: #e60023;
+}
+
+.ps-board-filter-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e60023;
+}
+
+.ps-board-filter-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  color: #e60023;
+  line-height: 1;
+}
+
+/* ── Pins masonry grid ────────────────────────────────────── */
+.ps-pins-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+@media (max-width: 1200px) { .ps-pins-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 900px)  { .ps-pins-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px)  { .ps-pins-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 380px)  { .ps-pins-grid { grid-template-columns: 1fr; } }
+
+/* ── Pin card ─────────────────────────────────────────────── */
+.ps-pin-card {
+  background: var(--bg-primary);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.ps-pin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.16);
+}
+
+/* Image wrapper with absolute overlays */
+.ps-pin-img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--border-color);
+}
+
+.ps-pin-img {
+  width: 100%;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.ps-pin-card:hover .ps-pin-img { transform: scale(1.04); }
+
+/* Top overlay: board chip + open button */
+.ps-pin-overlay-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 8px 8px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.ps-pin-board-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(6px);
+  border-radius: 50px;
+  padding: 4px 10px 4px 7px;
+  max-width: calc(100% - 38px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: auto;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.ps-pin-board-chip svg {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.ps-pin-open-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.88);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.22);
+  pointer-events: auto;
+  transition: background 0.15s ease;
+}
+
+.ps-pin-open-btn:hover { background: #fff; }
+
+.ps-pin-open-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Bottom overlay: stats + ago + link */
+.ps-pin-overlay-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 36px 9px 9px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.78));
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ps-pin-overlay-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ps-pin-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.ps-pin-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+  position: relative;
+  cursor: help;
+}
+
+.ps-pin-stat svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.ps-pin-ago {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+
+.ps-pin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(200,0,30,0.85);
+  border-radius: 50px;
+  padding: 3px 10px 3px 7px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.ps-pin-link:hover { background: rgba(200,0,30,1); }
+
+.ps-pin-link svg {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+/* Card body: badges + title + desc */
+.ps-pin-body { padding: 9px 11px 11px; }
+
+.ps-pin-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 5px;
+}
+
+.ps-pin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 50px;
+  line-height: 1.6;
+}
+
+.ps-pin-badge-story  { background: #fff0f6; color: #c2185b; }
+.ps-pin-badge-video  { background: #f0f4ff; color: #1565c0; }
+.ps-pin-badge-recipe { background: #f0fff4; color: #2e7d32; }
+.ps-pin-badge-pages  { background: #f3f0ff; color: #6a1b9a; }
+.ps-pin-badge-cat    { background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border-color); }
+
+.ps-pin-title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ps-pin-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── No-results state ────────────────────────────────────── */
+.ps-empty-pins {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ── Dark theme extras ───────────────────────────────────── */
+html[data-theme="dark"] .ps-board-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+html[data-theme="dark"] .ps-pin-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+html[data-theme="dark"] .ps-profile-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+html[data-theme="dark"] .ps-pin-badge-story  { background: rgba(194,24,91,0.2);  color: #f48fb1; }
+html[data-theme="dark"] .ps-pin-badge-video  { background: rgba(21,101,192,0.2); color: #90caf9; }
+html[data-theme="dark"] .ps-pin-badge-recipe { background: rgba(46,125,50,0.2);  color: #a5d6a7; }
+html[data-theme="dark"] .ps-pin-badge-pages  { background: rgba(106,27,154,0.2); color: #ce93d8; }

@@ -1,0 +1,964 @@
+/* ============================================
+   ViralCloner - Ocean Blue Template
+   ============================================
+   
+   FULL visual identity override.
+   Changes colors, typography, shapes, radii,
+   shadows, spacing, gradients, and every
+   component's look — making the app feel like
+   a completely different product.
+   
+   Design language: soft, rounded, airy.
+   Font: Poppins (loaded below).
+   Accent: ocean sky-blue / teal.
+   Shapes: pill buttons, large card radii,
+           frosted-glass surfaces.
+   
+   ============================================ */
+
+/* Load Poppins — a rounder, friendlier typeface */
+
+
+/* ============================================
+   1. COLOR PALETTE
+   ============================================ */
+:root {
+  /* --- Brand / Accent → Ocean Blue --- */
+  --vc-brand-primary: #0ea5e9;
+  --vc-brand-primary-hover: #0284c7;
+  --vc-brand-primary-dark: #0369a1;
+  --vc-brand-primary-light: #38bdf8;
+  --vc-brand-primary-bg: rgba(14, 165, 233, 0.08);
+  --vc-brand-primary-bg-hover: rgba(14, 165, 233, 0.16);
+  --vc-brand-secondary: #06b6d4;
+  --vc-brand-secondary-hover: #0891b2;
+  --vc-brand-secondary-light: #22d3ee;
+  --vc-brand-secondary-bg: rgba(6, 182, 212, 0.08);
+
+  /* --- Sidebar → Teal --- */
+  --vc-sidebar-active: #0d9488;
+  --vc-sidebar-active-hover: rgba(13, 148, 136, 0.55);
+  --vc-sidebar-active-subtle: rgba(13, 148, 136, 0.08);
+
+  /* --- Backgrounds (cooler off-white) --- */
+  --vc-bg-secondary: #f1f5f9;
+  --vc-bg-tertiary: #e2e8f0;
+  --vc-bg-surface: #f8fafc;
+  --vc-bg-surface-alt: #f1f5f9;
+
+  /* --- Borders (softer, blue-tinted) --- */
+  --vc-border-color: #e2e8f0;
+  --vc-border-color-light: #e2e8f0;
+  --vc-border-color-lighter: #f1f5f9;
+  --vc-border-color-card: #e2e8f0;
+  --vc-border-color-brand-focus: #7dd3fc;
+
+  /* --- Semantic accents --- */
+  --vc-confirm-accent: #2563eb;
+  --vc-confirm-accent-hover: #1d4ed8;
+  --vc-confirm-accent-dark: #1e40af;
+  --vc-prompt-accent: #0ea5e9;
+  --vc-prompt-accent-hover: #0284c7;
+  --vc-prompt-accent-dark: #0369a1;
+  --vc-prompt-bar: linear-gradient(90deg, #0ea5e9, #14b8a6, #06b6d4);
+
+  /* --- Extended palette --- */
+  --vc-indigo-200: #bae6fd;
+  --vc-indigo-dark-hover: rgba(14, 165, 233, 0.35);
+  --vc-indigo-dark-bg: rgba(14, 165, 233, 0.08);
+
+  /* --- Focus rings --- */
+  --vc-focus-ring: 0 0 0 3px rgba(14, 165, 233, 0.2);
+  --vc-focus-ring-brand: 0 0 0 3px rgba(14, 165, 233, 0.18);
+  --vc-focus-ring-blue: 0 0 0 3px rgba(14, 165, 233, 0.12);
+}
+
+/* ============================================
+   2. TYPOGRAPHY
+   ============================================ */
+:root {
+  --vc-font-sans: "Poppins", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+
+  /* Slightly adjusted sizes for Poppins readability */
+  --vc-text-2xs: 10px;
+  --vc-text-xs: 11px;
+  --vc-text-sm: 12px;
+  --vc-text-base: 13px;
+  --vc-text-md: 14px;
+  --vc-text-lg: 15px;
+  --vc-text-xl: 17px;
+  --vc-text-2xl: 20px;
+  --vc-text-3xl: 24px;
+  --vc-text-4xl: 28px;
+  --vc-text-5xl: 34px;
+
+  /* Lighter heading weights — Poppins 600 instead of 700 */
+  --vc-weight-bold: 600;
+
+  /* More generous line-height for the rounder font */
+  --vc-leading-normal: 1.6;
+  --vc-leading-relaxed: 1.75;
+
+  /* Wider letter-spacing for headers */
+  --vc-tracking-wide: 0.3px;
+  --vc-tracking-widest: 0.8px;
+}
+
+/* ============================================
+   3. SPACING
+   ============================================ */
+:root {
+  --vc-page-padding: 32px;
+}
+
+/* ============================================
+   4. BORDER RADIUS — much rounder everywhere
+   ============================================ */
+:root {
+  --vc-radius-xs: 4px;
+  --vc-radius-sm: 6px;
+  --vc-radius-base: 8px;
+  --vc-radius-md: 10px;
+  --vc-radius-lg: 14px;
+  --vc-radius-xl: 16px;
+  --vc-radius-2xl: 20px;
+  --vc-radius-3xl: 24px;
+  --vc-radius-pill: 999px;
+  --vc-radius-button: 999px;
+  --vc-radius-circle: 50%;
+
+  /* Component-specific radii */
+  --vc-radius-card: 20px;
+  --vc-radius-modal: 24px;
+  --vc-radius-input: 12px;
+  --vc-radius-dropdown: 16px;
+  --vc-radius-badge: 999px;
+  --vc-radius-avatar: 50%;
+  --vc-radius-sidebar-item: 10px;
+  --vc-radius-icon-tile: 16px;
+  --vc-radius-notification: 16px;
+}
+
+/* ============================================
+   5. SHADOWS — colored, softer, more spread
+   ============================================ */
+:root {
+  --vc-shadow-xs: 0 1px 3px rgba(14, 165, 233, 0.04);
+  --vc-shadow-sm: 0 2px 6px rgba(14, 165, 233, 0.06);
+  --vc-shadow-md: 0 4px 12px rgba(14, 165, 233, 0.08);
+  --vc-shadow-lg: 0 8px 24px rgba(14, 165, 233, 0.10);
+  --vc-shadow-xl: 0 16px 40px rgba(14, 165, 233, 0.12);
+  --vc-shadow-2xl: 0 24px 64px rgba(14, 165, 233, 0.16);
+  --vc-shadow-inner: inset 0 2px 4px rgba(14, 165, 233, 0.06);
+
+  --vc-shadow-brand: 0 4px 18px rgba(14, 165, 233, 0.22);
+  --vc-shadow-brand-lg: 0 8px 30px rgba(14, 165, 233, 0.30);
+
+  --vc-shadow-card: 0 2px 12px rgba(14, 165, 233, 0.05);
+  --vc-shadow-card-hover: 0 8px 30px rgba(14, 165, 233, 0.10);
+  --vc-shadow-dropdown: 0 12px 48px rgba(14, 165, 233, 0.14), 0 0 0 1px rgba(14, 165, 233, 0.06);
+  --vc-shadow-modal: 0 24px 64px rgba(14, 165, 233, 0.18), 0 0 0 1px rgba(14, 165, 233, 0.05);
+  --vc-shadow-tooltip: 0 8px 24px rgba(14, 165, 233, 0.14);
+  --vc-shadow-notification: 0 6px 20px rgba(14, 165, 233, 0.12);
+  --vc-shadow-settings-sidebar: 6px 0 30px rgba(14, 165, 233, 0.05);
+  --vc-shadow-table: 0 4px 24px rgba(14, 165, 233, 0.05);
+}
+
+/* ============================================
+   6. GRADIENTS — sky / teal palette
+   ============================================ */
+:root {
+  --vc-grad-brand: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+  --vc-grad-brand-hover: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  --vc-grad-brand-dark: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  --vc-grad-brand-vertical: linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%);
+  --vc-grad-indigo: linear-gradient(135deg, #06b6d4 0%, #38bdf8 100%);
+  --vc-grad-indigo-deep: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
+  --vc-grad-confirm: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  --vc-grad-confirm-hover: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+
+  --vc-grad-blue: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  --vc-grad-blue-deep: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  --vc-grad-blue-bar: linear-gradient(90deg, #0ea5e9, #0284c7);
+  --vc-grad-blue-action: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+
+  --vc-grad-light-purple: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-grad-light-purple-faint: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-grad-light-purple-fill: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  --vc-grad-light-surface: linear-gradient(160deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-grad-light-surface-vertical: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-grad-dark-surface: linear-gradient(135deg, #0c4a6e 0%, #0e2d4a 100%);
+  --vc-grad-modal-bg: linear-gradient(160deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-grad-sidebar-light: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-grad-settings-group-header: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+/* ============================================
+   7. TRANSITIONS — slightly slower, smoother
+   ============================================ */
+:root {
+  --vc-duration-fast: 0.18s;
+  --vc-duration-base: 0.25s;
+  --vc-duration-moderate: 0.35s;
+  --vc-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --vc-transition-fast: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --vc-transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --vc-transition-moderate: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Bigger hover lifts */
+  --vc-hover-lift-sm: -2px;
+  --vc-hover-lift-md: -4px;
+}
+
+/* ============================================
+   9. SCROLLBAR — wider, rounded, tinted
+   ============================================ */
+:root {
+  --vc-scrollbar-width: 8px;
+  --vc-scrollbar-width-thin: 5px;
+  --vc-scrollbar-track: rgba(14, 165, 233, 0.03);
+  --vc-scrollbar-thumb: rgba(14, 165, 233, 0.18);
+  --vc-scrollbar-thumb-hover: rgba(14, 165, 233, 0.32);
+}
+
+/* ============================================
+   10. DARK THEME TOKEN OVERRIDES
+   ============================================ */
+html[data-theme="dark"] {
+  /* Backgrounds (deep navy) */
+  --vc-bg-primary: #0a1628;
+  --vc-bg-secondary: #0e1f3a;
+  --vc-bg-tertiary: #132844;
+  --vc-bg-surface: #122240;
+  --vc-bg-surface-alt: rgba(14, 165, 233, 0.04);
+  --vc-bg-elevated: #163052;
+
+  /* Borders (blue-tinted) */
+  --vc-border-color: #1e3a5f;
+  --vc-border-color-light: #162d4d;
+  --vc-border-color-lighter: #1e3a5f;
+  --vc-border-color-card: #1e3a5f;
+
+  /* Accent */
+  --vc-confirm-accent: #67e8f9;
+
+  /* Shadows (deeper blue) */
+  --vc-shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --vc-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.3);
+  --vc-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --vc-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --vc-shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --vc-shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --vc-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --vc-shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --vc-shadow-dropdown: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(14, 165, 233, 0.1);
+  --vc-shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(14, 165, 233, 0.08);
+  --vc-shadow-tooltip: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --vc-shadow-notification: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --vc-shadow-settings-sidebar: 6px 0 30px rgba(0, 0, 0, 0.35);
+  --vc-shadow-table: 0 4px 24px rgba(0, 0, 0, 0.3);
+
+  /* Scrollbar */
+  --vc-scrollbar-track: rgba(14, 165, 233, 0.04);
+  --vc-scrollbar-thumb: rgba(14, 165, 233, 0.2);
+  --vc-scrollbar-thumb-hover: rgba(14, 165, 233, 0.35);
+
+  /* Gradients */
+  --vc-grad-light-surface: linear-gradient(160deg, #0e1f3a 0%, #132844 100%);
+  --vc-grad-light-surface-vertical: linear-gradient(180deg, #0e1f3a 0%, #132844 100%);
+  --vc-grad-light-purple: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(14, 165, 233, 0.22) 100%);
+  --vc-grad-light-purple-faint: linear-gradient(135deg, rgba(14, 165, 233, 0.06) 0%, rgba(6, 182, 212, 0.04) 100%);
+  --vc-grad-light-purple-fill: linear-gradient(135deg, rgba(14, 165, 233, 0.16) 0%, rgba(56, 189, 248, 0.12) 100%);
+  --vc-grad-modal-bg: #0e1f3a;
+  --vc-grad-settings-group-header: rgba(14, 165, 233, 0.06);
+  --vc-grad-sidebar-light: linear-gradient(180deg, #0e1f3a 0%, #0a1628 100%);
+
+  /* Extended palette */
+  --vc-indigo-200: rgba(14, 165, 233, 0.3);
+  --vc-indigo-dark-hover: rgba(14, 165, 233, 0.3);
+  --vc-indigo-dark-bg: rgba(14, 165, 233, 0.06);
+  --vc-gray-50: rgba(14, 165, 233, 0.03);
+  --vc-gray-100: rgba(14, 165, 233, 0.06);
+}
+
+
+/* ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+   B. COMPONENT STYLES — full reshape
+   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ */
+
+/* ============================================
+   12. TITLEBAR
+   ============================================ */
+:root {
+  --vc-titlebar-bg: #075985;
+  --vc-titlebar-height: 38px;
+  --vc-titlebar-btn-hover-bg: rgba(175, 175, 175, 0.12);
+}
+
+/* ============================================
+   13. SIDEBAR
+   ============================================ */
+:root {
+  --vc-sidebar-width: 220px;
+  --vc-sidebar-width-collapsed: 64px;
+  --vc-sidebar-border: #e0f2fe;
+  --vc-sidebar-logo-margin-top: 18px;
+}
+
+/* ============================================
+   14. SIDEBAR MENU ITEMS
+   ============================================ */
+:root {
+  --vc-menu-item-font-size: var(--vc-text-md);
+  --vc-menu-item-padding: 10px 14px;
+  --vc-menu-item-margin: 3px 10px;
+  --vc-menu-item-radius: var(--vc-radius-sidebar-item);
+  --vc-menu-category-hover-bg: rgba(14, 165, 233, 0.06);
+  --vc-menu-category-open-color: #0d9488;
+}
+
+/* ============================================
+   15. SIDEBAR USER PROFILE
+   ============================================ */
+:root {
+  --vc-profile-avatar-radius: 50%;
+  --vc-profile-avatar-bg: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --vc-profile-section-padding: 12px 14px;
+  --vc-profile-section-margin: 16px 12px 12px;
+  --vc-profile-section-radius: 16px;
+  --vc-profile-hover-border: #7dd3fc;
+  --vc-profile-hover-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+/* ============================================
+   16. SIDEBAR FOOTER
+   ============================================ */
+:root {
+  --vc-sidebar-footer-padding: 16px 10px;
+  --vc-sidebar-logout-bg: #e11d48;
+  --vc-sidebar-logout-hover-bg: #be123c;
+  --vc-sidebar-logout-radius: 10px;
+  --vc-sidebar-footer-btn-radius: 10px;
+  --vc-sidebar-footer-btn-hover-bg: rgba(14, 165, 233, 0.08);
+  --vc-sidebar-footer-btn-hover-color: #0ea5e9;
+}
+
+/* ============================================
+   17. SIDEBAR COLLAPSED STATE
+   ============================================ */
+:root {
+  --vc-sidebar-toggle-size: 26px;
+  --vc-sidebar-toggle-hover-bg: #0d9488;
+  --vc-sidebar-toggle-hover-shadow: 0 4px 16px rgba(13, 148, 136, 0.35);
+  --vc-sidebar-toggle-icon-size: 15px;
+}
+
+/* ============================================
+   18. CONTENT AREA
+   ============================================ */
+:root {
+  --vc-content-bg: #f8fafc;
+  --vc-content-border-left: 1px solid #e0f2fe;
+}
+
+/* ============================================
+   19. CARDS — bigger radii, colored shadow
+   ============================================ */
+:root {
+  --vc-card-border: 1px solid #e0f2fe;
+  --vc-card-radius: 20px;
+  --vc-card-shadow: 0 2px 12px rgba(14, 165, 233, 0.05);
+  --vc-card-shadow-hover: 0 10px 36px rgba(14, 165, 233, 0.10);
+  --vc-card-hover-lift: -4px;
+  --vc-card-header-bg: #f0f9ff;
+  --vc-card-header-border: 1px solid #e0f2fe;
+  --vc-card-header-padding: 22px 26px;
+  --vc-card-header-icon-color: #0ea5e9;
+  --vc-card-body-padding: 20px;
+}
+
+/* ============================================
+   20. STAT TILES
+   ============================================ */
+:root {
+  --vc-stat-tile-border: 1px solid #e0f2fe;
+  --vc-stat-tile-radius: 20px;
+  --vc-stat-tile-padding: 28px;
+  --vc-stat-tile-gap: 18px;
+  --vc-stat-tile-shadow: 0 2px 12px rgba(14, 165, 233, 0.05);
+  --vc-stat-tile-hover-lift: -4px;
+  --vc-stat-tile-hover-shadow: 0 10px 36px rgba(14, 165, 233, 0.10);
+  --vc-stat-tile-icon-size: 52px;
+  --vc-stat-tile-icon-radius: 16px;
+  --vc-stat-tile-icon-font-size: 26px;
+  --vc-stat-tile-value-size: 36px;
+  --vc-stat-tile-value-weight: 600;
+  --vc-stat-icon-automations: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --vc-stat-icon-templates: linear-gradient(135deg, #ec4899, #f43f5e);
+  --vc-stat-icon-spy: linear-gradient(135deg, #14b8a6, #0d9488);
+  --vc-stat-icon-workflows: linear-gradient(135deg, #10b981, #34d399);
+}
+
+/* ============================================
+   20b. ACTION TILES — pill, softer
+   ============================================ */
+:root {
+  --vc-action-tile-radius: 18px;
+  --vc-action-tile-hover-bg: #f0f9ff;
+  --vc-action-tile-hover-border: #0ea5e9;
+  --vc-action-tile-icon-size: 44px;
+  --vc-action-tile-icon-radius: 14px;
+  --vc-action-tile-icon-purple: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --vc-action-tile-icon-blue: linear-gradient(135deg, #0ea5e9, #38bdf8);
+}
+html[data-theme="dark"] {
+  --vc-action-tile-hover-bg: rgba(14, 165, 233, 0.10);
+  --vc-action-tile-hover-border: rgba(14, 165, 233, 0.4);
+}
+
+/* ============================================
+   20c. NOTES
+   ============================================ */
+:root {
+  --vc-note-radius: 18px;
+  --vc-note-action-btn-bg: rgba(14, 165, 233, 0.06);
+}
+
+/* ============================================
+   20d. NOTE MODAL
+   ============================================ */
+:root {
+  --vc-note-modal-radius: 20px;
+  --vc-note-modal-shadow: 0 24px 64px rgba(14, 165, 233, 0.16);
+  --vc-note-modal-input-radius: 12px;
+  --vc-note-modal-input-focus-border: #0ea5e9;
+  --vc-note-modal-input-focus-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+  --vc-note-modal-cancel-bg: #f0f9ff;
+  --vc-note-modal-save-bg: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --vc-note-modal-save-hover-shadow: 0 6px 18px rgba(14, 165, 233, 0.35);
+  --vc-note-color-active-border: #0ea5e9;
+  --vc-note-color-active-shadow: 0 0 0 2px rgba(14, 165, 233, 0.25);
+}
+
+/* ============================================
+   20e. COMMUNITY POST ITEMS
+   ============================================ */
+:root {
+  --vc-community-item-radius: 14px;
+  --vc-community-item-hover-bg: #f0f9ff;
+  --vc-community-item-hover-border: #0ea5e9;
+}
+html[data-theme="dark"] {
+  --vc-community-item-hover-bg: rgba(14, 165, 233, 0.10);
+  --vc-community-item-hover-border: rgba(14, 165, 233, 0.4);
+}
+
+/* ============================================
+   20f. ACTIVITY FEED
+   ============================================ */
+:root {
+  --vc-activity-item-radius: 14px;
+  --vc-activity-icon-automation-bg: #e0f2fe;
+  --vc-activity-icon-automation-color: #0284c7;
+  --vc-activity-icon-spy-bg: #ccfbf1;
+  --vc-activity-icon-spy-color: #0d9488;
+  --vc-activity-icon-workflow-bg: #e0f2fe;
+  --vc-activity-icon-workflow-color: #0ea5e9;
+}
+html[data-theme="dark"] {
+  --vc-activity-icon-automation-bg: rgba(14, 165, 233, 0.12);
+  --vc-activity-icon-spy-bg: rgba(13, 148, 136, 0.12);
+  --vc-activity-icon-workflow-bg: rgba(14, 165, 233, 0.12);
+}
+
+/* ============================================
+   20g. ARTICLE ITEMS
+   ============================================ */
+:root {
+  --vc-article-item-radius: 14px;
+  --vc-article-tag-bg: #e0f2fe;
+  --vc-article-tag-color: #0284c7;
+  --vc-article-cover-gradient: linear-gradient(135deg, #0ea5e9, #0891b2);
+  --vc-article-new-badge-bg: linear-gradient(135deg, #14b8a6, #0d9488);
+}
+html[data-theme="dark"] {
+  --vc-article-tag-bg: rgba(14, 165, 233, 0.12);
+  --vc-article-tag-color: #7dd3fc;
+}
+
+/* ============================================
+   20h. CONVERSATION ITEMS
+   ============================================ */
+:root {
+  --vc-conv-item-radius: 14px;
+  --vc-conv-item-hover-bg: #f0f9ff;
+  --vc-conv-item-hover-border: #0ea5e9;
+  --vc-conv-item-unread-bg: #f0f9ff;
+  --vc-conv-item-unread-border: #7dd3fc;
+  --vc-conv-unread-badge-bg: #0ea5e9;
+  --vc-conv-group-avatar-bg: linear-gradient(135deg, #0ea5e9, #06b6d4);
+}
+html[data-theme="dark"] {
+  --vc-conv-item-hover-bg: rgba(14, 165, 233, 0.10);
+  --vc-conv-item-hover-border: rgba(14, 165, 233, 0.4);
+  --vc-conv-item-unread-bg: rgba(14, 165, 233, 0.08);
+  --vc-conv-item-unread-border: rgba(125, 211, 252, 0.3);
+}
+
+/* ============================================
+   20i. STATUS INDICATORS
+   ============================================ */
+:root {
+  --vc-status-row-radius: 14px;
+}
+
+/* ============================================
+   20j. REFRESH BUTTON
+   ============================================ */
+:root {
+  --vc-refresh-btn-hover-border: #0ea5e9;
+}
+html[data-theme="dark"] {
+  --vc-refresh-btn-hover-bg: rgba(14, 165, 233, 0.10);
+  --vc-refresh-btn-hover-border: rgba(14, 165, 233, 0.4);
+}
+
+/* ============================================
+   21. TABLES — rounder, cleaner borders
+   ============================================ */
+:root {
+  --vc-table-border: 1px solid #e0f2fe;
+  --vc-table-radius: 20px;
+  --vc-table-shadow: 0 4px 24px rgba(14, 165, 233, 0.05);
+  --vc-table-header-bg: linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-table-header-letter-spacing: 0.6px;
+  --vc-table-header-border-bottom: 2px solid #bae6fd;
+  --vc-table-header-padding: 14px 22px;
+  --vc-table-cell-padding: 14px 22px;
+  --vc-table-row-hover-bg: #f0f9ff;
+}
+html[data-theme="dark"] {
+  --vc-table-row-hover-bg: rgba(14, 165, 233, 0.05);
+  --vc-table-header-bg: rgba(14, 165, 233, 0.06);
+  --vc-table-header-border-bottom: 2px solid rgba(14, 165, 233, 0.15);
+}
+
+/* ============================================
+   22. BUTTONS — pill-shaped, ocean accents
+   ============================================ */
+:root {
+  /* Primary */
+  --vc-btn-primary-bg: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+  --vc-btn-primary-bg-hover: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  --vc-btn-primary-shadow: 0 4px 18px rgba(14, 165, 233, 0.25);
+  --vc-btn-primary-shadow-hover: 0 8px 28px rgba(14, 165, 233, 0.35);
+  --vc-btn-primary-padding: 12px 24px;
+  --vc-btn-primary-radius: 999px;
+
+  /* Success */
+  --vc-btn-success-shadow: 0 4px 18px rgba(16, 185, 129, 0.25);
+
+  /* Confirm */
+  --vc-btn-confirm-bg: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  --vc-btn-confirm-bg-hover: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  --vc-btn-confirm-shadow: 0 4px 18px rgba(37, 99, 235, 0.3);
+  --vc-btn-confirm-padding: 11px 28px;
+  --vc-btn-confirm-radius: 999px;
+  --vc-btn-confirm-font-size: var(--vc-text-md);
+
+  /* Cancel */
+  --vc-btn-cancel-bg: #f0f9ff;
+  --vc-btn-cancel-color: #475569;
+  --vc-btn-cancel-border: 1px solid #bae6fd;
+  --vc-btn-cancel-bg-hover: #e0f2fe;
+  --vc-btn-cancel-padding: 11px 28px;
+  --vc-btn-cancel-radius: 999px;
+
+  /* Legacy .btn-one */
+  --vc-btn-one-bg: #0d9488;
+  --vc-btn-one-padding: 10px 28px;
+  --vc-btn-one-radius: 999px;
+  --vc-btn-one-primary: #0284c7;
+  --vc-btn-one-success: #059669;
+  --vc-btn-one-danger: #dc2626;
+
+  /* Action buttons */
+  --vc-btn-action-size: 38px;
+  --vc-btn-action-radius: 12px;
+  --vc-btn-action-bg: #f0f9ff;
+  --vc-btn-action-hover-shadow: 0 4px 16px rgba(14, 165, 233, 0.12);
+}
+html[data-theme="dark"] {
+  --vc-btn-cancel-bg: #163052;
+  --vc-btn-cancel-border: 1px solid #1e3a5f;
+  --vc-btn-cancel-bg-hover: #1e3a5f;
+  --vc-btn-action-bg: rgba(14, 165, 233, 0.08);
+}
+
+/* ============================================
+   23. FORM INPUTS — larger radius, softer
+   ============================================ */
+:root {
+  --vc-input-border: 2px solid #e0f2fe;
+  --vc-input-border-color: #e0f2fe;
+  --vc-input-radius: 12px;
+  --vc-input-padding: 12px 16px;
+  --vc-input-focus-border: #0ea5e9;
+  --vc-input-focus-ring: 0 0 0 3px rgba(14, 165, 233, 0.12);
+  --vc-input-focus-brand-border: #7dd3fc;
+  --vc-input-focus-brand-ring: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  --vc-checkbox-border: 1px solid #bae6fd;
+}
+html[data-theme="dark"] {
+  --vc-input-border: 2px solid #1e3a5f;
+}
+
+/* ============================================
+   24. CUSTOM SELECT / SEARCHABLE DROPDOWN
+   ============================================ */
+:root {
+  --vc-select-trigger-border: 2px solid #e0f2fe;
+  --vc-select-trigger-radius: 12px;
+  --vc-select-trigger-padding: 12px 16px;
+  --vc-select-trigger-hover-border: #7dd3fc;
+  --vc-select-trigger-open-border: #0ea5e9;
+  --vc-select-trigger-open-ring: 0 0 0 3px rgba(14, 165, 233, 0.12);
+  --vc-select-dropdown-border: 2px solid #e0f2fe;
+  --vc-select-dropdown-radius: 16px;
+  --vc-select-dropdown-shadow: 0 12px 48px rgba(14, 165, 233, 0.14);
+  --vc-select-search-bg: #f0f9ff;
+  --vc-select-option-hover-bg: #f0f9ff;
+  --vc-select-option-selected-bg: #e0f2fe;
+  --vc-select-option-selected-color: #0ea5e9;
+  --vc-select-thumbnail-radius: 10px;
+}
+
+/* ============================================
+   25. BADGES — fully pill-shaped
+   ============================================ */
+:root {
+  --vc-badge-radius: 999px;
+  --vc-badge-padding: 4px 14px;
+  --vc-badge-text-transform: none;
+  --vc-badge-font-weight: 500;
+  --vc-badge-success-bg: #d1fae5;
+  --vc-badge-success-color: #059669;
+  --vc-badge-danger-bg: #fee2e2;
+  --vc-badge-danger-color: #dc2626;
+  --vc-badge-warning-bg: #fef3c7;
+  --vc-badge-warning-color: #d97706;
+  --vc-badge-info-bg: #e0f2fe;
+  --vc-badge-info-color: #0284c7;
+}
+html[data-theme="dark"] {
+  --vc-badge-success-bg: rgba(16, 185, 129, 0.12);
+  --vc-badge-success-color: #34d399;
+  --vc-badge-danger-bg: rgba(239, 68, 68, 0.12);
+  --vc-badge-danger-color: #f87171;
+  --vc-badge-warning-bg: rgba(245, 158, 11, 0.12);
+  --vc-badge-warning-color: #fbbf24;
+  --vc-badge-info-bg: rgba(14, 165, 233, 0.12);
+  --vc-badge-info-color: #38bdf8;
+}
+
+/* ============================================
+   26. DROPDOWNS — rounder, ocean shadow
+   ============================================ */
+:root {
+  --vc-dropdown-border: 1px solid #e0f2fe;
+  --vc-dropdown-radius: 16px;
+  --vc-dropdown-shadow: 0 12px 48px rgba(14, 165, 233, 0.14), 0 0 0 1px rgba(14, 165, 233, 0.06);
+  --vc-dropdown-item-padding: 11px 16px;
+  --vc-dropdown-item-hover-bg: #f0f9ff;
+  --vc-dropdown-primary-color: #0ea5e9;
+  --vc-dropdown-primary-hover-bg: #e0f2fe;
+  --vc-dropdown-success-hover-bg: #d1fae5;
+  --vc-dropdown-warning-hover-bg: #fef3c7;
+  --vc-dropdown-danger-hover-bg: #fee2e2;
+  --vc-dropdown-info-color: #06b6d4;
+  --vc-dropdown-info-hover-bg: #e0f2fe;
+}
+html[data-theme="dark"] {
+  --vc-dropdown-border: 1px solid #1e3a5f;
+  --vc-dropdown-item-hover-bg: rgba(14, 165, 233, 0.08);
+  --vc-dropdown-primary-color: #38bdf8;
+  --vc-dropdown-primary-hover-bg: rgba(14, 165, 233, 0.12);
+  --vc-dropdown-info-color: #22d3ee;
+  --vc-dropdown-info-hover-bg: rgba(14, 165, 233, 0.12);
+}
+
+/* ============================================
+   27. MODALS — rounder, ocean chrome
+   ============================================ */
+:root {
+  --vc-modal-overlay-bg: rgba(7, 89, 133, 0.35);
+  --vc-modal-overlay-blur: 6px;
+
+  /* Confirm */
+  --vc-confirm-radius: 24px;
+  --vc-confirm-padding: 36px;
+  --vc-confirm-shadow: 0 24px 64px rgba(14, 165, 233, 0.18);
+  --vc-confirm-icon-size: 52px;
+  --vc-confirm-icon-radius: 16px;
+  --vc-confirm-icon-bg: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  --vc-confirm-icon-color: #0ea5e9;
+
+  /* Dynamic */
+  --vc-dynamic-radius: 24px;
+  --vc-dynamic-shadow: 0 24px 64px rgba(14, 165, 233, 0.18);
+  --vc-dynamic-header-bg: linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-dynamic-header-border: 1px solid #bae6fd;
+  --vc-dynamic-header-padding: 22px 28px;
+  --vc-dynamic-close-radius: 10px;
+
+  /* Prompt */
+  --vc-prompt-radius: 24px;
+  --vc-prompt-shadow: 0 24px 64px rgba(14, 165, 233, 0.18);
+  --vc-prompt-bar-gradient: linear-gradient(90deg, #0ea5e9, #14b8a6, #06b6d4);
+  --vc-prompt-close-radius: 10px;
+  --vc-prompt-close-bg: rgba(14, 165, 233, 0.06);
+  --vc-prompt-close-hover-bg: rgba(14, 165, 233, 0.12);
+  --vc-prompt-submit-bg: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --vc-prompt-submit-hover-bg: linear-gradient(135deg, #0284c7, #0ea5e9);
+  --vc-prompt-submit-shadow: 0 4px 18px rgba(14, 165, 233, 0.30);
+  --vc-prompt-submit-radius: 999px;
+
+  /* Text Editor */
+  --vc-text-editor-radius: 24px;
+  --vc-text-editor-header-bg: linear-gradient(135deg, #0ea5e9, #38bdf8);
+}
+html[data-theme="dark"] {
+  --vc-modal-overlay-bg: rgba(0, 0, 0, 0.6);
+  --vc-confirm-icon-bg: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(6, 182, 212, 0.15));
+  --vc-dynamic-header-bg: linear-gradient(160deg, #0e1f3a 0%, #132844 100%);
+  --vc-dynamic-header-border: 1px solid #1e3a5f;
+}
+
+/* ============================================
+   28. NOTIFICATIONS — rounder pill
+   ============================================ */
+:root {
+  --vc-notification-radius: 16px;
+  --vc-notification-shadow: 0 8px 30px rgba(14, 165, 233, 0.12);
+  --vc-notification-padding: 16px 22px;
+  --vc-notification-icon-radius: 12px;
+}
+html[data-theme="dark"] {
+  --vc-notification-border: 1px solid #1e3a5f;
+}
+
+/* ============================================
+   29. LOADING — ocean spinners
+   ============================================ */
+:root {
+  --vc-loading-solid-bg: linear-gradient(160deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-loading-card-radius: 20px;
+  --vc-loading-card-padding: 36px 44px;
+  --vc-loading-card-shadow: 0 12px 48px rgba(14, 165, 233, 0.12);
+  --vc-loading-card-border: 1px solid #e0f2fe;
+  --vc-loading-progress-bg: rgba(14, 165, 233, 0.08);
+  --vc-loading-progress-fill: linear-gradient(90deg, #0ea5e9, #06b6d4);
+  --vc-spinner-ring-1: #0ea5e9;
+  --vc-spinner-ring-2: #06b6d4;
+  --vc-spinner-ring-3: #38bdf8;
+}
+html[data-theme="dark"] {
+  --vc-loading-solid-bg: linear-gradient(160deg, #0a1628 0%, #0e1f3a 100%);
+  --vc-loading-progress-bg: rgba(14, 165, 233, 0.12);
+}
+
+/* ============================================
+   30. TOOLTIPS — rounder, ocean tint
+   ============================================ */
+:root {
+  --vc-tooltip-bg: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+  --vc-tooltip-radius: 16px;
+  --vc-tooltip-padding: 18px 20px;
+  --vc-tooltip-shadow: 0 20px 48px rgba(7, 89, 133, 0.4), 0 0 0 1px rgba(14, 165, 233, 0.15);
+  --vc-tooltip-title-color: #38bdf8;
+  --vc-tooltip-code-bg: #0a1628;
+  --vc-tooltip-code-color: #67e8f9;
+  --vc-tooltip-code-border: 1px solid rgba(14, 165, 233, 0.15);
+  --vc-tooltip-close-bg: rgba(14, 165, 233, 0.15);
+  --vc-tooltip-close-hover-bg: rgba(239, 68, 68, 0.3);
+  --vc-sidebar-tooltip-bg: #075985;
+  --vc-sidebar-tooltip-radius: 8px;
+  --vc-sidebar-tooltip-shadow: 0 4px 16px rgba(7, 89, 133, 0.3);
+}
+
+/* ============================================
+   31. SETTINGS PAGE — rounder, ocean chrome
+   ============================================ */
+:root {
+  --vc-settings-bg: linear-gradient(160deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-settings-sidebar-width: 290px;
+  --vc-settings-sidebar-shadow: 6px 0 30px rgba(14, 165, 233, 0.05);
+  --vc-settings-content-padding: 36px 44px;
+
+  /* Menu groups */
+  --vc-settings-group-bg: #f0f9ff;
+  --vc-settings-group-border: 1px solid #e0f2fe;
+  --vc-settings-group-radius: 16px;
+  --vc-settings-group-header-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-settings-group-header-icon-color: #0ea5e9;
+  --vc-settings-group-header-border: 1px solid #bae6fd;
+
+  /* Menu items */
+  --vc-settings-item-color: #475569;
+  --vc-settings-item-radius: 10px;
+  --vc-settings-item-padding: 11px 14px;
+  --vc-settings-item-active-bg: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  --vc-settings-item-active-color: #0ea5e9;
+  --vc-settings-item-active-bar: linear-gradient(180deg, #0ea5e9 0%, #38bdf8 100%);
+  --vc-settings-item-icon-active-color: #0ea5e9;
+  --vc-settings-item-hover-color: #0ea5e9;
+
+  /* Section header */
+  --vc-settings-header-radius: 20px;
+  --vc-settings-header-padding: 28px;
+  --vc-settings-header-shadow: 0 4px 24px rgba(14, 165, 233, 0.05);
+  --vc-settings-header-icon-size: 52px;
+  --vc-settings-header-icon-radius: 16px;
+  --vc-settings-header-icon-bg: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  --vc-settings-header-title-size: 22px;
+  --vc-settings-header-icon-color: #0ea5e9;
+  --vc-settings-header-desc-color: #64748b;
+
+  /* Automation settings */
+  --vc-settings-auto-header-accent: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
+  --vc-settings-auto-title-icon-color: #0ea5e9;
+
+  /* Tables */
+  --vc-settings-table-radius: 20px;
+  --vc-settings-table-shadow: 0 4px 24px rgba(14, 165, 233, 0.05);
+  --vc-settings-table-border: 1px solid #e0f2fe;
+  --vc-settings-table-header-bg: linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-settings-table-header-border: 2px solid #bae6fd;
+  --vc-settings-table-hover-bg: #f0f9ff;
+  --vc-settings-table-body-border: 1px solid #f0f9ff;
+
+  /* Setting cards */
+  --vc-setting-card-border: 1px solid #e0f2fe;
+  --vc-setting-card-radius: 20px;
+  --vc-setting-card-shadow: 0 4px 24px rgba(14, 165, 233, 0.05);
+  --vc-setting-card-hover-shadow: 0 10px 36px rgba(14, 165, 233, 0.10);
+  --vc-setting-card-hover-border: #bae6fd;
+  --vc-setting-card-header-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-setting-card-header-border: 1px solid #bae6fd;
+  --vc-setting-icon-bg: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  --vc-setting-icon-shadow: 0 4px 18px rgba(14, 165, 233, 0.25);
+  --vc-setting-icon-radius: 14px;
+
+  /* Form elements */
+  --vc-settings-form-input-border: 2px solid #e0f2fe;
+  --vc-settings-form-input-radius: 12px;
+  --vc-settings-form-input-hover-border: #7dd3fc;
+  --vc-settings-form-input-focus-border: #0ea5e9;
+  --vc-settings-form-input-focus-shadow: 0 0 0 4px rgba(14, 165, 233, 0.10);
+
+  /* Toggle */
+  --vc-toggle-track-bg: #e0f2fe;
+  --vc-toggle-checked-bg: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  --vc-toggle-focus-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+
+  /* Info boxes */
+  --vc-info-box-radius: 16px;
+  --vc-info-box-purple-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --vc-info-box-purple-border: 4px solid #0ea5e9;
+  --vc-info-box-purple-icon: #0ea5e9;
+
+  /* Sub-header */
+  --vc-settings-sub-header-border: 2px solid #f0f9ff;
+  --vc-settings-sub-header-icon-bg: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  --vc-settings-sub-header-icon-shadow: 0 4px 18px rgba(14, 165, 233, 0.25);
+
+  /* Form row */
+  --vc-settings-form-row-border: 1px solid #f0f9ff;
+
+  /* Empty state */
+  --vc-settings-empty-bg: linear-gradient(160deg, #ffffff 0%, #f0f9ff 100%);
+  --vc-settings-empty-border: 2px dashed #bae6fd;
+  --vc-settings-empty-radius: 20px;
+
+  /* Pinterest */
+  --vc-pinterest-select-border: 2px solid #e0f2fe;
+  --vc-pinterest-select-bg: #fff;
+  --vc-pinterest-clear-border: 1px solid #e0f2fe;
+  --vc-pinterest-clear-hover-bg: #f0f9ff;
+  --vc-pinterest-clear-hover-border: #bae6fd;
+
+  --vc-settings-mobile-border: 1px solid #e0f2fe;
+}
+html[data-theme="dark"] {
+  --vc-settings-bg: linear-gradient(160deg, #0a1628 0%, #0e1f3a 100%);
+  --vc-settings-group-bg: rgba(14, 165, 233, 0.04);
+  --vc-settings-group-border: 1px solid #1e3a5f;
+  --vc-settings-group-header-border: 1px solid #1e3a5f;
+  --vc-settings-group-header-icon-color: #38bdf8;
+  --vc-settings-item-active-bg: linear-gradient(135deg, rgba(14, 165, 233, 0.16) 0%, rgba(56, 189, 248, 0.12) 100%);
+  --vc-settings-item-active-color: #7dd3fc;
+  --vc-settings-item-icon-active-color: #38bdf8;
+  --vc-settings-item-hover-color: #38bdf8;
+  --vc-settings-header-icon-color: #38bdf8;
+  --vc-settings-auto-title-icon-color: #38bdf8;
+  --vc-settings-table-border: 1px solid #1e3a5f;
+  --vc-settings-table-header-bg: rgba(14, 165, 233, 0.06);
+  --vc-settings-table-header-border: 2px solid rgba(14, 165, 233, 0.12);
+  --vc-settings-table-hover-bg: rgba(14, 165, 233, 0.06);
+  --vc-settings-table-body-border: 1px solid #1e3a5f;
+  --vc-setting-card-border: 1px solid #1e3a5f;
+  --vc-setting-card-hover-border: rgba(14, 165, 233, 0.3);
+  --vc-setting-card-header-bg: rgba(14, 165, 233, 0.08);
+  --vc-setting-card-header-border: 1px solid rgba(14, 165, 233, 0.15);
+  --vc-setting-icon-shadow: 0 4px 18px rgba(14, 165, 233, 0.35);
+  --vc-settings-form-input-border: 2px solid #1e3a5f;
+  --vc-settings-form-input-hover-border: rgba(14, 165, 233, 0.3);
+  --vc-settings-form-input-focus-border: #38bdf8;
+  --vc-settings-form-input-focus-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+  --vc-toggle-track-bg: #1e3a5f;
+  --vc-toggle-focus-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+  --vc-info-box-purple-bg: rgba(14, 165, 233, 0.08);
+  --vc-settings-sub-header-border: 2px solid #1e3a5f;
+  --vc-settings-form-row-border: 1px solid #1e3a5f;
+  --vc-settings-empty-bg: rgba(14, 165, 233, 0.03);
+  --vc-settings-empty-border: 2px dashed #1e3a5f;
+  --vc-pinterest-select-border: 2px solid #1e3a5f;
+  --vc-pinterest-select-bg: #0a1628;
+  --vc-pinterest-clear-border: 1px solid #1e3a5f;
+  --vc-pinterest-clear-hover-bg: rgba(14, 165, 233, 0.06);
+  --vc-pinterest-clear-hover-border: rgba(14, 165, 233, 0.2);
+  --vc-settings-mobile-border: 1px solid #1e3a5f;
+}
+
+/* ============================================
+   32. DRAWFLOW / NODE EDITOR
+   ============================================ */
+:root {
+  --vc-node-bg: #0c4a6e;
+  --vc-node-accent: #38bdf8;
+  --vc-node-accent-light: #7dd3fc;
+  --vc-node-label-bg: #0c4a6e;
+  --vc-node-label-radius: 999px;
+  --vc-node-label-padding: 4px 10px;
+  --vc-node-info-icon-bg: rgba(14, 165, 233, 0.3);
+  --vc-node-info-icon-hover-bg: rgba(14, 165, 233, 0.7);
+  --vc-node-selected-bg: #075985;
+  --vc-node-selected-border: rgba(56, 189, 248, 0.8);
+  --vc-node-delete-bg: #0a1628;
+  --vc-node-delete-hover-bg: #38bdf8;
+  --vc-node-delete-hover-color: #0a1628;
+  --vc-node-line-color: #14b8a6;
+  --vc-node-line-selected: #0ea5e9;
+
+  --vc-automation-sidebar-bg: linear-gradient(180deg, #0e1f3a 0%, #0a1628 100%);
+  --vc-node-group-title-color: #38bdf8;
+  --vc-node-item-hover-border: rgba(56, 189, 248, 0.4);
+  --vc-sidebar-inputs-back-bg: #f0f9ff;
+  --vc-sidebar-inputs-back-border: 1px solid #e0f2fe;
+}
+html[data-theme="dark"] {
+  --vc-node-accent: #38bdf8;
+  --vc-node-accent-light: #7dd3fc;
+  --vc-sidebar-inputs-back-bg: rgba(14, 165, 233, 0.06);
+  --vc-sidebar-inputs-back-border: 1px solid #1e3a5f;
+}

@@ -1,0 +1,547 @@
+﻿/* Spy Start */
+
+.library-manager {
+  position: fixed;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff89;
+  backdrop-filter: blur(10px);
+  padding: 5%;
+  overflow-y: auto;
+  display: none;
+  z-index: 10;
+}
+
+.library-manager .top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.library-manager .top-bar .spinner-border {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+
+.library-manager .top-bar .libraryGenerationState {
+  color: #fff;
+}
+
+.library-manager .top-bar .libraryGenerationState span {
+  color: #fff;
+}
+
+.posts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.post-element {
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #c5c5c579;
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+}
+
+/* Post card badges (viral growth, used, duplicate, category) */
+.post-element .viral-growth-badge,
+.post-element .used-badge,
+.post-element .duplicate-badge,
+.post-element .category-badge {
+  position: absolute;
+  z-index: 10;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.post-element .viral-growth-badge {
+  top: 68px;
+  left: 8px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  animation: viral-pulse 2s ease-in-out infinite;
+}
+
+@keyframes viral-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+  }
+}
+
+.post-element .viral-growth-badge .viral-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.post-element .viral-growth-badge .viral-header i {
+  font-size: 16px;
+}
+
+.post-element .viral-growth-badge .viral-percent {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.post-element .viral-growth-badge .viral-stats {
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.post-element .used-badge {
+  top: 8px;
+  right: 8px;
+  background: rgba(100, 116, 139, 0.9);
+  color: #fff;
+}
+
+.post-element .used-badge i {
+  font-size: 14px;
+}
+
+.post-element .duplicate-badge {
+  top: 8px;
+  left: 8px;
+  background: rgba(245, 158, 11, 0.9);
+  color: #fff;
+}
+
+.post-element .duplicate-badge i {
+  font-size: 14px;
+}
+
+.post-element .category-badge {
+  bottom: auto;
+  top: 58px;
+  left: 8px;
+  background: rgba(79, 70, 229, 0.9);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 10px;
+}
+
+.post-element .category-badge img {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.post-element .category-badge i {
+  font-size: 12px;
+}
+
+/* Adjust viral-growth-badge position when there's also a duplicate badge */
+.post-element .duplicate-badge + .viral-growth-badge {
+  top: 68px;
+}
+
+/* Responsive layout for post elements */
+@media (max-width: 576px) {
+  .posts-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+.posts-container .post-element .post-image {
+  width: 100%;
+}
+
+.posts-container .post-element .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.posts-container .post-element .head .name {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  font-size: 13px;
+}
+
+.posts-container .post-element .head .name .page-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #888;
+}
+
+.posts-container .post-element .head .name .page-followers {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #1876f2;
+  font-weight: 500;
+}
+
+.posts-container .post-element .head .name .page-followers i {
+  color: #1876f2;
+}
+
+.posts-container .post-element .head .sm {
+  width: 20px;
+  height: 20px;
+}
+
+.posts-container .post-element .head .profile {
+  border-radius: 50%;
+  width: 40px;
+  margin-right: 8px;
+}
+
+.posts-container .post-element .head .left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.posts-container .post-element .post-statistics {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 10px;
+}
+
+.posts-container .post-element .post-statistics .stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.posts-container .post-element .post-statistics .stat i {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.posts-container .post-element .post-statistics .stat span {
+  font-size: 12px;
+}
+
+.posts-container .post-element .post-statistics .stat:nth-child(1) {
+  color: #1876f2;
+}
+
+.posts-container .post-element .post-statistics .stat:nth-child(2) {
+  color: #697a9b;
+}
+
+.posts-container .post-element .post-statistics .stat:nth-child(3) {
+  color: #4267b2;
+}
+
+.posts-container .post-element .post-statistics .stat.virality {
+  color: #ff6b35;
+}
+
+.posts-container .post-element .post-statistics .stat.virality i {
+  color: #ff6b35;
+}
+
+.posts-container .post-element .post-content {
+  border: none;
+  cursor: default;
+  outline: none;
+  resize: none;
+  max-height: 120px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* Spy Card Actions */
+.spy-card-actions {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spy-card-actions-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spy-select-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #555;
+  user-select: none;
+}
+
+.spy-select-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #4f46e5;
+}
+
+.spy-card-dropdown {
+  position: relative;
+}
+
+.spy-dropdown-toggle {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.spy-dropdown-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.spy-dropdown-toggle i {
+  font-size: 20px;
+  color: #666;
+}
+
+.spy-dropdown-menu {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+}
+
+.spy-card-dropdown:hover .spy-dropdown-menu,
+.spy-card-dropdown:focus-within .spy-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.spy-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  transition: background-color 0.15s;
+  text-align: left;
+}
+
+.spy-dropdown-item:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.spy-dropdown-item:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.spy-dropdown-item:only-child {
+  border-radius: 8px;
+}
+
+.spy-dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.spy-dropdown-item i {
+  font-size: 18px;
+  color: #666;
+}
+
+.spy-dropdown-item[data-role="banPage"] i {
+  color: #f59e0b;
+}
+
+.spy-dropdown-item[data-role="hidePost"] i {
+  color: #6b7280;
+}
+
+/* Add to Library Button - Professional Style */
+.spy-add-library-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.spy-add-library-btn:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  transform: translateY(-1px);
+}
+
+.spy-add-library-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+}
+
+.spy-add-library-btn:disabled,
+.spy-add-library-btn.processing {
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.spy-add-library-btn:disabled:hover,
+.spy-add-library-btn.processing:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.spy-add-library-btn i {
+  font-size: 18px;
+}
+
+/* Pages Categories Section */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.page-category-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.page-category-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.page-category-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-category-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.page-category-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.page-category-icon .material-icons {
+  font-size: 22px;
+  color: var(--text-secondary);
+}
+
+.page-category-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-category-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-category-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.page-category-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.page-category-actions .btn {
+  padding: 4px 10px;
+}
+
+.page-category-actions .btn .material-icons {
+  font-size: 16px;
+}
+
+/* Spy end */

@@ -1,0 +1,112 @@
+<div class="gwr-container">
+
+  <!-- Header -->
+  <div class="gwr-header">
+    <div class="gwr-header-content">
+      <div class="gwr-header-title">
+        <div class="gwr-title-icon">
+          <i class="material-icons">water_drop</i>
+        </div>
+        <div class="gwr-title-text">
+          <h1 data-i18n="gwr.title">Gemini Watermark Remover</h1>
+          <p data-i18n="gwr.subtitle">Remove the invisible Gemini (SynthID) watermark from images</p>
+        </div>
+      </div>
+      <div class="gwr-header-actions">
+        <button id="gwr-import-btn" class="gwr-btn gwr-btn-primary">
+          <i class="material-icons">upload_file</i>
+          <span data-i18n="gwr.import_image">Import Image</span>
+        </button>
+        <button id="gwr-batch-import-btn" class="gwr-btn gwr-btn-secondary">
+          <i class="material-icons">folder_open</i>
+          <span data-i18n="gwr.batch_import">Batch Import</span>
+        </button>
+        <button id="gwr-export-btn" class="gwr-btn gwr-btn-success" disabled>
+          <i class="material-icons">download</i>
+          <span data-i18n="gwr.export_image">Export Cleaned</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="gwr-body">
+
+    <!-- Single image view -->
+    <div id="gwr-single-view">
+      <!-- Drop zone -->
+      <div id="gwr-dropzone" class="gwr-dropzone">
+        <div class="gwr-dropzone-inner">
+          <i class="material-icons gwr-drop-icon">cloud_upload</i>
+          <p class="gwr-drop-title" data-i18n="gwr.drop_title">Drop an image here</p>
+          <p class="gwr-drop-subtitle" data-i18n="gwr.drop_subtitle">or click Import Image above</p>
+          <p class="gwr-drop-formats">JPEG &middot; PNG &middot; WebP</p>
+        </div>
+      </div>
+
+      <!-- Compare -->
+      <div id="gwr-compare" class="gwr-compare" style="display:none">
+        <div class="gwr-compare-side">
+          <div class="gwr-compare-label" data-i18n="gwr.original">Original</div>
+          <img id="gwr-img-before" class="gwr-preview-img" alt="Original">
+          <div class="gwr-img-info" id="gwr-info-before"></div>
+        </div>
+        <div class="gwr-compare-divider">
+          <div class="gwr-compare-arrow">
+            <i class="material-icons">arrow_forward</i>
+          </div>
+        </div>
+        <div class="gwr-compare-side">
+          <div class="gwr-compare-label" data-i18n="gwr.cleaned">Cleaned</div>
+          <div id="gwr-img-after-placeholder" class="gwr-img-placeholder">
+            <i class="material-icons">hourglass_empty</i>
+            <span data-i18n="gwr.click_to_remove">Click "Remove Watermark" to process</span>
+          </div>
+          <img id="gwr-img-after" class="gwr-preview-img" style="display:none" alt="Cleaned">
+          <div class="gwr-img-info" id="gwr-info-after"></div>
+        </div>
+      </div>
+
+      <!-- Action row -->
+      <div class="gwr-action-row" id="gwr-action-row" style="display:none">
+        <div id="gwr-status" class="gwr-status gwr-status-idle">
+          <i class="material-icons">radio_button_unchecked</i>
+          <span data-i18n="gwr.status_idle">Ready</span>
+        </div>
+        <button id="gwr-process-btn" class="gwr-btn gwr-btn-accent" disabled>
+          <i class="material-icons">water_drop</i>
+          <span data-i18n="gwr.remove_watermark">Remove Watermark</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Batch view -->
+    <div id="gwr-batch-view" style="display:none">
+      <div class="gwr-batch-toolbar">
+        <button id="gwr-batch-process-btn" class="gwr-btn gwr-btn-accent" disabled>
+          <i class="material-icons">batch_prediction</i>
+          <span data-i18n="gwr.batch_process">Remove All Watermarks</span>
+        </button>
+        <button id="gwr-batch-export-btn" class="gwr-btn gwr-btn-success" disabled>
+          <i class="material-icons">folder_zip</i>
+          <span data-i18n="gwr.batch_export">Export All</span>
+        </button>
+        <div class="gwr-batch-progress" id="gwr-batch-progress" style="display:none">
+          <div class="gwr-progress-bar">
+            <div id="gwr-progress-fill" class="gwr-progress-fill" style="width:0%"></div>
+          </div>
+          <span id="gwr-progress-label" class="gwr-progress-label">0 / 0</span>
+        </div>
+      </div>
+      <div id="gwr-batch-list" class="gwr-batch-list"></div>
+    </div>
+
+  </div><!-- /gwr-body -->
+
+  <!-- Hidden file inputs -->
+  <input type="file" id="gwr-file-input" accept="image/png,image/jpeg,image/webp" style="display:none">
+  <input type="file" id="gwr-file-input-batch" accept="image/png,image/jpeg,image/webp" multiple style="display:none">
+
+</div>
+
+<script src="assets/js/pages/gemini-watermark-remover.js"></script>

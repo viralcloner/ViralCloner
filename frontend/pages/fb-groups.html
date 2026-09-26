@@ -1,0 +1,1311 @@
+﻿<div id="fb-groups-page" class="fbg-app-layout">
+
+    <!-- ── Navigation Rail ───────────────────────────────── -->
+    <nav class="fbg-nav-rail" id="fbgNavRail">
+        <div class="fbg-nav-brand">
+            <span class="material-icons">groups</span>
+            <span class="fbg-nav-label fbg-nav-brand-label" data-i18n="fb_groups.title">FB Groups</span>
+        </div>
+        <div class="fbg-nav-items">
+            <button class="fbg-nav-item active" data-page="dashboard">
+                <span class="material-icons">dashboard</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_dashboard">Dashboard</span>
+            </button>
+            <button class="fbg-nav-item" data-page="workflows">
+                <span class="material-icons">sync_alt</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_workflows">Workflows</span>
+            </button>
+            <button class="fbg-nav-item" data-page="groups">
+                <span class="material-icons">group_work</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_groups">Groups</span>
+            </button>
+            <button class="fbg-nav-item" data-page="profiles">
+                <span class="material-icons">badge</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_profiles">Profiles</span>
+            </button>
+            <button class="fbg-nav-item" data-page="library">
+                <span class="material-icons">photo_library</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_library">Library</span>
+            </button>
+            <button class="fbg-nav-item" data-page="posts">
+                <span class="material-icons">history</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_posts">Post History</span>
+            </button>
+            <button class="fbg-nav-item" data-page="logs">
+                <span class="material-icons">receipt_long</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_logs">Live Logs</span>
+                <span class="fbg-nav-badge" id="fbgLogBadge" style="display:none;">0</span>
+            </button>
+            <button class="fbg-nav-item" data-page="analytics">
+                <span class="material-icons">bar_chart</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_analytics">Analytics</span>
+            </button>
+            <button class="fbg-nav-item" data-page="group-settings">
+                <span class="material-icons">tune</span>
+                <span class="fbg-nav-label" data-i18n="fb_groups.nav_group_settings">Groups Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ── Page Area ─────────────────────────────────────── -->
+    <div class="fbg-page-area">
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  DASHBOARD                                   ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page active" data-page="dashboard" id="fbgPageDashboard">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_dashboard">Dashboard</h2>
+                    <p data-i18n="fb_groups.dashboard_subtitle">Overview of your automation activity</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <button class="fbg-btn-secondary" id="fbgDashPauseAll">
+                        <span class="material-icons">pause_circle</span>
+                        <span data-i18n="fb_groups.pause_all">Pause All</span>
+                    </button>
+                    <button class="fbg-btn-primary" id="fbgDashImportBtn">
+                        <span class="material-icons">add_circle</span>
+                        <span data-i18n="fb_groups.new_workflow">New Workflow</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats row -->
+            <div class="fbg-stats-grid" id="fbgDashStats">
+                <div class="fbg-stat-card">
+                    <div class="fbg-stat-card-icon" style="background:rgba(16,185,129,.12);color:#10b981;"><span class="material-icons">sync_alt</span></div>
+                    <div class="fbg-stat-card-body">
+                        <div class="fbg-stat-card-value" id="dstatActiveWorkflowsVal">—</div>
+                        <div class="fbg-stat-card-label" data-i18n="fb_groups.stat_active_workflows">Active Workflows</div>
+                    </div>
+                </div>
+                <div class="fbg-stat-card">
+                    <div class="fbg-stat-card-icon" style="background:rgba(59,130,246,.12);color:#3b82f6;"><span class="material-icons">today</span></div>
+                    <div class="fbg-stat-card-body">
+                        <div class="fbg-stat-card-value" id="dstatPostsToday">—</div>
+                        <div class="fbg-stat-card-label" data-i18n="fb_groups.stat_posts_today">Posts Today</div>
+                    </div>
+                </div>
+                <div class="fbg-stat-card">
+                    <div class="fbg-stat-card-icon" style="background:rgba(139,92,246,.12);color:#8b5cf6;"><span class="material-icons">date_range</span></div>
+                    <div class="fbg-stat-card-body">
+                        <div class="fbg-stat-card-value" id="dstatPostsWeek">—</div>
+                        <div class="fbg-stat-card-label" data-i18n="fb_groups.stat_posts_week">Posts This Week</div>
+                    </div>
+                </div>
+                <div class="fbg-stat-card">
+                    <div class="fbg-stat-card-icon" style="background:rgba(245,158,11,.12);color:#f59e0b;"><span class="material-icons">verified</span></div>
+                    <div class="fbg-stat-card-body">
+                        <div class="fbg-stat-card-value" id="dstatSuccessRate">—</div>
+                        <div class="fbg-stat-card-label" data-i18n="fb_groups.stat_success_rate">Success Rate</div>
+                    </div>
+                </div>
+                <div class="fbg-stat-card">
+                    <div class="fbg-stat-card-icon" style="background:rgba(236,72,153,.12);color:#ec4899;"><span class="material-icons">trending_up</span></div>
+                    <div class="fbg-stat-card-body">
+                        <div class="fbg-stat-card-value" id="dstatMonitoring">—</div>
+                        <div class="fbg-stat-card-label" data-i18n="fb_groups.stat_monitoring">Monitoring</div>
+                    </div>
+                </div>
+                <div class="fbg-stat-card">
+                    <div class="fbg-stat-card-icon" style="background:rgba(107,114,128,.12);color:#6b7280;"><span class="material-icons">group_work</span></div>
+                    <div class="fbg-stat-card-body">
+                        <div class="fbg-stat-card-value" id="dstatTotalGroups">—</div>
+                        <div class="fbg-stat-card-label" data-i18n="fb_groups.stat_total_groups">Total Groups</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fbg-dash-grid">
+                <div class="fbg-dash-panel">
+                    <div class="fbg-dash-panel-header">
+                        <span class="material-icons">history</span>
+                        <h3 data-i18n="fb_groups.recent_activity">Recent Activity</h3>
+                    </div>
+                    <div class="fbg-activity-feed" id="fbgActivityFeed">
+                        <div class="fbg-activity-empty" data-i18n="fb_groups.no_activity">No activity yet</div>
+                    </div>
+                </div>
+                <div class="fbg-dash-panel">
+                    <div class="fbg-dash-panel-header">
+                        <span class="material-icons" style="color:#ec4899;">local_fire_department</span>
+                        <h3 data-i18n="fb_groups.viral_alerts">Viral Alerts</h3>
+                    </div>
+                    <div class="fbg-viral-alerts" id="fbgViralAlerts">
+                        <div class="fbg-activity-empty" data-i18n="fb_groups.no_viral_alerts">No viral triggers yet</div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /#fbgPageDashboard -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  WORKFLOWS                                   ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="workflows" id="fbgPageWorkflows">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_workflows">Workflows</h2>
+                    <p data-i18n="fb_groups.workflows_subtitle">Imported automation workflows that post to your groups</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <div class="fbg-search-wrap" style="max-width:240px;">
+                        <span class="material-icons">search</span>
+                        <input type="text" id="fbgWfSearch" placeholder="Search…" data-i18n-placeholder="fb_groups.search_placeholder">
+                    </div>
+                    <button class="fbg-btn-primary" id="fbgWfImportBtn">
+                        <span class="material-icons">add_circle</span>
+                        <span data-i18n="fb_groups.new_workflow">New Workflow</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fbg-workflow-grid" id="fbgWorkflowGrid">
+                <div class="fbg-wf-empty" id="fbgWfEmpty">
+                    <span class="material-icons" style="font-size:48px;color:var(--text-secondary);">sync_alt</span>
+                    <p data-i18n="fb_groups.no_workflows">No imported workflows yet</p>
+                    <p style="font-size:13px;color:var(--text-secondary);" data-i18n="fb_groups.no_workflows_desc">Import a workflow that has a Facebook Output node to start automating.</p>
+                    <button class="fbg-btn-primary" id="fbgWfEmptyImportBtn">
+                        <span class="material-icons">add_circle</span>
+                        <span data-i18n="fb_groups.new_workflow">New Workflow</span>
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /#fbgPageWorkflows -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  GROUPS (existing UI preserved)              ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="groups" id="fbgPageGroups">
+
+            <div class="fbg-toolbar">
+                <div class="fbg-search-wrap">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="fbgSearch" data-i18n-placeholder="fb_groups.search_placeholder" placeholder="Search groups by name, URL or notes…">
+                </div>
+                <div class="fbg-toolbar-right">
+                    <div class="fbg-stats-bar" id="fbgStatsBar">
+                        <div class="fbg-stat-pill"><span class="material-icons">group_work</span><span data-i18n="fb_groups.groups">Groups</span><strong id="statTotalGroups">0</strong></div>
+                        <div class="fbg-stat-pill"><span class="material-icons">person</span><span data-i18n="fb_groups.profiles">Profiles</span><strong id="statTotalProfiles">0</strong></div>
+                        <div class="fbg-stat-pill"><span class="material-icons">send</span><span data-i18n="fb_groups.posts_sent">Posts Sent</span><strong id="statPostsSent">0</strong></div>
+                    </div>
+                    <button class="btn-fbg-new" id="fbgNewGroupBtn">
+                        <span class="material-icons">add</span>
+                        <span data-i18n="fb_groups.new_group">New Group</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fbg-content" id="fbgContent">
+                <div class="fbg-grid" id="fbgSkeleton">
+                    <div class="fbg-skeleton-card"><div class="fbg-skeleton fbg-sk-line" style="width:55%;height:16px;"></div><div class="fbg-skeleton fbg-sk-line" style="width:35%;height:10px;margin-top:12px;"></div><div class="fbg-skeleton fbg-sk-line" style="width:80%;height:10px;margin-top:8px;"></div></div>
+                    <div class="fbg-skeleton-card"><div class="fbg-skeleton fbg-sk-line" style="width:65%;height:16px;"></div><div class="fbg-skeleton fbg-sk-line" style="width:40%;height:10px;margin-top:12px;"></div><div class="fbg-skeleton fbg-sk-line" style="width:75%;height:10px;margin-top:8px;"></div></div>
+                    <div class="fbg-skeleton-card"><div class="fbg-skeleton fbg-sk-line" style="width:45%;height:16px;"></div><div class="fbg-skeleton fbg-sk-line" style="width:30%;height:10px;margin-top:12px;"></div><div class="fbg-skeleton fbg-sk-line" style="width:70%;height:10px;margin-top:8px;"></div></div>
+                </div>
+                <div class="fbg-empty-state" id="fbgEmptyState" style="display:none;">
+                    <div class="fbg-empty-icon"><span class="material-icons">group_add</span></div>
+                    <h3 data-i18n="fb_groups.no_groups">No Facebook Groups Yet</h3>
+                    <p data-i18n="fb_groups.no_groups_desc">Create your first group and link structure profiles to enable automated posting.</p>
+                    <button class="btn-fbg-new" id="fbgEmptyNewBtn"><span class="material-icons">add</span><span data-i18n="fb_groups.create_group">Create Group</span></button>
+                </div>
+                <div class="fbg-grid" id="fbgGrid"></div>
+                <div class="fbg-pagination" id="fbgPagination"></div>
+            </div>
+
+        </div><!-- /#fbgPageGroups -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  PROFILES                                    ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="profiles" id="fbgPageProfiles">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_profiles">Profiles</h2>
+                    <p data-i18n="fb_groups.profiles_subtitle">Live activity, daily usage and history for every group profile</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <div class="fbg-search-wrap fbg-search-inline">
+                        <span class="material-icons">search</span>
+                        <input type="text" id="fbgProfileSearch" data-i18n-placeholder="fb_groups.profile_search_placeholder" placeholder="Search profiles…">
+                    </div>
+                    <button class="fbg-btn-secondary fbg-btn-sm" id="fbgProfilesRefresh">
+                        <span class="material-icons">refresh</span>
+                        <span data-i18n="fb_groups.refresh">Refresh</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fbg-content" id="fbgProfilesContent">
+                <div class="fbg-empty-state" id="fbgProfilesEmpty" style="display:none;">
+                    <div class="fbg-empty-icon"><span class="material-icons">badge</span></div>
+                    <h3 data-i18n="fb_groups.profiles_empty">No Profiles Yet</h3>
+                    <p data-i18n="fb_groups.profiles_empty_desc">Link structure profiles to your groups to see them here.</p>
+                </div>
+                <div class="fbg-profiles-grid" id="fbgProfilesGrid"></div>
+            </div>
+
+        </div><!-- /#fbgPageProfiles -->
+
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  POSTS LIBRARY                               ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="library" id="fbgPageLibrary">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_library">Posts Library</h2>
+                    <p data-i18n="fb_groups.library_subtitle">Reusable content posts — assign them to manual workflows</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <div class="fbg-search-wrap" style="max-width:240px;">
+                        <span class="material-icons">search</span>
+                        <input type="text" id="fbgLibSearch" placeholder="Search posts…" data-i18n-placeholder="fb_groups.search_placeholder">
+                    </div>
+                    <button class="fbg-btn-primary" id="fbgLibAddBtn">
+                        <span class="material-icons">add_circle</span>
+                        <span data-i18n="fb_groups.add_post">Add Post</span>
+                    </button>
+                    <button class="fbg-btn-secondary" id="fbgLibImportCsvBtn">
+                        <span class="material-icons">upload_file</span>
+                        <span data-i18n="fb_groups.import_csv">Import CSV</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fbg-library-grid" id="fbgLibraryGrid">
+                <div class="fbg-wf-empty" id="fbgLibraryEmpty">
+                    <span class="material-icons" style="font-size:48px;color:var(--text-secondary);">photo_library</span>
+                    <p data-i18n="fb_groups.library_no_posts">No posts in the library yet</p>
+                    <p style="font-size:13px;color:var(--text-secondary);" data-i18n="fb_groups.library_no_posts_desc">Add reusable posts here and assign them to manual workflows.</p>
+                    <button class="fbg-btn-primary" id="fbgLibEmptyAddBtn">
+                        <span class="material-icons">add_circle</span>
+                        <span data-i18n="fb_groups.add_post">Add Post</span>
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /#fbgPageLibrary -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  POSTS FEED                                  ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="posts" id="fbgPagePosts">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_posts">Post History</h2>
+                    <p data-i18n="fb_groups.posts_subtitle">All published automation posts</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <div class="fbg-range-btns" id="fbgPostsViewBtns">
+                        <button class="fbg-posts-view-btn active" data-view="active" data-i18n="fb_groups.posts_view_active">Active</button>
+                        <button class="fbg-posts-view-btn" data-view="expired" data-i18n="fb_groups.posts_view_expired">Expired</button>
+                    </div>
+                    <div class="fbg-range-btns" id="fbgPostsFilterBtns">
+                        <button class="fbg-posts-filter-btn active" data-filter="all" data-i18n="fb_groups.filter_all">All</button>
+                        <button class="fbg-posts-filter-btn" data-filter="monitoring" data-i18n="fb_groups.posts_filter_monitoring">Monitoring</button>
+                        <button class="fbg-posts-filter-btn" data-filter="triggered" data-i18n="fb_groups.posts_filter_triggered">Triggered</button>
+                    </div>
+                    <button class="fbg-wf-action-btn fbg-vm-toggle-btn" id="fbgPostsVmToggleBtn">
+                        <span class="material-icons" id="fbgPostsVmToggleIcon">pause_circle</span>
+                        <span id="fbgPostsVmToggleLabel" data-i18n="fb_groups.viral_monitor_pause">Pause monitoring</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="fbgPostsVmPausedBanner" class="fbg-vm-paused-banner" style="display:none;">
+                <span class="material-icons">pause_circle</span>
+                <span data-i18n="fb_groups.viral_monitor_paused_notice">Viral monitoring is paused. Posts are not being checked.</span>
+            </div>
+
+            <div class="fbg-expired-table-wrap" id="fbgPostsTableWrap">
+                <table class="fbg-expired-table" id="fbgPostsTable">
+                    <thead>
+                        <tr>
+                            <th data-i18n="fb_groups.expired_col_image">Image</th>
+                            <th data-i18n="fb_groups.expired_col_post">Post</th>
+                            <th data-i18n="fb_groups.expired_col_group">Group</th>
+                            <th data-i18n="fb_groups.expired_col_metric">Result</th>
+                            <th data-i18n="fb_groups.posts_col_status">Status</th>
+                            <th data-i18n="fb_groups.expired_col_posted">Posted</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="fbgPostsTableBody"></tbody>
+                </table>
+                <div class="fbg-wf-empty" id="fbgPostsEmpty">
+                    <span class="material-icons" style="font-size:48px;">feed</span>
+                    <p data-i18n="fb_groups.posts_empty">No posts yet</p>
+                </div>
+            </div>
+
+            <div class="fbg-pagination" id="fbgPostsPagination" style="display:none;"></div>
+
+        </div><!-- /#fbgPagePosts -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  LIVE LOGS                                   ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="logs" id="fbgPageLogs">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_logs">Live Logs</h2>
+                    <p data-i18n="fb_groups.logs_subtitle">Real-time scheduler activity</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <div class="fbg-log-filters" id="fbgLogFilters">
+                        <button class="fbg-log-filter active" data-filter="all" data-i18n="fb_groups.filter_all">All</button>
+                        <button class="fbg-log-filter" data-filter="success" data-i18n="fb_groups.filter_posts">Posts</button>
+                        <button class="fbg-log-filter" data-filter="viral" data-i18n="fb_groups.filter_viral">Viral</button>
+                        <button class="fbg-log-filter" data-filter="error" data-i18n="fb_groups.filter_errors">Errors</button>
+                    </div>
+                    <label class="fbg-toggle-label">
+                        <input type="checkbox" id="fbgAutoScroll" checked>
+                        <span data-i18n="fb_groups.auto_scroll">Auto-scroll</span>
+                    </label>
+                    <button class="fbg-btn-secondary fbg-btn-sm" id="fbgClearLogs">
+                        <span class="material-icons">delete_outline</span>
+                        <span data-i18n="fb_groups.clear">Clear</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fbg-log-container" id="fbgLiveLogContainer">
+                <div class="fbg-log-empty-state" id="fbgLiveLogEmptyState">
+                    <span class="material-icons">receipt_long</span>
+                    <p data-i18n="fb_groups.logs_empty">No logs yet. Start a workflow to see activity here.</p>
+                </div>
+            </div>
+
+        </div><!-- /#fbgPageLogs -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  ANALYTICS                                   ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="analytics" id="fbgPageAnalytics">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_analytics">Analytics</h2>
+                    <p data-i18n="fb_groups.analytics_subtitle">Performance insights for your automated posting</p>
+                </div>
+                <div class="fbg-page-actions">
+                    <div class="fbg-range-btns" id="fbgRangeBtns">
+                        <button class="fbg-range-btn active" data-days="7">7d</button>
+                        <button class="fbg-range-btn" data-days="30">30d</button>
+                        <button class="fbg-range-btn" data-days="90">90d</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fbg-analytics-body">
+                <div class="fbg-analytics-card fbg-analytics-chart-card">
+                    <div class="fbg-analytics-card-header">
+                        <span class="material-icons">show_chart</span>
+                        <h3 data-i18n="fb_groups.chart_posts_over_time">Posts Over Time</h3>
+                    </div>
+                    <div class="fbg-chart-container" id="fbgChartPostsOverTime">
+                        <div class="fbg-chart-empty" data-i18n="fb_groups.no_data">No data yet</div>
+                    </div>
+                </div>
+                <div class="fbg-analytics-row">
+                    <div class="fbg-analytics-card">
+                        <div class="fbg-analytics-card-header"><span class="material-icons">leaderboard</span><h3 data-i18n="fb_groups.top_groups">Top Groups</h3></div>
+                        <table class="fbg-analytics-table" id="fbgTopGroupsTable">
+                            <thead><tr><th>Group</th><th>Sent</th><th>Rate</th></tr></thead>
+                            <tbody><tr><td colspan="3" class="fbg-table-empty" data-i18n="fb_groups.no_data">No data yet</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="fbg-analytics-card">
+                        <div class="fbg-analytics-card-header"><span class="material-icons">local_fire_department</span><h3 data-i18n="fb_groups.viral_performance">Viral Performance</h3></div>
+                        <table class="fbg-analytics-table" id="fbgViralTable">
+                            <thead><tr><th>Monitors</th><th>Triggered</th><th>Avg Shares</th></tr></thead>
+                            <tbody><tr><td colspan="3" class="fbg-table-empty" data-i18n="fb_groups.no_data">No data yet</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="fbg-analytics-card">
+                    <div class="fbg-analytics-card-header"><span class="material-icons">sync_alt</span><h3 data-i18n="fb_groups.workflow_performance">Workflow Performance</h3></div>
+                    <table class="fbg-analytics-table" id="fbgWfPerfTable">
+                        <thead><tr><th>Workflow</th><th>Posts Sent</th><th>Success Rate</th></tr></thead>
+                        <tbody><tr><td colspan="3" class="fbg-table-empty" data-i18n="fb_groups.no_data">No data yet</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- /#fbgPageAnalytics -->
+
+        <!-- ╔══════════════════════════════════════════════╗ -->
+        <!-- ║  GROUP SETTINGS                              ║ -->
+        <!-- ╚══════════════════════════════════════════════╝ -->
+        <div class="fbg-page" data-page="group-settings" id="fbgPageGroupSettings">
+
+            <div class="fbg-page-header">
+                <div class="fbg-page-title-block">
+                    <h2 data-i18n="fb_groups.nav_group_settings">Groups Settings</h2>
+                    <p data-i18n="fb_groups.group_settings_subtitle">Global scheduler settings for all workflows</p>
+                </div>
+            </div>
+
+            <div class="fbg-settings-content">
+
+                <!-- ── Comment Delay ──────────────────────────────────── -->
+                <div class="fbg-settings-card">
+                    <div class="fbg-settings-card-header">
+                        <span class="material-icons">comment</span>
+                        <div>
+                            <h3 data-i18n="fb_groups.comment_delay_title">First Comment Delay</h3>
+                            <p data-i18n="fb_groups.comment_delay_subtitle">Random delay before posting the URL comment after a post</p>
+                        </div>
+                    </div>
+                    <div class="fbg-settings-card-body">
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgCommentDelayMin" data-i18n="fb_groups.comment_delay_min">Minimum (seconds)</label>
+                                <input type="number" class="fbg-input" id="fbgCommentDelayMin" min="0" max="3600" value="60" />
+                            </div>
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgCommentDelayMax" data-i18n="fb_groups.comment_delay_max">Maximum (seconds)</label>
+                                <input type="number" class="fbg-input" id="fbgCommentDelayMax" min="0" max="3600" value="180" />
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.comment_delay_hint">A random delay between min and max will be used. Set both to 0 to post immediately. Note: delay is skipped when viral monitoring uses the &ldquo;Edit First Comment&rdquo; action.</p>
+                    </div>
+                </div>
+
+                <!-- ── Daily Cap ─────────────────────────────────────── -->
+                <div class="fbg-settings-card">
+                    <div class="fbg-settings-card-header">
+                        <span class="material-icons">event_busy</span>
+                        <div>
+                            <h3 data-i18n="fb_groups.daily_cap_title">Per-Profile Daily Posting Cap</h3>
+                            <p data-i18n="fb_groups.daily_cap_subtitle">Maximum posts any single Facebook profile can send per day</p>
+                        </div>
+                    </div>
+                    <div class="fbg-settings-card-body">
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgDailyCapInput" data-i18n="fb_groups.daily_cap_label">Max posts per profile / day</label>
+                                <input type="number" class="fbg-input" id="fbgDailyCapInput" min="0" max="200" value="8" />
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.daily_cap_hint">Set to 0 for no limit. Recommended: 8 or fewer to avoid restrictions.</p>
+                    </div>
+                </div>
+
+                <!-- ── Posting Safety (anti-ban) ──────────────────────── -->
+                <div class="fbg-settings-card">
+                    <div class="fbg-settings-card-header">
+                        <span class="material-icons">shield</span>
+                        <div>
+                            <h3 data-i18n="fb_groups.posting_safety_title">Posting Safety</h3>
+                            <p data-i18n="fb_groups.posting_safety_subtitle">Spread out activity so Facebook does not flag a profile for unusual behaviour</p>
+                        </div>
+                    </div>
+                    <div class="fbg-settings-card-body">
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgMinProfileGapMin" data-i18n="fb_groups.profile_gap_min">Minimum gap between a profile's posts (minutes)</label>
+                                <input type="number" class="fbg-input" id="fbgMinProfileGapMin" min="0" max="1440" value="30" />
+                            </div>
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgMinProfileGapMax" data-i18n="fb_groups.profile_gap_max">Maximum gap (minutes)</label>
+                                <input type="number" class="fbg-input" id="fbgMinProfileGapMax" min="0" max="1440" value="90" />
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.profile_gap_hint">A random delay between min and max is enforced between ANY two posts from the same profile, across all groups and workflows. Set min to 0 to disable.</p>
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-switch-label">
+                                    <input type="checkbox" id="fbgWarmupEnabled" checked />
+                                    <span data-i18n="fb_groups.warmup_label">Warm up new profiles (start with fewer posts/day, then ramp up)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-switch-label">
+                                    <input type="checkbox" id="fbgContentVariationEnabled" checked />
+                                    <span data-i18n="fb_groups.content_variation_label">Lightly vary post text so the same content is not posted identically everywhere</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-switch-label">
+                                    <input type="checkbox" id="fbgHumanMode" checked />
+                                    <span data-i18n="fb_groups.human_mode_label">Human mode: open a real browser, browse briefly and use the actual composer before posting</span>
+                                </label>
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.human_mode_hint">Makes each post look human: the profile loads the feed, scrolls, opens the real post box and types, instead of posting silently in the background. Safer against bot detection but slower. Can be overridden per workflow.</p>
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-switch-label">
+                                    <input type="checkbox" id="fbgHumanModeWatch" />
+                                    <span data-i18n="fb_groups.human_mode_watch_label">Watch Human mode (show the browser window while posting) — for testing only</span>
+                                </label>
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.human_mode_watch_hint">When on, Human-mode posts run in a visible browser so you can watch the warm-up, scrolling and composer typing. Turn this OFF for normal use — it shows a window for every post.</p>
+                    </div>
+                </div>
+
+                <!-- ── Viral Monitoring ───────────────────────────────── -->
+                <div class="fbg-settings-card">
+                    <div class="fbg-settings-card-header">
+                        <span class="material-icons">trending_up</span>
+                        <div>
+                            <h3 data-i18n="fb_groups.viral_monitor_title">Viral Monitoring</h3>
+                            <p data-i18n="fb_groups.viral_monitor_subtitle">How long to watch a post and how often to re-check its metrics</p>
+                        </div>
+                        <button class="fbg-wf-action-btn fbg-vm-toggle-btn" id="fbgViralMonitorToggleBtn" style="margin-left:auto;">
+                            <span class="material-icons" id="fbgViralMonitorToggleIcon">pause_circle</span>
+                            <span id="fbgViralMonitorToggleLabel" data-i18n="fb_groups.viral_monitor_pause">Pause monitoring</span>
+                        </button>
+                    </div>
+                    <div id="fbgViralMonitorPausedBanner" class="fbg-vm-paused-banner" style="display:none;">
+                        <span class="material-icons">pause_circle</span>
+                        <span data-i18n="fb_groups.viral_monitor_paused_notice">Viral monitoring is paused. Posts are not being checked.</span>
+                    </div>
+                    <div class="fbg-settings-card-body">
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgViralExpiryHours" data-i18n="fb_groups.viral_expiry_hours">Stop monitoring after (hours)</label>
+                                <input type="number" class="fbg-input" id="fbgViralExpiryHours" min="1" max="720" value="48" />
+                            </div>
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgViralCheckMin" data-i18n="fb_groups.viral_check_interval">Browse & check posts every (minutes)</label>
+                                <input type="number" class="fbg-input" id="fbgViralCheckMin" min="1" max="1440" value="120" />
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.viral_monitor_hint">At this interval, an idle account opens each group once and scrolls it like a human to read all monitored posts in a single pass — instead of checking each post separately. Longer intervals are safer.</p>
+                    </div>
+                </div>
+
+                <!-- ── Group Auto-Scan ────────────────────────────────── -->
+                <div class="fbg-settings-card">
+                    <div class="fbg-settings-card-header">
+                        <span class="material-icons">radar</span>
+                        <div>
+                            <h3 data-i18n="fb_groups.auto_scan_title">Automatic Group Scan</h3>
+                            <p data-i18n="fb_groups.auto_scan_subtitle">Refresh each group's name, cover and stats automatically</p>
+                        </div>
+                    </div>
+                    <div class="fbg-settings-card-body">
+                        <div class="fbg-settings-row">
+                            <div class="fbg-settings-field">
+                                <label class="fbg-switch-label">
+                                    <input type="checkbox" id="fbgAutoScanEnabled" checked />
+                                    <span data-i18n="fb_groups.auto_scan_enabled">Enable daily auto-scan</span>
+                                </label>
+                            </div>
+                            <div class="fbg-settings-field">
+                                <label class="fbg-form-label" for="fbgAutoScanIntervalHours" data-i18n="fb_groups.auto_scan_interval">Scan every (hours)</label>
+                                <input type="number" class="fbg-input" id="fbgAutoScanIntervalHours" min="1" max="168" value="24" />
+                            </div>
+                        </div>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.auto_scan_hint">A group is scanned automatically the first time a profile is linked, then on this schedule. Requires at least one linked profile that is logged into Facebook.</p>
+                    </div>
+                </div>
+
+                <!-- ── Diagnostics: Doc ID Test ───────────────────────── -->
+                <div class="fbg-settings-card">
+                    <div class="fbg-settings-card-header">
+                        <span class="material-icons">science</span>
+                        <div>
+                            <h3 data-i18n="fb_groups.docids_title">Facebook Query IDs (Diagnostics)</h3>
+                            <p data-i18n="fb_groups.docids_subtitle">Gather Facebook's GraphQL doc IDs to verify automations can talk to Facebook</p>
+                        </div>
+                    </div>
+                    <div class="fbg-settings-card-body">
+                        <p class="fbg-form-hint" data-i18n="fb_groups.docids_hint">This opens a linked profile in the background, browses Facebook, and tries to collect every query ID the automations rely on. Use it to confirm they are gathered successfully.</p>
+                        <div class="fbg-settings-actions" style="justify-content:flex-start;margin-top:8px;">
+                            <button class="fbg-btn-primary" id="fbgTestDocIdsBtn">
+                                <span class="material-icons">bug_report</span>
+                                <span data-i18n="fb_groups.docids_test_btn">Test / Gather Doc IDs</span>
+                            </button>
+                        </div>
+                        <div id="fbgDocIdsResult" class="fbg-docids-result" style="display:none;"></div>
+                    </div>
+                </div>
+
+                <!-- ── Save ──────────────────────────────────────────── -->
+                <div class="fbg-settings-actions">
+                    <button class="fbg-btn-primary" id="fbgSaveGroupSettings">
+                        <span class="material-icons">save</span>
+                        <span data-i18n="fb_groups.save">Save</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div><!-- /#fbgPageGroupSettings -->
+
+    </div><!-- /.fbg-page-area -->
+
+    <!-- ── Group Detail Panel ─────────────────────────────── -->
+    <div class="fbg-detail-overlay" id="fbgOverlay"></div>
+    <div class="fbg-detail-panel" id="fbgDetailPanel">
+        <div class="fbg-panel-header">
+            <button class="fbg-panel-back" id="fbgPanelBack"><span class="material-icons">arrow_back</span></button>
+            <div class="fbg-panel-title">
+                <h2 id="fbgPanelGroupName">—</h2>
+                <span id="fbgPanelGroupMeta"></span>
+            </div>
+            <button class="fbg-panel-edit-btn" id="fbgPanelEditBtn"><span class="material-icons">edit</span><span data-i18n="fb_groups.edit">Edit</span></button>
+            <button class="fbg-panel-action-btn" id="fbgScanInfoBtn"><span class="material-icons">analytics</span><span data-i18n="fb_groups.scan_info">Scan Info</span></button>
+            <button class="fbg-panel-action-btn fbg-btn-green" id="fbgNewPostBtn"><span class="material-icons">send</span><span>New Post</span></button>
+        </div>
+        <div class="fbg-panel-body">
+            <div class="fbg-panel-section" id="fbgPanelInfoSection"></div>
+            <div class="fbg-panel-divider"></div>
+            <div class="fbg-panel-section">
+                <div class="fbg-section-header">
+                    <div class="fbg-section-title"><span class="material-icons">person</span><span data-i18n="fb_groups.linked_profiles">Linked Profiles</span></div>
+                    <button class="btn-fbg-add-profile" id="fbgAddProfileBtn"><span class="material-icons">person_add</span><span data-i18n="fb_groups.add_profile">Add Profile</span></button>
+                </div>
+                <div class="fbg-chips-container" id="fbgProfileChips"><span class="fbg-chips-empty" data-i18n="fb_groups.no_profiles_linked">No profiles linked yet</span></div>
+            </div>
+            <div class="fbg-panel-divider" style="margin-top:20px;"></div>
+            <div class="fbg-panel-section">
+                <div class="fbg-section-header">
+                    <div class="fbg-section-title"><span class="material-icons">history</span><span data-i18n="fb_groups.posting_history">Posting History</span></div>
+                    <span id="fbgLogTotal" style="font-size:12px;color:var(--text-secondary,#6b7280);"></span>
+                </div>
+                <table class="fbg-log-table">
+                    <thead><tr><th data-i18n="fb_groups.log_profile">Profile</th><th data-i18n="fb_groups.log_message">Message</th><th data-i18n="fb_groups.log_status">Status</th><th data-i18n="fb_groups.log_date">Date</th><th style="width:70px;"></th></tr></thead>
+                    <tbody id="fbgLogBody"><tr><td colspan="5" class="fbg-log-empty" data-i18n="fb_groups.no_posts_yet">No posts recorded yet</td></tr></tbody>
+                </table>
+                <div class="fbg-log-pagination" id="fbgLogPagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Workflow Settings Panel ────────────────────────── -->
+    <div class="fbg-detail-overlay" id="fbgWfOverlay"></div>
+    <div class="fbg-detail-panel" id="fbgWfSettingsPanel">
+        <div class="fbg-panel-header">
+            <button class="fbg-panel-back" id="fbgWfPanelBack"><span class="material-icons">arrow_back</span></button>
+            <div class="fbg-panel-title">
+                <h2 id="fbgWfPanelName">—</h2>
+                <span id="fbgWfPanelMeta"></span>
+            </div>
+            <button class="fbg-btn-primary fbg-btn-sm" id="fbgWfSaveSettings"><span class="material-icons">save</span><span data-i18n="fb_groups.save">Save</span></button>
+        </div>
+        <div class="fbg-panel-body" id="fbgWfPanelBody"></div>
+    </div>
+
+    <!-- ── Resume Monitoring Modal ────────────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgResumeMonitorBackdrop"></div>
+    <div class="fbg-import-modal" id="fbgResumeMonitorModal" style="width:min(520px,95vw);">
+        <div class="fbg-modal-header">
+            <span class="material-icons">play_circle</span>
+            <h3 data-i18n="fb_groups.resume_monitor_title">Resume Viral Monitoring</h3>
+            <button class="fbg-modal-close" id="fbgResumeMonitorClose"><span class="material-icons">close</span></button>
+        </div>
+        <div class="fbg-modal-body">
+            <p data-i18n="fb_groups.resume_monitor_desc">Which posts should be rechecked now that monitoring is resuming?</p>
+            <div class="fbg-resume-options">
+                <label class="fbg-resume-option">
+                    <input type="radio" name="fbgResumeRange" value="all" checked />
+                    <span data-i18n="fb_groups.resume_recheck_all">Recheck all active posts</span>
+                </label>
+                <label class="fbg-resume-option">
+                    <input type="radio" name="fbgResumeRange" value="days" />
+                    <span data-i18n="fb_groups.resume_recheck_days">Recheck posts from the last</span>
+                    <input type="number" class="fbg-input fbg-resume-days-input" id="fbgResumeDaysInput" value="7" min="1" max="365" />
+                    <span data-i18n="fb_groups.resume_days_label">days</span>
+                </label>
+            </div>
+        </div>
+        <div class="fbg-modal-footer">
+            <button class="fbg-btn-secondary" id="fbgResumeMonitorCancel" data-i18n="fb_groups.cancel">Cancel</button>
+            <button class="fbg-btn-primary" id="fbgResumeMonitorConfirm">
+                <span class="material-icons">play_circle</span>
+                <span data-i18n="fb_groups.resume_monitor_confirm">Resume &amp; Recheck</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ── Unified New Workflow Modal ─────────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgNewWfBackdrop"></div>
+    <div class="fbg-import-modal" id="fbgNewWfModal">
+        <div class="fbg-import-modal-header">
+            <h2>
+                <span class="material-icons" style="font-size:20px;vertical-align:middle;margin-right:6px;color:#1877F2;">add_circle</span>
+                <span data-i18n="fb_groups.new_workflow_title">New Workflow</span>
+            </h2>
+            <button class="fbg-modal-close" id="fbgNewWfClose"><span class="material-icons">close</span></button>
+        </div>
+
+        <!-- ── TYPE TABS ─────────────────────────────────────────── -->
+        <div class="fbg-wf-type-tabs">
+            <button type="button" class="fbg-wf-type-tab active" data-type="automation">
+                <span class="material-icons">account_tree</span>
+                <span data-i18n="fb_groups.wf_type_automation">Automation Workflow</span>
+                <span class="fbg-wf-type-desc" data-i18n="fb_groups.wf_type_automation_desc">Run a workflow that generates Facebook posts automatically</span>
+            </button>
+            <button type="button" class="fbg-wf-type-tab" data-type="manual">
+                <span class="material-icons">edit_note</span>
+                <span data-i18n="fb_groups.wf_type_manual">Manual Posts</span>
+                <span class="fbg-wf-type-desc" data-i18n="fb_groups.wf_type_manual_desc">Schedule posts from your library on a recurring basis</span>
+            </button>
+        </div>
+
+        <div class="fbg-import-modal-body" id="fbgNWModalBody">
+
+            <!-- AUTOMATION ONLY: workflow picker -->
+            <div id="fbgNWAutomationSection">
+                <div class="fbg-form-section">
+                    <label class="fbg-form-label" data-i18n="fb_groups.select_workflow">Select Workflow</label>
+                    <p class="fbg-form-hint" data-i18n="fb_groups.select_workflow_hint">Only workflows with a Facebook Output node are shown.</p>
+                    <div class="fbg-workflow-picker" id="fbgNWWorkflowPicker">
+                        <div class="fbg-picker-empty" data-i18n="fb_groups.no_eligible_workflows">No eligible workflows found</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SHARED: workflow name -->
+            <div class="fbg-form-group" id="fbgNWNameSection" style="display:none;">
+                <label class="fbg-form-label" data-i18n="fb_groups.workflow_name">Workflow Name</label>
+                <input type="text" class="fbg-input" id="fbgNWName" placeholder="e.g. Weekly Recipes" data-i18n-placeholder="fb_groups.workflow_name_placeholder">
+            </div>
+
+            <!-- SHARED: target groups -->
+            <div class="fbg-form-section">
+                <label class="fbg-form-label" data-i18n="fb_groups.target_groups">Target Groups</label>
+                <p class="fbg-form-hint" data-i18n="fb_groups.target_groups_hint">Select groups to post to. Optionally pin a specific profile per group.</p>
+                <div class="fbg-group-targets-list" id="fbgNWGroupTargetsList">
+                    <div class="fbg-picker-empty" data-i18n="fb_groups.no_groups_yet">No groups configured yet</div>
+                </div>
+            </div>
+
+            <!-- SHARED: scheduling (injected by JS via buildSchedulingHtml) -->
+            <div id="fbgNWSchedulingSection"></div>
+
+            <!-- SHARED: loop -->
+            <div class="fbg-form-group">
+                <label class="fbg-form-label" data-i18n="fb_groups.loop_workflow">Loop Workflow</label>
+                <label class="fbg-toggle-switch">
+                    <input type="checkbox" id="fbgNWLoop">
+                    <span class="fbg-toggle-thumb"></span>
+                </label>
+                <p class="fbg-form-hint" style="margin-top:4px;" data-i18n="fb_groups.loop_hint">Re-start from post 1 when all posts are processed</p>
+            </div>
+
+            <!-- SHARED: first comment -->
+            <div class="fbg-form-section fbg-collapsible-section">
+                <div class="fbg-collapsible-header" id="fbgNWUrlCommentToggle">
+                    <span class="material-icons">comment</span>
+                    <span data-i18n="fb_groups.url_as_comment">First Comment</span>
+                    <label class="fbg-toggle-switch" style="margin-left:auto;" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="fbgNWUrlComment">
+                        <span class="fbg-toggle-thumb"></span>
+                    </label>
+                </div>
+                <div class="fbg-collapsible-body" id="fbgNWUrlCommentSection" style="display:none;">
+                    <div class="fbg-form-group">
+                        <label class="fbg-form-label" data-i18n="fb_groups.comment_text">Comment Text</label>
+                        <textarea class="fbg-input fbg-textarea" id="fbgNWUrlPrefix" rows="3" data-i18n-placeholder="fb_groups.comment_text_placeholder" placeholder="e.g. Check it out!&#10;{{url}}"></textarea>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.comment_url_hint">Use {{url}} to insert the post URL. If using 'Run Automation for Article URL', leave blank — the URL will be added at trigger time via the Replacement Comment Text.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SHARED: viral monitoring -->
+            <div class="fbg-form-section fbg-collapsible-section">
+                <div class="fbg-collapsible-header" id="fbgNWViralToggle">
+                    <span class="material-icons" style="color:#ec4899;">local_fire_department</span>
+                    <span data-i18n="fb_groups.viral_monitoring">Viral Monitoring</span>
+                    <label class="fbg-toggle-switch" style="margin-left:auto;" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="fbgNWViralEnabled">
+                        <span class="fbg-toggle-thumb"></span>
+                    </label>
+                </div>
+                <div class="fbg-collapsible-body" id="fbgNWViralSection" style="display:none;">
+                    <p class="fbg-form-hint" data-i18n="fb_groups.viral_hint">Monitors the post metric every 5 minutes. When it reaches the target, fires the selected action.</p>
+                    <div class="fbg-form-row">
+                        <div class="fbg-form-group">
+                            <label class="fbg-form-label" data-i18n="fb_groups.viral_metric">Metric</label>
+                            <select class="fbg-input" id="fbgNWViralMetric" style="width:120px;">
+                                <option value="shares" data-i18n="fb_groups.metric_shares">Shares</option>
+                                <option value="likes" data-i18n="fb_groups.metric_likes">Likes</option>
+                                <option value="comments" data-i18n="fb_groups.metric_comments">Comments</option>
+                            </select>
+                        </div>
+                        <div class="fbg-form-group">
+                            <label class="fbg-form-label" data-i18n="fb_groups.target_count">Target Count</label>
+                            <input type="number" class="fbg-input" id="fbgNWViralShares" value="100" min="1" style="width:100px;">
+                        </div>
+                        <div class="fbg-form-group">
+                            <label class="fbg-form-label" data-i18n="fb_groups.viral_action">Action When Triggered</label>
+                            <select class="fbg-input" id="fbgNWViralAction">
+                                <option value="edit_comment" data-i18n="fb_groups.edit_first_comment">Edit First Comment</option>
+                                <option value="edit_post" selected data-i18n="fb_groups.edit_post">Edit Post</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- AI Rewrite / Edit Post Content -->
+                    <div id="fbgNWAiRewriteSection" style="display:none;border:1px solid var(--border-color,#e5e7eb);border-radius:10px;padding:14px 16px;background:var(--bg-secondary,#f8f9fa);margin-bottom:10px;">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                            <span class="material-icons" style="font-size:18px;color:#8b5cf6;">smart_toy</span>
+                            <span id="fbgNWEditSectionLabel" style="font-weight:600;font-size:13px;" data-i18n="fb_groups.edit_post_content">Edit Post Content</span>
+                        </div>
+                        <!-- Mode picker: always shown for both actions -->
+                        <div id="fbgNWEditPostModePicker" style="display:flex;margin-bottom:12px;gap:0;border:1px solid var(--border-color,#e5e7eb);border-radius:8px;overflow:hidden;">
+                            <button type="button" id="fbgNWEditModeAiBtn" style="flex:1;padding:8px 14px;font-size:13px;font-weight:500;border:none;background:var(--accent-color,#0d6efd);color:#fff;cursor:pointer;">
+                                <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-right:4px;">smart_toy</span>
+                                <span data-i18n="fb_groups.ai_rewrite">AI Rewrite Post</span>
+                            </button>
+                            <button type="button" id="fbgNWEditModeCustomBtn" style="flex:1;padding:8px 14px;font-size:13px;font-weight:500;border:none;border-left:1px solid var(--border-color,#e5e7eb);background:var(--bg-primary,#fff);color:var(--text-secondary,#6c757d);cursor:pointer;">
+                                <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-right:4px;">edit_note</span>
+                                <span data-i18n="fb_groups.custom_text">Custom Text</span>
+                            </button>
+                        </div>
+                        <!-- Hidden AI rewrite state checkbox (tracks current mode) -->
+                        <input type="checkbox" id="fbgNWAiRewrite" style="display:none;">
+                        <div id="fbgNWAiRewriteBody" style="display:block;">
+                            <p class="fbg-form-hint" style="margin-bottom:12px;" data-i18n="fb_groups.ai_rewrite_hint">The AI will receive your prompt (with post text &amp; URL injected) and generate the new post content.</p>
+                            <div class="fbg-form-row" style="gap:10px;flex-wrap:wrap;">
+                                <div class="fbg-form-group" style="flex:1;min-width:130px;">
+                                    <label class="fbg-form-label" data-i18n="fb_groups.ai_provider">AI Provider</label>
+                                    <select class="fbg-input" id="fbgNWAiProvider">
+                                        <option value="" disabled selected data-i18n="fb_groups.ai_loading">Loading…</option>
+                                    </select>
+                                </div>
+                                <div class="fbg-form-group" style="flex:1;min-width:130px;">
+                                    <label class="fbg-form-label" data-i18n="fb_groups.ai_model">Model</label>
+                                    <input type="text" class="fbg-input" id="fbgNWAiModel" placeholder="e.g. gpt-4o-mini">
+                                </div>
+                            </div>
+                            <!-- Prompt manager -->
+                            <div class="fbg-form-group" style="margin-top:8px;">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                                    <label class="fbg-form-label" data-i18n="fb_groups.ai_prompt">Prompt</label>
+                                    <div style="display:flex;gap:6px;">
+                                        <select class="fbg-input fbg-input-xs" id="fbgNWAiPromptPicker" style="max-width:180px;">
+                                            <option value="" data-i18n="fb_groups.ai_prompt_select">— Saved Prompts —</option>
+                                        </select>
+                                        <button class="fbg-icon-btn" id="fbgNWAiPromptSaveBtn" title="Save current prompt">
+                                            <span class="material-icons">save</span>
+                                        </button>
+                                        <button class="fbg-icon-btn danger" id="fbgNWAiPromptDeleteBtn" title="Delete selected prompt" style="display:none;">
+                                            <span class="material-icons">delete_outline</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <textarea class="fbg-input fbg-textarea" id="fbgNWAiPrompt" rows="5" placeholder="Use {{post_text}} for the original post and {{url}} for the link.&#10;e.g: Rewrite the following Facebook post to be more engaging. Keep it concise. Add this link naturally at the end where it cuts off for &quot;more&quot;: {{url}}&#10;&#10;Original post:&#10;{{post_text}}"></textarea>
+                                <p class="fbg-form-hint" style="margin-top:4px;" data-i18n="fb_groups.ai_prompt_hint">Available variables: <code>{{post_text}}</code> — original post · <code>{{url}}</code> — the viral link</p>
+                            </div>
+                        </div>
+                        <!-- Custom Text body: shown for edit_post + Custom mode -->
+                        <!-- Custom Text body for edit_post -->
+                        <div id="fbgNWEditPostCustomBody" style="display:none;">
+                            <div class="fbg-form-group">
+                                <label class="fbg-form-label" data-i18n="fb_groups.edit_post_new_text">New Post Text</label>
+                                <textarea class="fbg-input fbg-textarea" id="fbgNWEditPostText" rows="4" placeholder="Enter the new post text. Use {{url}} for the viral link."></textarea>
+                                <p class="fbg-form-hint" data-i18n="fb_groups.edit_post_text_hint">Use {{url}} to insert the viral link.</p>
+                            </div>
+                            <div class="fbg-form-group" style="margin-top:8px;">
+                                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                    <label class="fbg-toggle-switch" onclick="event.stopPropagation()">
+                                        <input type="checkbox" id="fbgNWEditPostKeepLinesEnabled">
+                                        <span class="fbg-toggle-thumb"></span>
+                                    </label>
+                                    <span style="font-size:13px;" data-i18n="fb_groups.keep_lines_label">Keep first</span>
+                                    <input type="number" class="fbg-input" id="fbgNWEditPostKeepLines" value="2" min="1" max="50" style="width:65px;" disabled>
+                                    <span style="font-size:13px;" data-i18n="fb_groups.keep_lines_suffix">lines from old post, then add new text below</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Custom Text body for edit_comment -->
+                        <div id="fbgNWEditCommentCustomBody" style="display:none;">
+                            <div class="fbg-form-group" style="margin-top:10px;">
+                                <label class="fbg-form-label" data-i18n="fb_groups.also_edit_post">Also Edit the Post</label>
+                                <p class="fbg-form-hint" data-i18n="fb_groups.also_edit_post_hint">Leave empty to not touch the post. Use {{url}} for the viral link.</p>
+                                <textarea class="fbg-input fbg-textarea" id="fbgNWEditPostText" rows="3" placeholder="e.g. Check out the first comment for the full recipe! {{url}}"></textarea>
+                            </div>
+                            <div class="fbg-form-group" style="margin-top:8px;">
+                                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                    <label class="fbg-toggle-switch" onclick="event.stopPropagation()">
+                                        <input type="checkbox" id="fbgNWEditPostKeepLinesEnabled">
+                                        <span class="fbg-toggle-thumb"></span>
+                                    </label>
+                                    <span style="font-size:13px;" data-i18n="fb_groups.keep_lines_label">Keep first</span>
+                                    <input type="number" class="fbg-input" id="fbgNWEditPostKeepLines" value="2" min="1" max="50" style="width:65px;" disabled>
+                                    <span style="font-size:13px;" data-i18n="fb_groups.keep_lines_suffix">lines from old post, then add new text below</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Replacement Comment Text — always visible for edit_comment -->
+                        <div id="fbgNWEditCommentTextGroup" style="display:none;margin-top:10px;">
+                            <div class="fbg-form-group">
+                                <label class="fbg-form-label" data-i18n="fb_groups.edit_comment_text">Replacement Comment Text</label>
+                                <p class="fbg-form-hint" data-i18n="fb_groups.edit_comment_text_hint">Replaces the First Comment when the target is reached. Use {{url}} — substituted with the automation URL if configured, otherwise the post URL.</p>
+                                <textarea class="fbg-input fbg-textarea" id="fbgNWEditCommentText" rows="3" placeholder="e.g. Check out the full recipe: {{url}}" data-i18n-placeholder="fb_groups.edit_comment_text_placeholder"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fbg-form-group" id="fbgNWInitialCommentGroup">
+                        <label class="fbg-form-label" data-i18n="fb_groups.initial_comment">Initial Comment Text</label>
+                        <p class="fbg-form-hint" data-i18n="fb_groups.initial_comment_hint">Posted right after publishing. When the shares target is reached, this comment gets edited with the URL.</p>
+                        <textarea class="fbg-input fbg-textarea" id="fbgNWInitialComment" rows="3" placeholder="e.g. Enjoy this delicious recipe!" data-i18n-placeholder="fb_groups.initial_comment_placeholder"></textarea>
+                    </div>
+
+                    <!-- Run Automation for URL -->
+                    <div style="border:1px solid var(--border-color,#e5e7eb);border-radius:10px;padding:14px 16px;background:var(--bg-secondary,#f8f9fa);margin-top:10px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <span class="material-icons" style="font-size:18px;color:#0ea5e9;">rocket_launch</span>
+                                <span style="font-weight:600;font-size:13px;" data-i18n="fb_groups.viral_automation_url">Run Automation for Article URL</span>
+                            </div>
+                            <label class="fbg-toggle-switch" onclick="event.stopPropagation()">
+                                <input type="checkbox" id="fbgNWViralAutoEnabled">
+                                <span class="fbg-toggle-thumb"></span>
+                            </label>
+                        </div>
+                        <div id="fbgNWViralAutoBody" style="display:none;">
+                            <p class="fbg-form-hint" style="margin-bottom:10px;" data-i18n="fb_groups.viral_automation_url_hint">When the viral threshold is reached, this automation will run first. It receives the post image (image input) and post text (text input), and must output a URL via the URL slot of the facebook-output node. That URL is then used for the edit action.</p>
+                            <div class="fbg-form-group">
+                                <label class="fbg-form-label" data-i18n="fb_groups.viral_automation_select">Select Automation</label>
+                                <select class="fbg-input" id="fbgNWViralAutoId" style="width:100%;">
+                                    <option value="" data-i18n="fb_groups.viral_automation_loading">Loading workflows…</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MANUAL ONLY: library posts -->
+            <div class="fbg-form-group" id="fbgNWLibrarySection" style="display:none;">
+                <label class="fbg-form-label">
+                    <span data-i18n="fb_groups.select_posts">Select Posts</span>
+                    <span style="font-weight:400;font-size:12px;color:var(--text-secondary);margin-left:6px;" data-i18n="fb_groups.select_posts_hint">(optional — assign later via Manage Posts)</span>
+                </label>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <button class="fbg-btn-secondary" id="fbgNWOpenPickerBtn" style="height:36px;padding:0 16px;font-size:13px;display:flex;align-items:center;gap:6px;">
+                        <span class="material-icons" style="font-size:16px;">checklist</span>
+                        <span data-i18n="fb_groups.select_posts_btn">Select Posts</span>
+                    </button>
+                    <span id="fbgNWPostsSelCount" style="font-size:13px;color:var(--accent-color,#0d6efd);font-weight:600;"></span>
+                </div>
+            </div>
+
+        </div><!-- /.fbg-import-modal-body -->
+
+        <div class="fbg-import-modal-footer">
+            <button class="fbg-btn-secondary" id="fbgNewWfCancelBtn" data-i18n="fb_groups.cancel">Cancel</button>
+            <button class="fbg-btn-primary" id="fbgNewWfConfirmBtn" disabled>
+                <span class="material-icons">add_circle</span>
+                <span id="fbgNewWfConfirmLabel" data-i18n="fb_groups.import_confirm">Import &amp; Activate</span>
+            </button>
+        </div>
+    </div><!-- /.fbg-new-wf-modal -->
+
+    <!-- ── NW Posts Picker Modal ─────────────────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgNWPickerBackdrop"></div>
+    <div class="fbg-import-modal fbg-nw-picker-modal" id="fbgNWPickerModal">
+        <div class="fbg-import-modal-header">
+            <div>
+                <h2 style="margin:0 0 2px;" data-i18n="fb_groups.select_posts">Select Posts</h2>
+                <span id="fbgNWPickerCount" style="font-size:12px;color:var(--accent-color,#0d6efd);font-weight:600;"></span>
+            </div>
+            <button class="fbg-modal-close" id="fbgNWPickerCloseBtn"><span class="material-icons">close</span></button>
+        </div>
+        <!-- Filters toolbar -->
+        <div class="fbg-nw-picker-toolbar">
+            <div class="fbg-nw-picker-filters">
+                <button class="fbg-picker-filter-chip active" data-filter="all" data-i18n="fb_groups.filter_all">All</button>
+                <button class="fbg-picker-filter-chip" data-filter="today" data-i18n="fb_groups.filter_today">Today</button>
+                <button class="fbg-picker-filter-chip" data-filter="yesterday" data-i18n="fb_groups.filter_yesterday">Yesterday</button>
+                <button class="fbg-picker-filter-chip" data-filter="range" data-i18n="fb_groups.filter_range">Date Range</button>
+            </div>
+            <div class="fbg-nw-picker-daterange" id="fbgNWPickerDateRange" style="display:none;">
+                <input type="date" class="fbg-input" id="fbgNWPickerDateFrom" style="height:32px;font-size:13px;width:140px;">
+                <span style="color:var(--text-secondary);font-size:13px;flex-shrink:0;">–</span>
+                <input type="date" class="fbg-input" id="fbgNWPickerDateTo" style="height:32px;font-size:13px;width:140px;">
+            </div>
+            <div class="fbg-nw-picker-search-row">
+                <div class="fbg-search-wrap" style="flex:1;min-width:0;">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="fbgNWPickerSearch" placeholder="Search posts…" data-i18n-placeholder="fb_groups.search_posts">
+                </div>
+                <button class="fbg-btn-secondary" id="fbgNWPickerSelAllBtn" style="height:34px;padding:0 12px;font-size:12px;white-space:nowrap;flex-shrink:0;" data-i18n="fb_groups.select_all">Select All</button>
+                <button class="fbg-btn-secondary" id="fbgNWPickerClearBtn" style="height:34px;padding:0 12px;font-size:12px;white-space:nowrap;flex-shrink:0;" data-i18n="fb_groups.clear">Clear</button>
+            </div>
+        </div>
+        <!-- Posts list -->
+        <div class="fbg-nw-picker-list" id="fbgNWPickerList"></div>
+        <div class="fbg-nw-picker-pagination" id="fbgNWPickerPagination"></div>
+        <!-- Footer -->
+        <div class="fbg-import-modal-footer">
+            <span id="fbgNWPickerSelInfo" style="font-size:13px;color:var(--text-secondary);flex:1;"></span>
+            <button class="fbg-btn-secondary" id="fbgNWPickerCancelBtn" data-i18n="fb_groups.cancel">Cancel</button>
+            <button class="fbg-btn-primary" id="fbgNWPickerApplyBtn">
+                <span class="material-icons" style="font-size:16px;">check_circle</span>
+                <span data-i18n="fb_groups.apply_selection">Apply Selection</span>
+            </button>
+        </div>
+    </div><!-- /.fbg-nw-picker-modal -->
+
+    <!-- ── Library Post Add/Edit Modal ──────────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgLibPostBackdrop"></div>
+    <div class="fbg-import-modal" id="fbgLibPostModal" style="width:min(560px,95vw);">
+        <div class="fbg-import-modal-header">
+            <h2 id="fbgLibPostModalTitle" data-i18n="fb_groups.add_post">Add Post</h2>
+            <button class="fbg-modal-close" id="fbgLibPostModalClose"><span class="material-icons">close</span></button>
+        </div>
+        <div class="fbg-import-modal-body">
+            <!-- Image -->
+            <div class="fbg-form-group">
+                <label class="fbg-form-label" data-i18n="fb_groups.post_image">Image <span style="font-weight:400;color:var(--text-secondary);">(optional)</span></label>
+                <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;">
+                    <div class="fbg-mp-img-preview" id="fbgLibPostImgPreview">
+                        <span class="material-icons" style="font-size:28px;color:var(--text-secondary);">image</span>
+                    </div>
+                    <div style="flex:1;min-width:180px;display:flex;flex-direction:column;gap:6px;">
+                        <div style="display:flex;gap:6px;">
+                            <button class="fbg-btn-secondary" id="fbgLibPostPickFileBtn" style="height:34px;font-size:12px;padding:0 12px;flex-shrink:0;">
+                                <span class="material-icons" style="font-size:15px;">upload_file</span>
+                                <span data-i18n="fb_groups.pick_file">Pick File</span>
+                            </button>
+                            <button class="fbg-btn-secondary" id="fbgLibPostClearImgBtn" style="height:34px;padding:0 10px;display:none;">
+                                <span class="material-icons" style="font-size:15px;">close</span>
+                            </button>
+                        </div>
+                        <input type="text" class="fbg-input" id="fbgLibPostImgUrl" placeholder="…or paste image URL" data-i18n-placeholder="fb_groups.or_paste_image_url" style="height:34px;font-size:13px;">
+                    </div>
+                </div>
+            </div>
+            <!-- Text -->
+            <div class="fbg-form-group">
+                <label class="fbg-form-label" data-i18n="fb_groups.post_text">Post Text</label>
+                <textarea class="fbg-input fbg-textarea" id="fbgLibPostText" rows="5" placeholder="Write your post content here…" data-i18n-placeholder="fb_groups.post_text_placeholder"></textarea>
+            </div>
+            <!-- URL -->
+            <div class="fbg-form-group">
+                <label class="fbg-form-label" data-i18n="fb_groups.post_url">URL <span style="font-weight:400;color:var(--text-secondary);">(optional)</span></label>
+                <input type="url" class="fbg-input" id="fbgLibPostUrl" placeholder="https://…" style="height:36px;">
+            </div>
+        </div>
+        <div class="fbg-import-modal-footer">
+            <button class="fbg-btn-secondary" id="fbgLibPostCancelBtn" data-i18n="fb_groups.cancel">Cancel</button>
+            <button class="fbg-btn-primary" id="fbgLibPostSaveBtn">
+                <span class="material-icons" style="font-size:16px;">save</span>
+                <span data-i18n="fb_groups.save_post">Save Post</span>
+            </button>
+        </div>
+    </div><!-- /.fbg-lib-post-modal -->
+
+    <!-- ── Assign Posts to Workflow Modal ──────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgAssignPostsBackdrop"></div>
+    <div class="fbg-import-modal fbg-assign-posts-modal" id="fbgAssignPostsModal">
+        <!-- Header -->
+        <div class="fbg-import-modal-header">
+            <div>
+                <h2 id="fbgAssignPostsTitle" style="margin:0 0 2px;font-size:17px;font-weight:700;"></h2>
+                <span id="fbgAssignPostsCount" style="font-size:12px;color:var(--accent-color,#0d6efd);font-weight:600;"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <button class="fbg-btn-secondary" id="fbgAssignClearAllBtn" style="height:32px;padding:0 12px;font-size:12px;" title="Remove all selected posts">
+                    <span class="material-icons" style="font-size:15px;">clear_all</span>
+                    <span>Clear All</span>
+                </button>
+                <button class="fbg-modal-close" id="fbgAssignPostsCloseBtn"><span class="material-icons">close</span></button>
+            </div>
+        </div>
+        <!-- Dual-panel body -->
+        <div class="fbg-assign-body">
+            <!-- LEFT: Library browser -->
+            <div class="fbg-assign-panel" id="fbgAssignLibPanel">
+                <div class="fbg-assign-panel-hd">
+                    <span class="material-icons" style="font-size:16px;color:var(--text-secondary);">photo_library</span>
+                    <strong style="font-size:13px;">Library</strong>
+                </div>
+                <div class="fbg-assign-search-row">
+                    <div class="fbg-search-wrap" style="flex:1;">
+                        <span class="material-icons">search</span>
+                        <input type="text" id="fbgAssignLibSearch" placeholder="Search posts…">
+                    </div>
+                    <button class="fbg-btn-secondary" id="fbgAssignAddAllBtn" style="height:34px;padding:0 10px;font-size:12px;white-space:nowrap;" title="Add all visible posts to workflow">
+                        <span class="material-icons" style="font-size:15px;">playlist_add</span>
+                        <span>Add page</span>
+                    </button>
+                </div>
+                <div class="fbg-assign-lib-list" id="fbgAssignLibList">
+                    <div class="fbg-wf-empty" id="fbgAssignLibEmpty" style="padding:24px 0;">
+                        <span class="material-icons" style="font-size:36px;color:var(--text-secondary);">photo_library</span>
+                        <p data-i18n="fb_groups.library_no_posts">No posts in library yet.</p>
+                        <button class="fbg-btn-primary" id="fbgAssignGoLibraryBtn" style="margin-top:8px;font-size:12px;height:32px;padding:0 14px;">
+                            <span class="material-icons" style="font-size:15px;">add_circle</span>
+                            <span data-i18n="fb_groups.go_to_library">Open Library</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider arrow -->
+            <div class="fbg-assign-divider">
+                <span class="material-icons">arrow_forward</span>
+            </div>
+
+            <!-- RIGHT: Selected / ordered posts -->
+            <div class="fbg-assign-panel" id="fbgAssignSelPanel">
+                <div class="fbg-assign-panel-hd">
+                    <span class="material-icons" style="font-size:16px;color:var(--accent-color,#0d6efd);">playlist_add_check</span>
+                    <strong style="font-size:13px;">Workflow Posts</strong>
+                    <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">(drag to reorder)</span>
+                </div>
+                <div class="fbg-assign-sel-list" id="fbgAssignSelList">
+                    <div class="fbg-wf-empty" id="fbgAssignSelEmpty" style="padding:24px 0;">
+                        <span class="material-icons" style="font-size:36px;color:var(--text-secondary);">playlist_add</span>
+                        <p style="font-size:13px;color:var(--text-secondary);">Add posts from the library</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="fbg-import-modal-footer">
+            <button class="fbg-btn-secondary" id="fbgAssignPostsCancelBtn" data-i18n="fb_groups.cancel">Cancel</button>
+            <button class="fbg-btn-primary" id="fbgAssignPostsSaveBtn">
+                <span class="material-icons" style="font-size:16px;">save</span>
+                <span data-i18n="fb_groups.save_post">Save</span>
+            </button>
+        </div>
+    </div><!-- /.fbg-assign-posts-modal -->
+
+    <!-- ── CSV Import Modal ─────────────────────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgCsvImportBackdrop"></div>
+    <div class="fbg-import-modal" id="fbgCsvImportModal" style="width:min(620px,96vw);max-height:92vh;">
+        <div class="fbg-import-modal-header">
+            <h2 data-i18n="fb_groups.csv_import_title">Import Posts from CSV</h2>
+            <button class="fbg-modal-close" id="fbgCsvImportClose"><span class="material-icons">close</span></button>
+        </div>
+        <div class="fbg-import-modal-body" style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Format documentation -->
+            <div class="fbg-csv-doc-box">
+                <div class="fbg-csv-doc-header">
+                    <span class="material-icons" style="font-size:18px;color:var(--accent-color);">info</span>
+                    <strong data-i18n="fb_groups.csv_format_title">CSV Format</strong>
+                </div>
+                <p class="fbg-csv-doc-text" data-i18n="fb_groups.csv_format_desc">
+                    The CSV must have 3 columns in this order, with a header row:
+                </p>
+                <div class="fbg-csv-columns">
+                    <div class="fbg-csv-col-row">
+                        <span class="fbg-csv-col-name">image_url</span>
+                        <span class="fbg-csv-col-desc" data-i18n="fb_groups.csv_col_image">Remote image URL (https://…). Downloaded automatically. Leave blank for no image.</span>
+                    </div>
+                    <div class="fbg-csv-col-row">
+                        <span class="fbg-csv-col-name">post_text</span>
+                        <span class="fbg-csv-col-desc" data-i18n="fb_groups.csv_col_text">Post content. Required — rows without text are skipped. Wrap in quotes if it contains commas or line breaks.</span>
+                    </div>
+                    <div class="fbg-csv-col-row">
+                        <span class="fbg-csv-col-name">url</span>
+                        <span class="fbg-csv-col-desc" data-i18n="fb_groups.csv_col_url">Article URL (https://…). Optional.</span>
+                    </div>
+                </div>
+                <div class="fbg-csv-example-header">
+                    <span data-i18n="fb_groups.csv_example_label">Example:</span>
+                </div>
+                <pre class="fbg-csv-example-code">image_url,post_text,url
+https://example.com/img.jpg,"Check out this amazing burger recipe!",https://example.com/recipe
+,"Great tips for social media growth",https://example.com/tips
+https://cdn.example.com/photo.png,"Delicious vegan pasta",</pre>
+                <button class="fbg-btn-secondary fbg-csv-download-btn" id="fbgCsvDownloadExample" style="margin-top:10px;font-size:12px;height:30px;padding:0 12px;">
+                    <span class="material-icons" style="font-size:14px;">download</span>
+                    <span data-i18n="fb_groups.csv_download_example">Download example.csv</span>
+                </button>
+            </div>
+
+            <!-- Drop zone / file picker -->
+            <div class="fbg-csv-dropzone" id="fbgCsvDropzone">
+                <span class="material-icons" style="font-size:36px;color:var(--text-secondary);">upload_file</span>
+                <p data-i18n="fb_groups.csv_drop_hint">Drag &amp; drop your CSV here, or click to browse</p>
+                <input type="file" id="fbgCsvFileInput" accept=".csv,text/csv" style="display:none;">
+            </div>
+
+            <!-- Selected file indicator -->
+            <div id="fbgCsvFileInfo" style="display:none;font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;">
+                <span class="material-icons" style="font-size:16px;color:var(--accent-color);">check_circle</span>
+                <span id="fbgCsvFileName"></span>
+                <button class="fbg-btn-secondary" id="fbgCsvClearFile" style="height:26px;padding:0 8px;font-size:11px;margin-left:auto;">
+                    <span class="material-icons" style="font-size:13px;">close</span>
+                </button>
+            </div>
+
+            <!-- Progress log -->
+            <div id="fbgCsvProgressWrap" style="display:none;">
+                <div class="fbg-csv-progress-bar-track"><div class="fbg-csv-progress-bar-fill" id="fbgCsvProgressBar" style="width:0%"></div></div>
+                <div id="fbgCsvProgressLog" class="fbg-csv-progress-log"></div>
+            </div>
+
+        </div>
+        <div class="fbg-import-modal-footer">
+            <button class="fbg-btn-secondary" id="fbgCsvImportCancelBtn" data-i18n="fb_groups.cancel">Cancel</button>
+            <button class="fbg-btn-primary" id="fbgCsvImportStartBtn" disabled>
+                <span class="material-icons" style="font-size:16px;">upload</span>
+                <span data-i18n="fb_groups.csv_import_start">Import Posts</span>
+            </button>
+        </div>
+    </div><!-- /.fbg-csv-import-modal -->
+
+    <!-- ── Profile Detail Modal ───────────────────────────── -->
+    <div class="fbg-modal-backdrop" id="fbgProfileDetailBackdrop"></div>
+    <div class="fbg-import-modal" id="fbgProfileDetailModal" style="width:min(680px,96vw);max-height:92vh;">
+        <div class="fbg-import-modal-header">
+            <div class="fbg-pd-title">
+                <h2 id="fbgPdName">—</h2>
+                <span id="fbgPdStructure" class="fbg-pd-structure"></span>
+            </div>
+            <button class="fbg-modal-close" id="fbgProfileDetailClose"><span class="material-icons">close</span></button>
+        </div>
+        <div class="fbg-import-modal-body" style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Live status -->
+            <div class="fbg-pd-status-row" id="fbgPdStatusRow">
+                <span class="fbg-profile-status" id="fbgPdStatus"><span class="fbg-status-dot"></span><span class="fbg-status-text">—</span></span>
+                <span class="fbg-pd-status-detail" id="fbgPdStatusDetail"></span>
+            </div>
+
+            <!-- Stat tiles -->
+            <div class="fbg-pd-stats">
+                <div class="fbg-pd-stat"><span class="fbg-pd-stat-val" id="fbgPdSentToday">0</span><span class="fbg-pd-stat-lbl" data-i18n="fb_groups.profile_cap_usage">Today</span></div>
+                <div class="fbg-pd-stat"><span class="fbg-pd-stat-val" id="fbgPdSent">0</span><span class="fbg-pd-stat-lbl" data-i18n="fb_groups.profile_sent">Sent</span></div>
+                <div class="fbg-pd-stat"><span class="fbg-pd-stat-val" id="fbgPdFailed">0</span><span class="fbg-pd-stat-lbl" data-i18n="fb_groups.profile_failed">Failed</span></div>
+                <div class="fbg-pd-stat"><span class="fbg-pd-stat-val" id="fbgPdRate">—</span><span class="fbg-pd-stat-lbl" data-i18n="fb_groups.profile_success_rate">Success</span></div>
+            </div>
+
+            <!-- Groups -->
+            <div>
+                <h3 class="fbg-pd-section-title" data-i18n="fb_groups.profile_belongs_to_groups">Groups</h3>
+                <div class="fbg-pd-groups" id="fbgPdGroups"></div>
+            </div>
+
+            <!-- History -->
+            <div>
+                <h3 class="fbg-pd-section-title" data-i18n="fb_groups.profile_history_title">Post History</h3>
+                <div class="fbg-pd-history" id="fbgPdHistory"></div>
+                <div class="fbg-pd-history-more" id="fbgPdHistoryMore" style="display:none;">
+                    <button class="fbg-btn-secondary fbg-btn-sm" id="fbgPdLoadMore" data-i18n="fb_groups.load_more">Load more</button>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /#fbgProfileDetailModal -->
+
+</div><!-- /#fb-groups-page -->
+
+<script src="assets/js/pages/fb-groups.js"></script>

@@ -1,0 +1,397 @@
+<div id="backup-section" class="container-fluid p-4">
+
+    <!-- Page Header -->
+    <div class="backup-page-header">
+        <h2>
+            <span class="material-icons">shield</span>
+            <span data-i18n="backup.title">Backup & Restore System</span>
+        </h2>
+        <p data-i18n="backup.subtitle">
+            Create complete backups of your ViralCloner data including profiles, images, database, and settings.
+            Restore from previous backups to recover your data.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- ═══════════ BACKUP COLUMN ═══════════ -->
+        <div class="col-lg-6">
+            <div class="backup-section-card">
+
+                <div class="section-header">
+                    <div class="icon-circle backup-icon">
+                        <span class="material-icons">backup</span>
+                    </div>
+                    <h3 class="section-title" data-i18n="backup.create_backup">Create Backup</h3>
+                </div>
+
+                <p class="section-desc" data-i18n="backup.create_backup_desc">
+                    Create a complete backup of all your ViralCloner data. The system will automatically clean up
+                    unnecessary files before creating the backup to optimize size.
+                </p>
+
+                <!-- What's Included -->
+                <div class="included-list">
+                    <h6>
+                        <span class="material-icons">checklist</span>
+                        <span data-i18n="backup.whats_included">What's Included:</span>
+                    </h6>
+                    <div class="included-items-grid">
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.sqlite_database">SQLite Databases (all settings & data)</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.chrome_profiles">Chrome Profiles</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.generated_images">Generated Images</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.user_uploads">User Uploads</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.audio_music">Audio & Music</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.downloads_recordings">Downloads & Recordings</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.video_media">Video Media</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.thumbnails_previews">Thumbnails & Previews</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.session_files">Session Files</span></div>
+                        <div class="included-item"><span class="material-icons">check_circle</span> <span data-i18n="backup.application_logs">Application Logs</span></div>
+                    </div>
+                    <div class="included-note">
+                        <span class="material-icons">info</span>
+                        <span data-i18n="backup.chromedriver_note">VCBrowser, FFmpeg & ChromeDriver are excluded (re-downloadable).</span>
+                    </div>
+                </div>
+
+                <!-- Estimate Panel -->
+                <div class="estimate-panel" id="backupEstimate">
+                    <div class="estimate-summary">
+                        <div class="estimate-stat">
+                            <div class="stat-label" data-i18n="backup.original_size">Original Size</div>
+                            <div class="stat-value" id="totalOriginalSize">-</div>
+                        </div>
+                        <div class="estimate-stat">
+                            <div class="stat-label" data-i18n="backup.after_compression">After Compression</div>
+                            <div class="stat-value" id="totalCompressedSize">-</div>
+                        </div>
+                        <div class="estimate-stat">
+                            <div class="stat-label" data-i18n="backup.space_saved">Space Saved</div>
+                            <div class="stat-value savings" id="totalSavings">-</div>
+                        </div>
+                    </div>
+
+                    <div class="estimate-info">
+                        <span id="categoriesWithData">0</span> / <span id="totalCategories">11</span>
+                        <span data-i18n="backup.categories_have_data">categories have data</span>
+                        &middot;
+                        <span data-i18n="backup.est_backup_time">Est. backup time</span>: <span id="estimatedTime">-</span>
+                    </div>
+
+                    <button class="estimate-toggle-btn" id="toggleDetailsBtn">
+                        <span class="material-icons" style="font-size: 16px;">expand_more</span>
+                        <span id="toggleText" data-i18n="backup.show_details">Show Details</span>
+                    </button>
+
+                    <div class="category-breakdown" id="estimateDetails">
+                        <h6 data-i18n="backup.category_breakdown">Category Breakdown</h6>
+                        <div id="categoryList"></div>
+                        <div class="included-note" style="margin-top: 10px;">
+                            <span class="material-icons">info</span>
+                            <span>
+                                <strong data-i18n="backup.largest_category">Largest category</strong>: <span id="largestCategory">-</span>
+                                &middot; <span data-i18n="backup.compression_note">Compression ratios vary by file type</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup Progress -->
+                <div class="progress-panel" id="backupProgress">
+                    <div class="progress-panel-header">
+                        <span class="material-icons spinning" id="backupSpinner">sync</span>
+                        <span class="progress-panel-title" id="backupProgressTitle" data-i18n="backup.creating_backup">Creating Backup...</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="backupProgressBar"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span class="progress-percentage" id="backupProgressPercentage">0%</span>
+                        <span class="progress-step" id="backupCurrentStep" data-i18n="backup.preparing">Preparing</span>
+                    </div>
+                    <div class="activity-log" id="backupActivityLog"></div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="backup-actions">
+                    <button class="btn-backup-secondary" id="getEstimateBtn">
+                        <span class="material-icons">analytics</span>
+                        <span data-i18n="backup.get_size_estimate">Get Size Estimate</span>
+                    </button>
+                    <button class="btn-backup-primary" id="createBackupBtn">
+                        <span class="material-icons">backup</span>
+                        <span data-i18n="backup.create_backup">Create Backup</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ RESTORE COLUMN ═══════════ -->
+        <div class="col-lg-6">
+            <div class="backup-section-card">
+
+                <div class="section-header">
+                    <div class="icon-circle restore-icon">
+                        <span class="material-icons">settings_backup_restore</span>
+                    </div>
+                    <h3 class="section-title" data-i18n="backup.restore_from_backup">Restore from Backup</h3>
+                </div>
+
+                <p class="section-desc">
+                    <span data-i18n="backup.restore_desc">Restore your ViralCloner data from a previous backup file.</span>
+                    <strong data-i18n="backup.restore_warning">This will completely replace all current data!</strong>
+                </p>
+
+                <!-- File Drop Zone -->
+                <div class="file-drop-zone" id="fileDropZone">
+                    <span class="material-icons drop-icon">cloud_upload</span>
+                    <h5 data-i18n="backup.select_backup_file">Select Backup File</h5>
+                    <p data-i18n="backup.drop_file_hint">Click to browse or drag and drop a .vcbak file</p>
+                    <button class="btn-backup-secondary" id="selectBackupBtn">
+                        <span class="material-icons">folder_open</span>
+                        <span data-i18n="backup.browse_files">Browse Files</span>
+                    </button>
+                </div>
+
+                <!-- Backup File Info -->
+                <div class="backup-file-info" id="backupInfo">
+                    <h6>
+                        <span class="material-icons">info</span>
+                        <span data-i18n="backup.backup_information">Backup Information</span>
+                    </h6>
+                    <div class="backup-info-grid">
+                        <div class="backup-info-item">
+                            <span class="info-label" data-i18n="backup.file_name">File Name</span>
+                            <span class="info-value" id="backupFileName">-</span>
+                        </div>
+                        <div class="backup-info-item">
+                            <span class="info-label" data-i18n="backup.file_size">File Size</span>
+                            <span class="info-value" id="backupFileSize">-</span>
+                        </div>
+                        <div class="backup-info-item">
+                            <span class="info-label" data-i18n="backup.created">Created</span>
+                            <span class="info-value" id="backupCreated">-</span>
+                        </div>
+                        <div class="backup-info-item">
+                            <span class="info-label" data-i18n="backup.version">Version</span>
+                            <span class="info-value" id="backupVersion">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restore Progress -->
+                <div class="progress-panel" id="restoreProgress">
+                    <div class="progress-panel-header">
+                        <span class="material-icons spinning">sync</span>
+                        <span class="progress-panel-title" id="restoreProgressTitle" data-i18n="backup.restoring">Restoring...</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill restore" id="restoreProgressBar"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span class="progress-percentage" id="restoreProgressPercentage">0%</span>
+                        <span class="progress-step" id="restoreCurrentStep" data-i18n="backup.preparing">Preparing</span>
+                    </div>
+                    <div class="activity-log" id="restoreActivityLog"></div>
+                </div>
+
+                <!-- Restore Button -->
+                <div class="backup-actions">
+                    <button class="btn-backup-primary" id="restoreBackupBtn" disabled style="width: 100%;">
+                        <span class="material-icons">settings_backup_restore</span>
+                        <span data-i18n="backup.restore_backup">Restore from Backup</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ DISK CLEANUP ROW ═══════════ -->
+    <div class="row g-4 mt-0">
+        <div class="col-12">
+            <div class="backup-section-card">
+                <div class="section-header">
+                    <div class="icon-circle" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <span class="material-icons">cleaning_services</span>
+                    </div>
+                    <h3 class="section-title" data-i18n="backup.profile_cache_title">Profile Cache Cleaner</h3>
+                </div>
+
+                <p class="section-desc" data-i18n="backup.profile_cache_desc">
+                    Chrome browser profiles can accumulate hundreds of megabytes of cached data (Cache, Code Cache, GPU Cache, etc.) over time.
+                    This tool removes those cache folders from all profile directories while keeping session data and cookies intact.
+                    It is safe to run at any time while no automations are running.
+                </p>
+
+                <div id="profileCacheResult" style="display:none; margin-bottom: 12px;">
+                    <div class="safety-note">
+                        <span class="material-icons" id="profileCacheResultIcon">check_circle</span>
+                        <p id="profileCacheResultText"></p>
+                    </div>
+                </div>
+
+                <div class="backup-actions">
+                    <button class="btn-backup-secondary" id="cleanProfileCachesBtn">
+                        <span class="material-icons">delete_sweep</span>
+                        <span data-i18n="backup.clean_profile_caches">Clean Profile Caches</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Warning Modal -->
+<div class="modal fade backup-warning-modal" id="warningModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span class="material-icons">warning</span>
+                    <span data-i18n="backup.warning_title">Critical Warning — Read Carefully</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="warning-alert">
+                    <h6>
+                        <span class="material-icons">error</span>
+                        <span data-i18n="backup.warning_danger">Data Will Be Permanently Erased</span>
+                    </h6>
+                    <p data-i18n="backup.warning_body">
+                        This action will completely erase all your current ViralCloner data and replace it
+                        with the backup data. This includes:
+                    </p>
+                </div>
+
+                <ul class="warning-steps">
+                    <li data-i18n="backup.warning_step1">All Chrome profiles will be deleted and replaced with backup profiles</li>
+                    <li data-i18n="backup.warning_step2">All generated images and media will be removed and replaced</li>
+                    <li data-i18n="backup.warning_step3">All application settings and data will be reset to the backup state</li>
+                    <li data-i18n="backup.warning_step4">All current automations and workflows will be replaced</li>
+                    <li data-i18n="backup.warning_step5">The application will need to be restarted after restoration</li>
+                </ul>
+
+                <div class="safety-note">
+                    <span class="material-icons">verified_user</span>
+                    <p data-i18n="backup.safety_note">
+                        Your current state will be automatically backed up before restoration begins,
+                        so you can recover if needed.
+                    </p>
+                </div>
+
+                <div class="confirm-checks">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmUnderstand">
+                        <label class="form-check-label" for="confirmUnderstand" data-i18n="backup.confirm_understand">
+                            I understand that this will completely erase my current data
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmBackup">
+                        <label class="form-check-label" for="confirmBackup" data-i18n="backup.confirm_proceed">
+                            I want to proceed with the restoration process
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmRestart">
+                        <label class="form-check-label" for="confirmRestart" data-i18n="backup.confirm_restart">
+                            I understand the application will restart after restoration
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-backup-secondary" data-bs-dismiss="modal">
+                    <span class="material-icons">close</span>
+                    <span data-i18n="backup.cancel">Cancel</span>
+                </button>
+                <button type="button" class="btn-danger-restore" id="confirmRestoreBtn" disabled>
+                    <span class="material-icons">warning</span>
+                    <span data-i18n="backup.confirm_restore_btn">Yes, Erase Everything and Restore</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade backup-result-modal" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <h5 class="modal-title">
+                    <span class="material-icons">check_circle</span>
+                    <span data-i18n="backup.operation_success">Operation Successful</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <p id="successMessage">Operation completed successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-backup-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade backup-result-modal" id="errorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header error">
+                <h5 class="modal-title">
+                    <span class="material-icons">error</span>
+                    <span data-i18n="backup.operation_error">Error</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">An error occurred during the operation.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-backup-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    console.log('[BACKUP] Loading backup.js script...');
+
+    if (window.backupManager) {
+        console.log('[BACKUP] Cleaning up existing backup manager instance...');
+        if (window.backupManager.destroy) window.backupManager.destroy();
+        window.backupManager = null;
+    }
+
+    function initBackup() {
+        console.log('[BACKUP] Initializing backup manager for new page instance...');
+        if (typeof initializeBackupManager === 'function') {
+            initializeBackupManager();
+        } else {
+            console.warn('[BACKUP] initializeBackupManager function not found, retrying...');
+            setTimeout(initBackup, 100);
+        }
+    }
+
+    if (!window.BackupManagerLoaded) {
+        const script = document.createElement('script');
+        script.src = 'assets/js/pages/backup.js';
+
+        script.onload = () => {
+            console.log('[BACKUP] backup.js loaded successfully');
+            window.BackupManagerLoaded = true;
+            initBackup();
+        };
+
+        script.onerror = (error) => {
+            console.error('[BACKUP] Failed to load backup.js:', error);
+        };
+
+        document.head.appendChild(script);
+    } else {
+        console.log('[BACKUP] backup.js already loaded, re-initializing...');
+        initBackup();
+    }
+})();
+</script>

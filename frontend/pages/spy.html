@@ -1,0 +1,1859 @@
+<div id="spy-section" class="settings-container">
+    <div class="settings-sidebar">
+        <div class="menu">
+
+            <a href="#" class="menu-element active" for="profiles-show">
+                <div>
+                    <i class="material-icons">account_circle</i>
+                    <span data-i18n="spy.profiles">Profiles</span>
+                </div>
+                <div class="material-icons" data-tooltip="Easily manage all your tracking profiles in one place.">
+                    info
+                </div>
+            </a>
+
+            <a href="#" class="menu-element" for="library-show">
+                <div>
+                    <i class="material-icons">collections</i>
+                    <span data-i18n="spy.library">Library</span>
+                </div>
+                <div class="material-icons" data-tooltip="Tracked content will be displayed in this section.">
+                    info
+                </div>
+            </a>
+
+            <a href="#" class="menu-element" for="pages-show">
+                <div>
+                    <i class="material-icons">block</i>
+                    <span data-i18n="spy.banned_pages">Banned Pages</span>
+                </div>
+                <div class="material-icons" data-tooltip="Manage banned pages from appearing in your spy feeds.">
+                    info
+                </div>
+            </a>
+
+            <a href="#" class="menu-element" for="followed-pages-show">
+                <div>
+                    <i class="material-icons">bookmark</i>
+                    <span data-i18n="spy.followed_pages">Followed Pages</span>
+                </div>
+                <div class="material-icons" data-tooltip="Save Facebook pages to spy on specific pages instead of the general feed.">
+                    info
+                </div>
+            </a>
+
+            <a href="#" class="menu-element" for="pages-categories-show">
+                <div>
+                    <i class="material-icons">category</i>
+                    <span data-i18n="spy.pages_categories">Pages Categories</span>
+                </div>
+                <div class="material-icons" data-tooltip="Create and manage categories to organize your followed pages and posts.">
+                    info
+                </div>
+            </a>
+
+        </div>
+        
+        <!-- Spy Usage Indicators -->
+        
+    </div>
+    <div class="settings-content">
+        <div class="section" id="profiles-show">
+            <button id="newProfile" class="btn-one my-3">
+                <i class="material-icons">add</i>
+                <span data-i18n="spy.connect_profile">Connect profile</span>
+            </button>
+            <table class="table" id="spyProfiles">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td data-i18n="spy.table.profile_name">Profile name</td>
+                        <td data-i18n="spy.table.country">Country</td>
+                        <td data-i18n="spy.table.created_at">Created At</td>
+                        <td data-i18n="spy.table.status">Status</td>
+                        <td data-i18n="spy.table.action">Action</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="section" id="library-show">
+            <div class="mb-3 d-flex gap-3 align-items-center flex-wrap">
+                <input type="text" id="search-message" class="form-control" placeholder="Search post message"
+                    data-i18n-placeholder="spy.search_posts"
+                    style="width: 300px;" />
+
+                <select id="filter-category" class="form-select" style="width: 200px;">
+                    <option value="" data-i18n="spy.all_categories">All Categories</option>
+                    <option value="uncategorized" data-i18n="spy.uncategorized">Uncategorized</option>
+                    <!-- Categories will be populated dynamically -->
+                </select>
+
+                <select id="filter-type" class="form-select" style="width: 200px;">
+                    <option value="" data-i18n="spy.all_types">All Types</option>
+                    <option value="pinterest">Pinterest</option>
+                    <option value="facebook">Facebook</option>
+                </select>
+
+                <select id="sort-by" class="form-select" style="width: 200px;">
+                    <option value="now" data-i18n="spy.newest">Newest</option>
+                    <option value="shares" data-i18n="spy.most_shared">Most Shared</option>
+                    <option value="comments" data-i18n="spy.most_commented">Most Commented</option>
+                </select>
+
+                <div class="d-flex gap-2 align-items-center">
+                    <label class="d-flex align-items-center gap-2" title="Hide posts that have already been used in workflows">
+                        <input type="checkbox" id="hide-used-posts" checked />
+                        <span data-i18n="spy.hide_used">Hide Used</span>
+                    </label>
+                </div>
+
+                <div class="d-flex gap-2 align-items-center">
+                    <label class="d-flex align-items-center gap-2">
+                        <input type="checkbox" id="select-all-posts" />
+                        <span data-i18n="spy.select_all">Select All</span>
+                    </label>
+                    <button id="delete-selected" class="btn btn-danger flex-center" disabled>
+                        <i class="material-icons">delete</i>
+                        <span data-i18n="spy.delete_selected">Delete Selected</span>
+                    </button>
+                    <button id="delete-all-used" class="btn btn-outline-warning flex-center" title="Delete all posts that have been used in workflows">
+                        <i class="material-icons">delete_sweep</i>
+                        <span data-i18n="spy.delete_all_used">Delete All Used</span>
+                    </button>
+                    <button id="manage-categories-btn" class="btn btn-outline-info flex-center" title="Create and manage categories">
+                        <i class="material-icons">folder</i>
+                        <span data-i18n="spy.manage_categories">Manage Categories</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="posts-container"></div>
+            <nav id="pagination" class="flex-center mt-4">
+                <ul class="pagination"></ul>
+            </nav>
+        </div>
+        <div class="section" id="pages-show">
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <h4 data-i18n="spy.banned_section.title">Banned Pages</h4>
+                <span id="banned-count" class="badge bg-secondary">0 <span data-i18n="spy.banned_pages">banned pages</span></span>
+            </div>
+            <div id="no-banned-pages" class="text-center py-5" style="display: none;">
+                <div class="material-icons mb-3" style="font-size: 4rem; color: #6c757d;">block</div>
+                <h5 data-i18n="spy.banned_section.empty">No Banned Pages</h5>
+                <p class="text-muted" data-i18n="spy.banned_section.empty_hint">Pages you ban will appear here. You can unban them anytime.</p>
+            </div>
+            <table class="table" id="bannedPages" style="display: none;">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td data-i18n="spy.banned_table.page_name">Page Name</td>
+                        <td data-i18n="spy.banned_table.platform">Platform</td>
+                        <td data-i18n="spy.banned_table.banned_date">Banned Date</td>
+                        <td data-i18n="spy.banned_table.action">Action</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="section" id="followed-pages-show">
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <h4 data-i18n="spy.followed_section.title">Followed Pages</h4>
+                <span id="followed-count" class="badge bg-primary">0 <span data-i18n="spy.followed_pages">followed pages</span></span>
+            </div>
+            <div class="mb-3">
+                <div class="d-flex gap-2">
+                    <input type="text" id="add-page-url" class="form-control" placeholder="Enter Facebook page URL (e.g., https://facebook.com/pagename)" data-i18n-placeholder="spy.followed_section.url_placeholder" style="flex: 1;" />
+                    <select id="add-page-category" class="form-select" style="width: 180px;">
+                        <option value="" data-i18n="spy.followed_section.no_category">No Category</option>
+                    </select>
+                    <button id="add-followed-page" class="btn btn-primary flex-center">
+                        <i class="material-icons">add</i>
+                        <span data-i18n="spy.followed_section.add_page">Add Page</span>
+                    </button>
+                </div>
+                <small class="text-muted mt-1 d-block" data-i18n="spy.followed_section.tip">Tip: You can also add pages directly from scraped posts using the "Follow Page" button.</small>
+            </div>
+            <div class="mb-3" id="feedspy-action-row" style="display: none;">
+                <button id="start-feedspy-btn" class="btn btn-primary flex-center" style="background: #4a6cf7; border-color: #4a6cf7;">
+                    <i class="material-icons">rss_feed</i>
+                    <span data-i18n="spy.feedspy.analyse_btn">Spy Without Browser Profile (FeedSpy)</span>
+                </button>
+                <small class="text-muted mt-1 d-block" data-i18n="spy.feedspy.analyse_hint">Fetch viral posts from your followed pages using FeedSpy — no browser login required.</small>
+            </div>
+            <div id="no-followed-pages" class="text-center py-5" style="display: none;">
+                <div class="material-icons mb-3" style="font-size: 4rem; color: #6c757d;">star_border</div>
+                <h5 data-i18n="spy.followed_section.empty">No Followed Pages</h5>
+                <p class="text-muted" data-i18n="spy.followed_section.empty_hint">Add Facebook pages here to spy on them specifically instead of the general feed.</p>
+            </div>
+            <div id="followed-pages-bulk-actions" class="d-flex gap-2 mb-2 align-items-center" style="display: none !important;">
+                <span id="followed-pages-selected-count" class="text-muted" style="font-size: 13px;"></span>
+                <button id="bulk-change-category-pages" class="btn btn-secondary btn-sm flex-center" disabled>
+                    <i class="material-icons" style="font-size: 16px;">category</i>
+                    <span data-i18n="spy.followed_section.change_category">Change Category</span>
+                </button>
+                <button id="bulk-delete-pages" class="btn btn-danger btn-sm flex-center" disabled>
+                    <i class="material-icons" style="font-size: 16px;">delete</i>
+                    <span data-i18n="spy.followed_section.delete_selected">Delete Selected</span>
+                </button>
+            </div>
+            <table class="table" id="followedPages" style="display: none;">
+                <thead>
+                    <tr>
+                        <td style="width: 40px;"><input type="checkbox" id="select-all-followed-pages" class="form-check-input" /></td>
+                        <td></td>
+                        <td data-i18n="spy.followed_table.page_name">Page Name</td>
+                        <td data-i18n="spy.followed_table.category">Category</td>
+                        <td data-i18n="spy.followed_table.platform">Platform</td>
+                        <td data-i18n="spy.followed_table.added_date">Added Date</td>
+                        <td data-i18n="spy.followed_table.action">Action</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="section" id="pages-categories-show">
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <h4 data-i18n="spy.pages_categories_section.title">Pages Categories</h4>
+                <button id="add-category-btn" class="btn btn-primary flex-center">
+                    <i class="material-icons">add</i>
+                    <span data-i18n="spy.pages_categories_section.add_category">Add Category</span>
+                </button>
+            </div>
+            <div id="no-page-categories" class="text-center py-5" style="display: none;">
+                <div class="material-icons mb-3" style="font-size: 4rem; color: #6c757d;">category</div>
+                <h5 data-i18n="spy.pages_categories_section.empty">No Categories</h5>
+                <p class="text-muted" data-i18n="spy.pages_categories_section.empty_hint">Create categories to organize your followed pages and posts.</p>
+            </div>
+            <div id="page-categories-list" class="categories-grid"></div>
+        </div>
+    </div>
+    
+    <!-- Spy Filter Dialog - Shows before starting spy -->
+    <div id="spy-filter-dialog" class="modal-overlay" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5><i class="material-icons">filter_list</i> Spy Filters</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Spy Mode Selection -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold spy-mode-label">Spy Mode</label>
+                    <div class="d-flex gap-2">
+                        <label class="form-check d-flex align-items-center gap-2 p-2 border rounded flex-fill spy-mode-option">
+                            <input type="radio" name="spy-mode" value="feed" class="form-check-input" checked />
+                            <div>
+                                <div class="mode-title">General Feed</div>
+                                <small class="text-muted mode-desc">Scrape from news feed</small>
+                            </div>
+                        </label>
+                        <label class="form-check d-flex align-items-center gap-2 p-2 border rounded flex-fill spy-mode-option">
+                            <input type="radio" name="spy-mode" value="pages" class="form-check-input" />
+                            <div>
+                                <div class="mode-title">Specific Pages</div>
+                                <small class="text-muted mode-desc">Scrape from selected pages</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Target Pages Selection (shown only when pages mode is selected) -->
+                <div id="target-pages-section" class="mb-3" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label fw-bold spy-mode-label mb-0">Select Pages to Spy On</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <label class="form-label mb-0" style="font-size: 13px;">Filter by:</label>
+                            <select id="spy-category-filter" class="form-select form-select-sm" style="width: 160px;">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Posts from this spy session will be auto-assigned to the selected category.</small>
+                        <label class="d-flex align-items-center gap-1 mb-0" style="cursor: pointer; font-size: 13px;">
+                            <input type="checkbox" id="select-all-spy-pages" />
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                    <div id="target-pages-list" class="border rounded p-2">
+                        <p class="text-muted text-center py-2 mb-0" id="no-pages-to-select">No followed pages yet. Add pages in the "Followed Pages" section first.</p>
+                    </div>
+                    <div class="mt-2 d-flex align-items-center gap-2">
+                        <label class="form-label mb-0" style="white-space: nowrap;">Max Post Age:</label>
+                        <input type="number" id="filter-max-post-age" class="form-control form-control-sm" style="width: 70px;" min="1" max="30" value="7" />
+                        <span class="text-muted">days</span>
+                        <small class="text-muted ms-2">(Switches to next page when posts are older)</small>
+                    </div>
+                </div>
+
+                <!-- Filters Grid -->
+                <div class="filter-box">
+                    <label class="form-label fw-bold filter-box-title">Minimum Thresholds</label>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <div class="filter-item">
+                            <label>Shares</label>
+                            <input type="number" id="filter-min-shares" class="form-control form-control-sm" placeholder="0" min="0" value="0" />
+                        </div>
+                        <div class="filter-item">
+                            <label>Likes</label>
+                            <input type="number" id="filter-min-likes" class="form-control form-control-sm" placeholder="0" min="0" value="0" />
+                        </div>
+                        <div class="filter-item">
+                            <label>Comments</label>
+                            <input type="number" id="filter-min-comments" class="form-control form-control-sm" placeholder="0" min="0" value="0" />
+                        </div>
+                        <div class="filter-item">
+                            <label>Virality</label>
+                            <input type="number" id="filter-min-virality" class="form-control form-control-sm" placeholder="0" min="0" step="0.1" value="0" />
+                        </div>
+                    </div>
+                    <small class="text-muted d-block mt-2 filter-hint">Shares per day per 10K followers. Higher = faster viral growth.</small>
+                </div>
+                
+                <!-- Scroll Speed -->
+                <div class="scroll-speed-box">
+                    <label class="form-label d-flex justify-content-between align-items-center scroll-speed-label">
+                        <span>Scroll Speed</span>
+                        <span id="scroll-speed-value" class="badge bg-primary">3</span>
+                    </label>
+                    <input type="range" id="filter-scroll-speed" class="form-range" min="1" max="10" value="3" />
+                    <div class="d-flex justify-content-between scroll-speed-hints">
+                        <span>Slower (safer)</span>
+                        <span>Faster (risky)</span>
+                    </div>
+                    <div id="scroll-speed-warning" class="alert alert-warning py-2 px-3 mt-2 mb-0" style="display: none;">
+                        <i class="material-icons">warning</i>
+                        High speeds may trigger Facebook's anti-bot detection.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" id="spy-filter-cancel">Cancel</button>
+                <button class="btn btn-primary btn-sm" id="spy-filter-start">
+                    <i class="material-icons">play_arrow</i> Start Spying
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FeedSpy Analyse Dialog -->
+    <div id="feedspy-dialog" class="modal-overlay" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5><i class="material-icons">rss_feed</i> <span data-i18n="spy.feedspy.dialog_title">FeedSpy Analysis</span></h5>
+            </div>
+            <div class="modal-body">
+                <!-- Page Selection -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label fw-bold spy-mode-label mb-0" data-i18n="spy.feedspy.select_pages">Select Pages to Analyse</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <label class="form-label mb-0" style="font-size: 13px;" data-i18n="spy.feedspy.filter_by">Filter by:</label>
+                            <select id="feedspy-category-filter" class="form-select form-select-sm" style="width: 160px;">
+                                <option value="" data-i18n="spy.feedspy.all_categories">All Categories</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <small class="text-muted" data-i18n="spy.feedspy.category_hint">Posts will be auto-assigned to the selected category.</small>
+                        <label class="d-flex align-items-center gap-1 mb-0" style="cursor: pointer; font-size: 13px;">
+                            <input type="checkbox" id="feedspy-select-all" />
+                            <span data-i18n="spy.feedspy.select_all">Select All</span>
+                        </label>
+                    </div>
+                    <div id="feedspy-pages-list" class="border rounded p-2">
+                        <p class="text-muted text-center py-2 mb-0" data-i18n="spy.feedspy.no_pages">No followed pages yet.</p>
+                    </div>
+                    <div class="mt-2 d-flex align-items-center gap-2">
+                        <label class="form-label mb-0" style="white-space: nowrap;" data-i18n="spy.feedspy.posts_per_page">Posts per page:</label>
+                        <input type="number" id="feedspy-posts-per-page" class="form-control form-control-sm" style="width: 70px;" min="1" max="100" value="50" />
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label fw-bold mb-1" data-i18n="spy.feedspy.min_thresholds">Minimum Thresholds</label>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <div class="flex-fill" style="min-width: 70px;">
+                                <label class="form-label mb-0" style="font-size: 12px;" data-i18n="spy.feedspy.shares">Shares</label>
+                                <input type="number" id="feedspy-min-shares" class="form-control form-control-sm" placeholder="0" min="0" value="0" />
+                            </div>
+                            <div class="flex-fill" style="min-width: 70px;">
+                                <label class="form-label mb-0" style="font-size: 12px;" data-i18n="spy.feedspy.likes">Likes</label>
+                                <input type="number" id="feedspy-min-likes" class="form-control form-control-sm" placeholder="0" min="0" value="0" />
+                            </div>
+                            <div class="flex-fill" style="min-width: 70px;">
+                                <label class="form-label mb-0" style="font-size: 12px;" data-i18n="spy.feedspy.comments_label">Comments</label>
+                                <input type="number" id="feedspy-min-comments" class="form-control form-control-sm" placeholder="0" min="0" value="0" />
+                            </div>
+                            <div class="flex-fill" style="min-width: 70px;">
+                                <label class="form-label mb-0" style="font-size: 12px;" data-i18n="spy.feedspy.virality">Virality</label>
+                                <input type="number" id="feedspy-min-virality" class="form-control form-control-sm" placeholder="0" min="0" step="0.1" value="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" id="feedspy-cancel" data-i18n="common.cancel">Cancel</button>
+                <button class="btn btn-primary btn-sm" id="feedspy-start">
+                    <i class="material-icons">play_arrow</i> <span data-i18n="spy.feedspy.start">Start Analysis</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="library-manager">
+        <div class="top-bar">
+            <!-- Multi-session switcher -->
+            <div class="spy-session-switcher d-none" id="spySessionSwitcher">
+                <div class="session-switcher-btn">
+                    <i class="material-icons">swap_horiz</i>
+                    <span class="current-session-name">Session 1</span>
+                    <i class="material-icons dropdown-arrow">expand_more</i>
+                </div>
+                <div class="session-switcher-dropdown">
+                    <div class="session-list">
+                        <!-- Sessions populated dynamically -->
+                    </div>
+                    <div class="session-switcher-hint">
+                        <i class="material-icons">info</i>
+                        <span>Run multiple spy sessions</span>
+                    </div>
+                </div>
+            </div>
+            <div class="libraryGenerationState d-flex align-items-center">
+                <div class="spinner-border me-2"></div>
+                <span>Generating posts</span>
+            </div>
+            <!-- Pages mode progress bar -->
+            <div class="spy-pages-progress d-none align-items-center gap-2" style="flex: 1; max-width: 400px; margin: 0 20px;">
+                <span class="progress-text" style="font-size: 12px; white-space: nowrap; color: #666;">Page <span class="current-page">1</span>/<span class="total-pages">1</span></span>
+                <div class="progress flex-grow-1" style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
+                    <div class="progress-bar" role="progressbar" style="width: 0%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width 0.3s ease;"></div>
+                </div>
+                <span class="current-page-name" style="font-size: 11px; color: #888; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title=""></span>
+            </div>
+            <!-- Spy category indicator -->
+            <div id="spy-category-indicator" class="d-none align-items-center gap-2" style="margin: 0 10px;">
+                <span style="font-size: 12px; color: #888;">Auto-assigning to:</span>
+                <span id="spy-category-name" class="badge bg-primary" style="font-size: 11px;"></span>
+            </div>
+            <div>
+                <div class="spy-toolbar-actions">
+                    <!-- Control group -->
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-light previewbrowser" title="Preview browser">
+                            <i class="material-icons">visibility</i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-light restartgeneration" title="Restart">
+                            <i class="material-icons">restart_alt</i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger stopresetgeneration" title="Stop generation">
+                            <i class="material-icons">stop_circle</i>
+                        </button>
+                    </div>
+                    <!-- Close/Minimize group -->
+                    <div class="btn-group ms-2">
+                        <button class="btn btn-sm btn-outline-light close" title="Close">
+                            <i class="material-icons">close</i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-light minimize" title="Minimize to floating icon">
+                            <i class="material-icons">picture_in_picture_alt</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 d-flex gap-3 align-items-center flex-wrap px-3">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted" style="font-size: 13px;">Active Filters:</span>
+            </div>
+            <input type="number" id="min-shares" class="form-control" placeholder="Min Shares"
+                min="0" style="width: 120px;" disabled readonly />
+            <input type="number" id="min-likes" class="form-control" placeholder="Min Likes"
+                min="0" style="width: 120px;" disabled readonly />
+            <input type="number" id="min-comments" class="form-control" placeholder="Min Comments"
+                min="0" style="width: 120px;" disabled readonly />
+            <input type="number" id="min-virality" class="form-control" placeholder="Min Virality"
+                min="0" step="0.1" style="width: 120px;" disabled readonly />
+            <div class="d-flex align-items-center gap-1" style="width: 100px;">
+                <i class="material-icons" style="font-size: 16px; color: #666;">speed</i>
+                <span id="active-scroll-speed" class="badge bg-secondary">3</span>
+            </div>
+            <select id="temp-sort-by" class="form-select" style="width: 160px;">
+                <option value="now" data-i18n="spy.newest">Newest</option>
+                <option value="shares" data-i18n="spy.most_shared">Most Shared</option>
+                <option value="comments" data-i18n="spy.most_commented">Most Commented</option>
+                <option value="likes" data-i18n="spy.most_liked">Most Liked</option>
+                <option value="viral" data-i18n="spy.most_viral">Most Viral</option>
+            </select>
+        </div>
+        <div class="mb-3 px-3 d-flex gap-2 align-items-center flex-wrap">
+            <label class="d-flex align-items-center mb-0">
+                <input type="checkbox" id="select-all-temp-posts" class="me-2" />
+                <span>Select All</span>
+            </label>
+            <div class="d-flex align-items-center gap-1" style="border-left: 1px solid #dee2e6; padding-left: 8px;">
+                <span style="font-size: 13px; white-space: nowrap;">Select first</span>
+                <input type="number" id="select-first-x-input" class="form-control form-control-sm" value="50" min="1" style="width: 70px;">
+                <button id="select-first-x-btn" class="btn btn-sm btn-outline-secondary flex-center">
+                    <i class="material-icons" style="font-size:16px;">done_all</i>
+                </button>
+            </div>
+            <button id="add-selected-to-library" class="btn btn-primary flex-center" disabled>
+                <i class="material-icons">add</i>
+                <span>Add Selected</span>
+            </button>
+            <button id="hide-selected-posts" class="btn btn-secondary flex-center" disabled>
+                <i class="material-icons">visibility_off</i>
+                <span>Hide Selected</span>
+            </button>
+        </div>
+        <div class="posts-container"></div>
+    </div>
+    
+    <!-- Browser Preview Modal -->
+    <div id="browser-preview-modal" class="browser-preview-overlay" style="display: none;">
+        <div class="browser-preview-container">
+            <div class="browser-preview-header">
+                <h5><i class="material-icons">visibility</i> Live Browser Preview</h5>
+                <button class="btn btn-sm btn-light close-preview">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="browser-preview-content">
+                <img id="browser-preview-image" src="" alt="Browser Preview">
+                <div class="browser-preview-loading">
+                    <div class="spinner-border"></div>
+                    <span>Loading preview...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Category Selection Modal -->
+    <div id="category-select-modal" class="category-modal-overlay" style="display: none;">
+        <div class="category-modal">
+            <div class="category-modal-header">
+                <h5><i class="material-icons">folder</i> <span id="category-modal-title">Select Category</span></h5>
+                <button class="btn btn-sm btn-light category-modal-close">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="category-modal-body">
+                <!-- View: Select existing category or create new -->
+                <div id="category-select-view">
+                    <div class="category-tabs">
+                        <button class="category-tab active" data-tab="select">Select Category</button>
+                        <button class="category-tab" data-tab="create">Create New</button>
+                        <button class="category-tab" data-tab="manage">Manage</button>
+                    </div>
+                    
+                    <!-- Select existing category -->
+                    <div class="category-tab-content active" data-content="select">
+                        <div class="category-list" id="category-list">
+                            <!-- Categories will be populated here -->
+                        </div>
+                        <div class="no-categories-message" id="no-categories-msg" style="display: none;">
+                            <i class="material-icons">folder_off</i>
+                            <p>No categories yet. Create one to organize your posts!</p>
+                            <button class="btn btn-primary btn-sm" id="go-to-create-tab">
+                                <i class="material-icons">add</i> Create Category
+                            </button>
+                        </div>
+                        <div class="skip-category-option">
+                            <button class="btn btn-outline-secondary btn-sm" id="skip-category-btn">
+                                <i class="material-icons">skip_next</i> Skip (No Category)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Create new category -->
+                    <div class="category-tab-content" data-content="create">
+                        <div class="mb-3">
+                            <label class="form-label">Category Name *</label>
+                            <input type="text" id="new-category-name" class="form-control" placeholder="e.g., Food, Travel, Fitness..." maxlength="50" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category Icon (Optional)</label>
+                            <div class="category-icon-preview mb-2">
+                                <div class="selected-icon-wrapper" id="selected-icon-preview">
+                                    <i class="material-icons default-icon">folder</i>
+                                </div>
+                                <span class="text-muted">Select a flag or upload custom image</span>
+                            </div>
+                            <div class="flag-picker-section">
+                                <label class="form-label small text-muted">Country Flags:</label>
+                                <div class="flag-picker-grid" id="flag-picker-grid">
+                                    <!-- Flags will be populated here -->
+                                </div>
+                            </div>
+                            <div class="custom-image-section mt-3">
+                                <label class="form-label small text-muted">Or upload custom image:</label>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-secondary btn-sm flex-grow-1" id="upload-category-image">
+                                        <i class="material-icons">upload</i> Upload Image
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" id="clear-category-image" style="display: none;">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </div>
+                                <input type="file" id="category-image-input" accept="image/*" style="display: none;" />
+                            </div>
+                        </div>
+                        <input type="hidden" id="new-category-image" value="" />
+                        <button class="btn btn-primary w-100" id="create-category-btn">
+                            <i class="material-icons">add</i> Create & Select
+                        </button>
+                    </div>
+                    
+                    <!-- Manage categories -->
+                    <div class="category-tab-content" data-content="manage">
+                        <div class="category-manage-list" id="category-manage-list">
+                            <!-- Categories with edit/delete options -->
+                        </div>
+                        <div class="no-categories-message" id="no-categories-manage-msg" style="display: none;">
+                            <i class="material-icons">folder_off</i>
+                            <p>No categories to manage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .browser-preview-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .browser-preview-container {
+            background: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 90%;
+            max-height: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        .browser-preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #2d2d2d;
+            border-bottom: 1px solid #444;
+        }
+        .browser-preview-header h5 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+        .browser-preview-header .close-preview {
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .browser-preview-content {
+            position: relative;
+            min-width: 800px;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #browser-preview-image {
+            max-width: 100%;
+            max-height: 80vh;
+            display: none;
+        }
+        .browser-preview-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: #aaa;
+        }
+        .browser-preview-content.loaded .browser-preview-loading {
+            display: none;
+        }
+        .browser-preview-content.loaded #browser-preview-image {
+            display: block;
+        }
+
+        /* ========== Modern Library Manager Styles (Light Theme) ========== */
+        .library-manager {
+            position: fixed;
+            top: 32px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 32px);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            padding: 0;
+            overflow: hidden;
+            display: none;
+            z-index: 10;
+            animation: lmFadeIn 0.4s ease;
+        }
+
+        @keyframes lmFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .library-manager .top-bar {
+            position: relative;
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .library-manager .top-bar .libraryGenerationState {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .library-manager .top-bar .libraryGenerationState .spinner-border {
+            width: 22px;
+            height: 22px;
+            border-width: 2px;
+            color: #6366f1;
+        }
+
+        .library-manager .top-bar .libraryGenerationState span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .library-manager .top-bar .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .library-manager .top-bar .btn {
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .library-manager .top-bar .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .library-manager .top-bar .btn.btn-info {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .library-manager .top-bar .btn.btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .library-manager .top-bar .btn.btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .library-manager .top-bar .btn.btn-primary.close {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        /* Filter bar */
+        .library-manager > .mb-3.d-flex {
+            padding: 16px 24px !important;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            margin: 0 !important;
+        }
+
+        .library-manager > .mb-3 .text-muted {
+            color: #64748b !important;
+            font-weight: 500;
+        }
+
+        .library-manager > .mb-3 .form-control {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .library-manager > .mb-3 .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Select all / action bar */
+        .library-manager > .mb-3.px-3.d-flex.gap-2 {
+            padding: 12px 24px !important;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .library-manager > .mb-3.px-3.d-flex.gap-2 label {
+            color: #475569;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .library-manager > .mb-3.px-3.d-flex.gap-2 input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #6366f1;
+        }
+
+        .library-manager > .mb-3.px-3.d-flex.gap-2 .btn {
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .library-manager > .mb-3.px-3.d-flex.gap-2 .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+        }
+
+        .library-manager > .mb-3.px-3.d-flex.gap-2 .btn-secondary {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        /* Posts container in library manager */
+        .library-manager .posts-container {
+            padding: 24px;
+            height: calc(100% - 180px);
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            align-items: start;
+            align-content: start;
+        }
+
+        .library-manager .posts-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .library-manager .posts-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .library-manager .posts-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .library-manager .posts-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Post cards in library manager */
+        .library-manager .post-element {
+            flex: none;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: visible;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: postSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            position: relative;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .library-manager .post-element:hover {
+            transform: translateY(-4px);
+            border-color: #c7d2fe;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15),
+                        0 0 0 1px rgba(99, 102, 241, 0.1);
+        }
+
+        @keyframes postSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Stagger animation for posts */
+        .library-manager .post-element:nth-child(1) { animation-delay: 0.02s; }
+        .library-manager .post-element:nth-child(2) { animation-delay: 0.04s; }
+        .library-manager .post-element:nth-child(3) { animation-delay: 0.06s; }
+        .library-manager .post-element:nth-child(4) { animation-delay: 0.08s; }
+        .library-manager .post-element:nth-child(5) { animation-delay: 0.10s; }
+        .library-manager .post-element:nth-child(6) { animation-delay: 0.12s; }
+        .library-manager .post-element:nth-child(7) { animation-delay: 0.14s; }
+        .library-manager .post-element:nth-child(8) { animation-delay: 0.16s; }
+
+        /* Post header */
+        .library-manager .post-element .head {
+            padding: 14px 16px;
+            background: #fafafa;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .library-manager .post-element .head .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .library-manager .post-element .head .profile {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .library-manager .post-element .head .name {
+            color: #1e293b;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .library-manager .post-element .head .name span:last-child {
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        .library-manager .post-element .head .sm {
+            width: 22px;
+            height: 22px;
+            opacity: 0.9;
+        }
+
+        /* Post image */
+        .library-manager .post-element .post-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .library-manager .post-element:hover .post-image {
+            transform: scale(1.02);
+        }
+
+        /* Statistics */
+        .library-manager .post-element .post-statistics {
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 12px;
+            background: #f8fafc;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .library-manager .post-element .post-statistics .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .library-manager .post-element .post-statistics .stat i {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .library-manager .post-element .post-statistics .stat span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .library-manager .post-element .post-statistics .stat:nth-child(1) {
+            color: #3b82f6;
+        }
+
+        .library-manager .post-element .post-statistics .stat:nth-child(2) {
+            color: #8b5cf6;
+        }
+
+        .library-manager .post-element .post-statistics .stat:nth-child(3) {
+            color: #10b981;
+        }
+
+        /* Post content/message */
+        .library-manager .post-element .post-content {
+            background: transparent;
+            color: #475569;
+            border: none;
+            padding: 12px 16px;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 80px;
+            resize: none;
+        }
+
+        .library-manager .post-element .post-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .library-manager .post-element .post-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+
+        /* Action buttons */
+        .library-manager .post-element .post-actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #fafafa;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .library-manager .post-element .post-actions .btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .library-manager .post-element .post-actions .btn i {
+            font-size: 16px;
+        }
+
+        .library-manager .post-element .post-actions .btn span {
+            display: none;
+        }
+
+        @media (min-width: 1400px) {
+            .library-manager .post-element .post-actions .btn span {
+                display: inline;
+            }
+        }
+
+        .library-manager .post-element .post-actions .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+        }
+
+        .library-manager .post-element .post-actions .btn-primary:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            transform: translateY(-1px);
+        }
+
+        .library-manager .post-element .post-actions .btn-danger {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+        .library-manager .post-element .post-actions .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .library-manager .post-element .post-actions .btn-secondary {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        .library-manager .post-element .post-actions .btn-secondary:hover {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Selection checkbox overlay - positioned on image area */
+        .library-manager .post-element input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: #6366f1;
+            cursor: pointer;
+            z-index: 5;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Pulse animation for new posts */
+        .library-manager .post-element.new-post {
+            animation: postSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                       newPostGlow 1s ease-out;
+        }
+
+        @keyframes newPostGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(99, 102, 241, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            }
+        }
+
+        /* Empty state */
+        .library-manager .posts-container:empty::after {
+            content: 'Waiting for posts...';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 14px;
+            grid-column: 1 / -1;
+            height: 200px;
+        }
+
+        /* Library section posts grid - fill available space */
+        #library-show .posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            align-items: start;
+            align-content: start;
+        }
+
+        #library-show .posts-container .post-element {
+            flex: none;
+            max-width: none;
+            width: 100%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .library-manager .posts-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .library-manager > .mb-3.d-flex {
+                flex-wrap: wrap;
+                gap: 8px !important;
+            }
+
+            .library-manager > .mb-3 .form-control,
+            .library-manager > .mb-3 .form-select {
+                min-width: 140px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .library-manager .posts-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                padding: 12px;
+                gap: 12px;
+            }
+
+            #library-show .posts-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+
+            .library-manager .top-bar {
+                flex-direction: column;
+                height: auto;
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .library-manager .top-bar .input-group {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            .library-manager .top-bar .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .library-manager .top-bar .btn span {
+                display: none;
+            }
+
+            .library-manager > .mb-3.d-flex {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 8px !important;
+                padding: 0 12px !important;
+            }
+
+            .library-manager > .mb-3 .form-control,
+            .library-manager > .mb-3 .form-select {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .library-manager > .mb-3.px-3.d-flex.gap-2 {
+                flex-wrap: wrap;
+                padding: 0 12px !important;
+            }
+
+            .library-manager > .mb-3.px-3.d-flex.gap-2 .btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .library-manager > .mb-3.px-3.d-flex.gap-2 .btn span {
+                display: none;
+            }
+
+            .library-manager .post-element .post-actions .btn span {
+                display: none;
+            }
+
+            .library-manager .post-element .post-content {
+                max-height: 50px;
+                font-size: 11px;
+            }
+        }
+
+        /* Used post badge */
+        .used-badge {
+            position: absolute;
+            top: 60px;
+            right: 12px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 5;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .used-badge i {
+            font-size: 12px;
+        }
+
+        /* Post with used status - subtle overlay effect */
+        .library-manager .post-element.post-used {
+            opacity: 0.75;
+        }
+
+        .library-manager .post-element.post-used:hover {
+            opacity: 1;
+        }
+
+        /* Used count badge in post footer */
+        .used-count-info {
+            font-size: 10px;
+            color: #f59e0b;
+            background: #fef3c7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .used-count-info i {
+            font-size: 12px;
+        }
+
+        /* Duplicate badge */
+        .duplicate-badge {
+            position: absolute;
+            top: 85px;
+            right: 12px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 5;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .duplicate-badge i {
+            font-size: 12px;
+        }
+
+        /* Viral Growth badge - for posts with 10%+ share increase */
+        .viral-growth-badge {
+            position: absolute;
+            top: 60px;
+            left: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 6;
+            box-shadow: 0 2px 12px rgba(16, 185, 129, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            animation: viralPulse 2s ease-in-out infinite;
+        }
+
+        .viral-growth-badge .viral-header {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .viral-growth-badge .viral-header i {
+            font-size: 14px;
+        }
+
+        .viral-growth-badge .viral-stats {
+            font-size: 10px;
+            opacity: 0.9;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .viral-growth-badge .viral-percent {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        @keyframes viralPulse {
+            0%, 100% {
+                box-shadow: 0 2px 12px rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 2px 20px rgba(16, 185, 129, 0.7);
+            }
+        }
+
+        /* ========== Category Modal Styles ========== */
+        .category-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: categoryModalFadeIn 0.2s ease;
+        }
+
+        @keyframes categoryModalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .category-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 520px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: categoryModalSlideIn 0.25s ease;
+        }
+
+        @keyframes categoryModalSlideIn {
+            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .category-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #fff;
+        }
+
+        .category-modal-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-modal-header h5 i {
+            font-size: 20px;
+        }
+
+        .category-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            border-radius: 8px;
+            padding: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .category-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .category-modal-body {
+            padding: 20px;
+            max-height: calc(85vh - 60px);
+            overflow-y: auto;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .category-tab {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-tab:hover {
+            color: #4f46e5;
+        }
+
+        .category-tab.active {
+            background: #fff;
+            color: #4f46e5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-tab-content {
+            display: none;
+        }
+
+        .category-tab-content.active {
+            display: block;
+            animation: tabContentFadeIn 0.2s ease;
+        }
+
+        @keyframes tabContentFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Category List */
+        .category-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        .category-item:hover {
+            border-color: #c7d2fe;
+            background: #f8fafc;
+            transform: translateY(-2px);
+        }
+
+        .category-item.selected {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+
+        .category-item .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+        }
+
+        .category-item .category-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .category-item .category-icon i {
+            font-size: 28px;
+            color: #6366f1;
+        }
+
+        .category-item .category-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+            text-align: center;
+            word-break: break-word;
+            max-width: 100%;
+        }
+
+        .category-item .category-count {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        /* No categories message */
+        .no-categories-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .no-categories-message i {
+            font-size: 48px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .no-categories-message p {
+            margin-bottom: 16px;
+        }
+
+        .no-categories-message .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        .no-categories-message .btn i {
+            font-size: 18px;
+            color: inherit;
+            margin-bottom: 0;
+        }
+
+        /* Skip category option */
+        .skip-category-option {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .skip-category-option .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        .skip-category-option .btn i {
+            font-size: 18px;
+        }
+
+        /* Category icon preview in create form */
+        .category-icon-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .selected-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .selected-icon-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .selected-icon-wrapper .default-icon {
+            font-size: 32px;
+            color: #94a3b8;
+        }
+
+        /* Flag picker grid */
+        .flag-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            max-height: 120px;
+            overflow-y: auto;
+            padding: 8px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .flag-picker-item {
+            width: 36px;
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .flag-picker-item:hover {
+            transform: scale(1.1);
+            border-color: #6366f1;
+        }
+
+        .flag-picker-item.selected {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+        }
+
+        .flag-picker-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Create category section buttons */
+        .category-tab-content[data-content="create"] .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        .category-tab-content[data-content="create"] .btn i {
+            font-size: 18px;
+        }
+
+        .custom-image-section .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Category manage list */
+        .category-manage-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .category-manage-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .category-manage-item .category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .category-manage-item .category-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .category-manage-item .category-icon i {
+            font-size: 22px;
+            color: #6366f1;
+        }
+
+        .category-manage-item .category-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .category-manage-item .category-name {
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .category-manage-item .category-count {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .category-manage-item .category-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .category-manage-item .category-actions button {
+            padding: 6px;
+            border: none;
+            background: #fff;
+            border-radius: 6px;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-manage-item .category-actions button:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .category-manage-item .category-actions .delete-btn:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Category badge on posts */
+        .category-badge {
+            position: absolute;
+            bottom: 150px;
+            left: 8px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            z-index: 5;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .category-badge img {
+            width: 14px;
+            height: 10px;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+
+        .category-badge span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-badge i {
+            font-size: 11px;
+        }
+
+        /* Library post action buttons */
+        .post-element .library-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 5px 4px;
+        }
+
+        .post-element .library-actions .btn {
+            padding: 4px 8px;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .post-element .library-actions .btn i {
+            font-size: 14px;
+        }
+
+        .post-element .library-actions .btn span {
+            display: none;
+        }
+
+        @media (min-width: 1400px) {
+            .post-element .library-actions .btn span {
+                display: inline;
+            }
+        }
+
+        /* Library category filter with icon preview */
+        #filter-category {
+            padding-left: 10px;
+        }
+    </style>
+</div>
+
+<script src="assets/js/pages/spy.js"></script>

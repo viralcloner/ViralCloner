@@ -1,0 +1,1380 @@
+<div id="pinterest-accounts-container">
+    
+    <!-- AI Title Generation Section -->
+    <div class="pinterest-titles-section mt-5">
+        <div class="section-header">
+            <h3 class="me-2"><i class="material-icons me-2">auto_awesome</i><span data-i18n="pinterest.title">AI Title Generator</span></h3>
+            <button id="generateTitles" class="btn btn-primary">
+                <i class="material-icons">auto_awesome</i>
+                <span data-i18n="pinterest.generate_titles">Generate Titles</span>
+            </button>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" data-i18n="pinterest.generate_new_titles">Generate New Titles</h5>
+                        <div class="form-check form-switch mb-0">
+                            <input class="form-check-input" type="checkbox" id="multiAccountMode">
+                            <label class="form-check-label" for="multiAccountMode">
+                                <small data-i18n="pinterest.multi_account">Multi-Account</small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form id="titleGenerationForm">
+                            <!-- Single Account Mode -->
+                            <div id="singleAccountMode">
+                                <div class="form-group mb-3">
+                                    <label for="selectedAccount" data-i18n="pinterest.pinterest_account">Pinterest Account:</label>
+                                    <select id="selectedAccount" class="form-control">
+                                        <option value="" data-i18n="pinterest.select_account">Select Account</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="selectedBoard" data-i18n="pinterest.board">Board:</label>
+                                    <select id="selectedBoard" class="form-control" disabled>
+                                        <option value="" data-i18n="pinterest.select_board">Select Board</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Multi-Account Mode -->
+                            <div id="multiAccountModeSection" style="display: none;">
+                                <div class="form-group mb-3">
+                                    <label data-i18n="pinterest.select_accounts">Select Accounts:</label>
+                                    <div class="multi-account-controls mb-2 d-flex gap-2">
+                                        <button type="button" id="selectAllAccounts" class="btn btn-sm btn-outline-secondary">
+                                            <i class="material-icons" style="font-size: 14px;">check_box</i> <span data-i18n="pinterest.all">All</span>
+                                        </button>
+                                        <button type="button" id="deselectAllAccounts" class="btn btn-sm btn-outline-secondary">
+                                            <i class="material-icons" style="font-size: 14px;">check_box_outline_blank</i> <span data-i18n="pinterest.none">None</span>
+                                        </button>
+                                    </div>
+                                    <div id="accountCheckboxList" class="account-checkbox-list"></div>
+                                    <small class="form-text text-muted mt-2">
+                                        <span id="selectedAccountsCount">0</span> <span data-i18n="pinterest.accounts_selected">account(s) selected</span>
+                                    </small>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="boardNumber" data-i18n="pinterest.board_number">Board Number (position):</label>
+                                    <select id="boardNumber" class="form-control">
+                                        <option value="1">Board #1 (first board)</option>
+                                        <option value="2">Board #2</option>
+                                        <option value="3">Board #3</option>
+                                        <option value="4">Board #4</option>
+                                        <option value="5">Board #5</option>
+                                        <option value="6">Board #6</option>
+                                        <option value="7">Board #7</option>
+                                        <option value="8">Board #8</option>
+                                        <option value="9">Board #9</option>
+                                        <option value="10">Board #10</option>
+                                    </select>
+                                    <small class="form-text text-muted" data-i18n="pinterest.board_position_hint">
+                                        Uses the Nth board from each selected account
+                                    </small>
+                                </div>
+
+                                <div id="multiAccountSummary" class="alert alert-info py-2 mb-3" style="display: none;">
+                                    <small><i class="material-icons" style="font-size: 14px; vertical-align: middle;">info</i>
+                                    <span id="multiAccountSummaryText"></span></small>
+                                </div>
+                            </div>
+
+                            <!-- Pinterest Trends Integration -->
+                            <div class="form-group mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="usePinterestTrends">
+                                    <label class="form-check-label" for="usePinterestTrends">
+                                        <small><i class="material-icons" style="font-size: 14px; vertical-align: middle;">trending_up</i> <span data-i18n="pinterest.use_pinterest_trends">Use Pinterest Trends Keywords</span></small>
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted" data-i18n="pinterest.trends_hint">
+                                    Fetches trending keywords for 10 months ahead (pins take ~2 months to gain traction)
+                                </small>
+                            </div>
+
+                            <div id="pinterestTrendsOptions" style="display: none;">
+                                <div class="row mb-3">
+                                    <div class="col-8">
+                                        <label for="trendCategory" class="form-label small">Trend Category:</label>
+                                        <select id="trendCategory" class="form-control form-control-sm">
+                                            <option value="918530398158">Food & Drinks</option>
+                                            <option value="925056443165">Animals</option>
+                                            <option value="918105274631">Architecture</option>
+                                            <option value="961238559656">Art</option>
+                                            <option value="935541271955">Beauty</option>
+                                            <option value="934876475639">DIY & Crafts</option>
+                                            <option value="935249274030">Interior Decoration</option>
+                                            <option value="922134410098">Education</option>
+                                            <option value="920236059316">Kids</option>
+                                            <option value="909983286710">Gardening</option>
+                                            <option value="903260720461">Wedding</option>
+                                            <option value="941870572865">Event Planning</option>
+                                            <option value="898620064290">Health</option>
+                                            <option value="908182459161">Travel</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="trendCountry" class="form-label small">Country:</label>
+                                        <select id="trendCountry" class="form-control form-control-sm">
+                                            <option value="US">United States</option>
+                                            <option value="GB">United Kingdom</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="FR">France</option>
+                                            <option value="ES">Spain</option>
+                                            <option value="IT">Italy</option>
+                                            <option value="BR">Brazil</option>
+                                            <option value="MX">Mexico</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="trendsFetchStatus" class="mb-3" style="display: none;">
+                                    <div class="alert alert-secondary py-2">
+                                        <small>
+                                            <i class="material-icons" style="font-size: 14px; vertical-align: middle;">schedule</i>
+                                            <span id="trendsFetchStatusText">Trends will be fetched when generating...</span>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div id="trendsPreview" class="mb-3" style="display: none;">
+                                    <label class="form-label small">Fetched Keywords Preview:</label>
+                                    <div id="trendsKeywordsList" class="trends-keywords-preview"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label for="titlePrompt" class="mb-0" data-i18n="pinterest.title_prompt_label">Title Generation Prompt:</label>
+                                    <button type="button" id="savePromptBtn" class="btn btn-sm btn-outline-primary">
+                                        <i class="material-icons" style="font-size: 14px;">save</i> <span data-i18n="pinterest.save_prompt">Save Prompt</span>
+                                    </button>
+                                </div>
+                                <textarea id="titlePrompt" class="form-control" rows="4" data-i18n-placeholder="pinterest.title_prompt_placeholder" placeholder="Describe what kind of Pinterest titles you want to generate. Use {BOARD_NAME} to include the board name automatically. E.g., 'Generate catchy Pinterest titles for {BOARD_NAME} that are engaging and include trending keywords'"
+                                 required></textarea>
+                                <small class="form-text text-muted">
+                                    <strong data-i18n="pinterest.prompt_tip">Tip:</strong> <span data-i18n="pinterest.prompt_tip_text">Use {BOARD_NAME} in your prompt to automatically include the selected board name.</span>
+                                </small>
+                                <div id="boardNamePreview" class="mt-2" style="display: none;">
+                                    <small class="text-info">
+                                        <i class="material-icons" style="font-size: 14px;">info</i>
+                                        <code>{BOARD_NAME}</code> <span data-i18n="pinterest.board_name_preview">will be replaced with:</span> <strong id="boardNameValue"></strong>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="titleCount"><span data-i18n="pinterest.number_of_titles">Number of Titles</span> <span id="perAccountLabel" data-i18n="pinterest.per_account">(per account)</span>:</label>
+                                <input type="number" id="titleCount" class="form-control" value="5" min="1" max="200">
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="material-icons me-2">auto_awesome</i>
+                                <span id="generateButtonText">Generate Titles</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 data-i18n="pinterest.generated_titles">Generated Titles</h5>
+                            <div class="filter-controls">
+                            <select id="filterAccount" class="form-control form-control-sm me-2" style="width: auto; display: inline-block;">
+                                <option value="" data-i18n="pinterest.all_accounts">All Accounts</option>
+                            </select>
+                            <select id="filterBoard" class="form-control form-control-sm" style="width: auto; display: inline-block;">
+                                <option value="" data-i18n="pinterest.all_boards">All Boards</option>
+                            </select>
+                        </div>
+                        </div>
+                        <div id="bulkActionsContainer" class="bulk-actions d-none">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="bulk-selection">
+                                    <label class="form-check-label me-3">
+                                        <input type="checkbox" id="selectAllTitles" class="form-check-input me-1">
+                                        <span data-i18n="pinterest.select_all">Select All</span>
+                                    </label>
+                                    <span id="selectedCount" class="text-muted">0 <span data-i18n="pinterest.selected">selected</span></span>
+                                </div>
+                                <div class="bulk-actions-buttons">
+                                    <button id="syncTitleUsage" class="btn btn-sm btn-outline-info me-2" data-i18n-title="pinterest.sync_usage" title="Scan workflows and mark titles that are in use">
+                                        <i class="material-icons me-1">sync</i>
+                                        <span data-i18n="pinterest.sync_usage">Sync Usage</span>
+                                    </button>
+                                    <button id="deleteAllUnusedTitles" class="btn btn-sm btn-outline-danger me-2">
+                                        <i class="material-icons me-1">delete_sweep</i>
+                                        <span data-i18n="pinterest.delete_all_unused">Delete All Unused</span>
+                                    </button>
+                                    <button id="deleteSelectedTitles" class="btn btn-sm btn-danger" disabled>
+                                        <i class="material-icons me-1">delete</i>
+                                        <span data-i18n="pinterest.delete_selected">Delete Selected</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="generatedTitlesList" class="titles-list" style="max-height: 400px; overflow-y: auto;">
+                            <div class="empty-state text-center py-4" style="color: #666;">
+                                <i class="material-icons" style="font-size: 48px;">auto_awesome</i>
+                                <p data-i18n="pinterest.no_generated_titles">No titles generated yet.</p>
+                                <p><small data-i18n="pinterest.use_form_to_generate">Use the form to generate Pinterest titles with AI.</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Accounts Management Section -->
+    <div class="pinterest-accounts-section">
+        <div class="section-header">
+            <h3 class="me-2"><img src="assets/images/icons/pinterest-colored.png" width="24" class="me-2"><span data-i18n="pinterest.pinterest_accounts">Pinterest Accounts</span></h3>
+            <button id="newPinterestAccount" class="btn-one">
+                <i class="material-icons">add</i>
+                <span data-i18n="pinterest.add_account">Add Account</span>
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover" id="pinterestAccountsTable">
+                <thead>
+                    <tr>
+                        <th data-i18n="pinterest.email">Email</th>
+                        <th data-i18n="pinterest.boards">Boards</th>
+                        <th data-i18n="pinterest.linked_profile">Linked Profile</th>
+                        <th data-i18n="pinterest.notes">Notes</th>
+                        <th data-i18n="pinterest.created">Created</th>
+                        <th data-i18n="pinterest.actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="pinterestAccountsBody"></tbody>
+            </table>
+        </div>
+
+        <div id="emptyPinterestAccounts" style="display: none; padding: 20px; text-align: center; color: #666;">
+            <span data-i18n="pinterest.no_accounts_found">No Pinterest accounts found.</span><br>
+            <strong data-i18n="pinterest.click_add_account">Click "Add Account" to create your first Pinterest account.</strong>
+        </div>
+    </div>
+
+    <!-- Board CSV Export History Section -->
+    <div class="pinterest-exports-section mt-5">
+        <div class="section-header">
+            <h3><i class="material-icons me-2">schedule</i><span data-i18n="pinterest.export_history">Board Export History & Schedule Map</span></h3>
+            <div class="header-actions">
+                <div class="date-range-controls me-3">
+                    <input type="date" id="fromDate" class="form-control form-control-sm" data-i18n-title="pinterest.from_date" title="From Date">
+                    <span class="mx-2" data-i18n="pinterest.to">to</span>
+                    <input type="date" id="toDate" class="form-control form-control-sm" data-i18n-title="pinterest.to_date" title="To Date">
+                </div>
+                <button id="refreshCsvExports" class="btn btn-outline-primary">
+                    <i class="material-icons">refresh</i>
+                    <span data-i18n="pinterest.refresh">Refresh</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 data-i18n="pinterest.boards_with_export_history">Pinterest Boards with CSV Export History</h5>
+                        <div class="export-stats">
+                            <small class="text-muted">
+                                <span id="totalBoardsExported">0</span> <span data-i18n="pinterest.boards_exported">boards exported</span> |
+                                <span id="totalScheduledPosts">0</span> <span data-i18n="pinterest.scheduled_posts">scheduled posts</span> |
+                                <span id="dateRangeInfo" data-i18n="pinterest.all_time">All time</span>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search and Filter Bar -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" id="boardSearch" class="form-control" data-i18n-placeholder="pinterest.search_boards_accounts" placeholder="Search boards or accounts...">
+                                    <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="exportStatusFilter" class="form-control">
+                                    <option value="" data-i18n="pinterest.all_export_status">All Export Status</option>
+                                    <option value="never" data-i18n="pinterest.never_exported">Never Exported</option>
+                                    <option value="recent" data-i18n="pinterest.recently_exported">Recently Exported (24h)</option>
+                                    <option value="older" data-i18n="pinterest.older_exports">Older Exports</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="btn-group w-100" role="group">
+                                    <button type="button" id="expandAllAccounts" class="btn btn-outline-secondary btn-sm">
+                                        <i class="material-icons">unfold_more</i>
+                                        <span data-i18n="pinterest.expand_all">Expand All</span>
+                                    </button>
+                                    <button type="button" id="collapseAllAccounts" class="btn btn-outline-secondary btn-sm">
+                                        <i class="material-icons">unfold_less</i>
+                                        <span data-i18n="pinterest.collapse_all">Collapse All</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="boardExportsAccordion" class="board-exports-accordion"></div>
+
+                        <div id="emptyBoardExports" style="display: none; padding: 40px 20px; text-align: center; color: #666;">
+                            <i class="material-icons" style="font-size: 48px; opacity: 0.5;">schedule</i>
+                            <p class="mt-3" data-i18n="pinterest.no_export_history">No board export history found.</p>
+                            <p><small data-i18n="pinterest.export_from_workflows">Export Pinterest posts from the Workflows page to see scheduling information here.</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Details Modal -->
+        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-i18n="pinterest.schedule_map">Schedule Map</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Schedule Header -->
+                        <div class="schedule-header mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 id="scheduleBoardName">Board Name</h6>
+                                    <small class="text-muted" id="scheduleAccountEmail">account@example.com</small>
+                                </div>
+                                <div class="schedule-stats">
+                                    <span class="badge bg-primary me-2">
+                                        <span id="schedulePostCount">0</span> <span data-i18n="pinterest.posts">Posts</span>
+                                    </span>
+                                    <span class="badge bg-info">
+                                        <span data-i18n="pinterest.export">Export:</span> <span id="scheduleExportDate" data-i18n="pinterest.never">Never</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Week Navigation -->
+                        <div class="week-navigation mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="button" id="prevWeek" class="btn btn-outline-secondary btn-sm">
+                                    <i class="material-icons">chevron_left</i>
+                                    <span data-i18n="pinterest.previous_week">Previous Week</span>
+                                </button>
+                                <div class="current-week-info">
+                                    <h6 class="mb-0" id="currentWeekRange">March 4-10, 2024</h6>
+                                    <small class="text-muted" data-i18n="pinterest.week_schedule">Week Schedule</small>
+                                </div>
+                                <button type="button" id="nextWeek" class="btn btn-outline-secondary btn-sm">
+                                    <span data-i18n="pinterest.next_week">Next Week</span>
+                                    <i class="material-icons">chevron_right</i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Calendar Grid -->
+                        <div class="weekly-calendar">
+                            <div class="calendar-container">
+                                <!-- Calendar header with days -->
+                                <div class="calendar-header">
+                                    <div class="time-column-header" data-i18n="pinterest.time">Time</div>
+                                    <div class="day-header" data-i18n="pinterest.monday">Monday</div>
+                                    <div class="day-header" data-i18n="pinterest.tuesday">Tuesday</div>
+                                    <div class="day-header" data-i18n="pinterest.wednesday">Wednesday</div>
+                                    <div class="day-header" data-i18n="pinterest.thursday">Thursday</div>
+                                    <div class="day-header" data-i18n="pinterest.friday">Friday</div>
+                                    <div class="day-header" data-i18n="pinterest.saturday">Saturday</div>
+                                    <div class="day-header" data-i18n="pinterest.sunday">Sunday</div>
+                                </div>
+
+                                <!-- Calendar body with time slots -->
+                                <div class="calendar-body" id="calendarGrid">
+                                    <!-- Time slots will be dynamically populated -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Controls -->
+                        <div class="calendar-controls mt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="time-range-controls">
+                                    <label class="form-label me-2" data-i18n="pinterest.show_hours">Show hours:</label>
+                                    <select id="startHour" class="form-select form-select-sm me-2" style="width: auto;">
+                                        <option value="0" selected>00:00</option>
+                                        <option value="1">01:00</option>
+                                        <option value="2">02:00</option>
+                                        <option value="3">03:00</option>
+                                        <option value="4">04:00</option>
+                                        <option value="5">05:00</option>
+                                        <option value="6">06:00</option>
+                                        <option value="7">07:00</option>
+                                        <option value="8">08:00</option>
+                                        <option value="9">09:00</option>
+                                        <option value="10">10:00</option>
+                                        <option value="11">11:00</option>
+                                        <option value="12">12:00</option>
+                                    </select>
+                                    <span class="me-2" data-i18n="pinterest.to">to</span>
+                                    <select id="endHour" class="form-select form-select-sm" style="width: auto;">
+                                        <option value="11">11:00</option>
+                                        <option value="12">12:00</option>
+                                        <option value="13">13:00</option>
+                                        <option value="14">14:00</option>
+                                        <option value="15">15:00</option>
+                                        <option value="16">16:00</option>
+                                        <option value="17">17:00</option>
+                                        <option value="18">18:00</option>
+                                        <option value="19">19:00</option>
+                                        <option value="20">20:00</option>
+                                        <option value="21">21:00</option>
+                                        <option value="22">22:00</option>
+                                        <option value="23" selected>23:00</option>
+                                    </select>
+                                </div>
+                                <div class="calendar-quick-actions">
+                                    <button type="button" id="showAllHours" class="btn btn-outline-secondary btn-sm me-2">
+                                        <i class="material-icons">schedule</i>
+                                        <span data-i18n="pinterest.24_hours">24 Hours</span>
+                                    </button>
+                                    <button type="button" id="todayWeek" class="btn btn-outline-primary btn-sm">
+                                        <i class="material-icons">today</i>
+                                        <span data-i18n="pinterest.current_week">Current Week</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="pinterest.close">Close</button>
+                        <button type="button" id="reExportBoard" class="btn btn-primary">
+                            <i class="material-icons me-1">file_download</i>
+                            <span data-i18n="pinterest.re_export_csv">Re-export CSV</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Details Modal -->
+<div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" data-i18n="pinterest.account_details">Pinterest Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="accountForm">
+                    <input type="hidden" id="accountId" value="">
+
+                    <div class="form-group mb-3">
+                        <label for="accountEmail" data-i18n="pinterest.email_address">Email Address:</label>
+                        <input type="email" id="accountEmail" class="form-control" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="accountPassword" data-i18n="pinterest.password">Password:</label>
+                        <input type="password" id="accountPassword" class="form-control" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="accountNotes" data-i18n="pinterest.notes_label">Notes:</label>
+                        <textarea id="accountNotes" class="form-control" rows="3"
+                            data-i18n-placeholder="pinterest.notes_placeholder" placeholder="Any additional information about this account..."></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="linkedStructureProfile" data-i18n="pinterest.linked_structure_profile">Linked Structure Profile (Optional):</label>
+                        <select id="linkedStructureProfile" class="form-control">
+                            <option value="" data-i18n="pinterest.no_linked_profile">No linked profile</option>
+                        </select>
+                        <small class="form-text text-muted" data-i18n="pinterest.linked_profile_hint">
+                            Link this Pinterest account to a structure profile for quick access after workflows.
+                        </small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label data-i18n="pinterest.boards_label">Boards:</label>
+                        <div id="boardsList">
+                            <!-- Boards will be dynamically added here -->
+                        </div>
+                        <button type="button" id="addBoard" class="btn btn-outline-primary btn-sm mt-2">
+                            <i class="material-icons">add</i>
+                            <span data-i18n="pinterest.add_board">Add Board</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="pinterest.cancel">Cancel</button>
+                <button type="button" id="saveAccount" class="btn btn-primary" data-i18n="pinterest.save_account">Save Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.pinterest-accounts-section, .pinterest-titles-section, .pinterest-exports-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.section-header h3 {
+    margin: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+/* Pinterest Accounts Table */
+#pinterestAccountsTable {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+#pinterestAccountsTable thead {
+    background: linear-gradient(135deg, #e60023 0%, #c41e3a 100%);
+    color: white;
+}
+
+#pinterestAccountsTable thead th {
+    padding: 14px 16px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    white-space: nowrap;
+}
+
+#pinterestAccountsTable tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+#pinterestAccountsTable tbody tr:hover {
+    background: #fef5f6;
+}
+
+#pinterestAccountsTable tbody td {
+    padding: 14px 16px;
+    vertical-align: middle;
+    border: none;
+}
+
+.account-email-cell strong {
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.linked-profile-cell {
+    line-height: 1.4;
+}
+
+.linked-profile-cell strong {
+    font-size: 13px;
+    color: #2c3e50;
+}
+
+.profile-details-small {
+    font-size: 12px;
+    color: #666;
+}
+
+.profile-icons-small {
+    display: flex;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.profile-icons-small i.material-icons {
+    font-size: 14px;
+}
+
+/* Multi-Account Mode Styles */
+.account-checkbox-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px;
+    background: #f8f9fa;
+}
+
+.account-checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.account-checkbox-item:last-child {
+    margin-bottom: 0;
+}
+
+.account-checkbox-item:hover {
+    border-color: #e60023;
+    background: #fff5f6;
+}
+
+.account-checkbox-item.disabled {
+    opacity: 0.5;
+    background: #f0f0f0;
+}
+
+.account-checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+}
+
+.account-checkbox-item .account-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-checkbox-item .account-email-text {
+    font-weight: 500;
+    font-size: 13px;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-checkbox-item .account-boards-info {
+    font-size: 11px;
+    color: #666;
+}
+
+.account-checkbox-item .board-count-badge {
+    background: #e60023;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.account-checkbox-item.no-board .board-count-badge {
+    background: #dc3545;
+}
+
+.multi-account-progress {
+    margin-top: 10px;
+}
+
+.multi-account-progress .progress-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.multi-account-progress .progress-item.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.multi-account-progress .progress-item.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.multi-account-progress .progress-item.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.board-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.board-item input {
+    flex: 1;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+.board-item button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.board-item button:hover {
+    background: #c82333;
+}
+
+.title-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #e60023;
+    gap: 10px;
+}
+
+.title-checkbox {
+    display: flex;
+    align-items: center;
+    padding-top: 2px;
+}
+
+.title-checkbox input[type="checkbox"] {
+    margin: 0;
+}
+
+.title-content {
+    flex: 1;
+}
+
+.title-text {
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.title-meta {
+    font-size: 0.85em;
+    color: #666;
+}
+
+.title-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.title-actions button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.title-actions button:hover {
+    background: #e0e0e0;
+}
+
+.title-item.used {
+    opacity: 0.6;
+    border-left-color: #ccc;
+}
+
+.title-item.used .title-text {
+    text-decoration: line-through;
+}
+
+.filter-controls select {
+    min-width: 120px;
+}
+
+.bulk-actions {
+    padding: 8px 0;
+    border-top: 1px solid #dee2e6;
+    margin-top: 8px;
+}
+
+.bulk-selection {
+    display: flex;
+    align-items: center;
+}
+
+.bulk-actions-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.empty-state {
+    color: #666;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Inline button spinner */
+.btn .loading-spinner,
+button .loading-spinner,
+span.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    margin-right: 8px;
+    vertical-align: middle;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Ensure button content is inline */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.export-stats {
+    font-size: 0.9em;
+}
+
+.export-date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.export-count-badge {
+    background: #e60023;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+}
+
+.never-exported {
+    color: #999;
+    font-style: italic;
+}
+
+.recently-exported {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.date-range-controls {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.date-range-controls input {
+    width: 140px;
+    margin: 0 5px;
+}
+
+.schedule-posts-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.schedule-post-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    position: relative;
+}
+
+.schedule-post-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.schedule-date {
+    background: #e60023;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 500;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.schedule-post-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    padding-right: 120px;
+}
+
+.schedule-post-meta {
+    font-size: 0.9em;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.schedule-post-description {
+    color: #555;
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.schedule-post-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.schedule-post-actions .btn {
+    font-size: 0.8em;
+    padding: 2px 8px;
+}
+
+.board-never-exported {
+    background: #f8f9fa !important;
+}
+
+.board-recently-exported {
+    background: #d4edda !important;
+    border-left: 4px solid #28a745;
+}
+
+.board-older-export {
+    background: #fff3cd !important;
+    border-left: 4px solid #ffc107;
+}
+
+/* Board Exports Accordion Styling */
+.board-exports-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.accordion-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.accordion-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.accordion-header.status-recent {
+    background: linear-gradient(to right, #d4edda 0%, #f8f9fa 100%);
+    border-left: 4px solid #28a745;
+}
+
+.accordion-header.status-older {
+    background: linear-gradient(to right, #fff3cd 0%, #f8f9fa 100%);
+    border-left: 4px solid #ffc107;
+}
+
+.accordion-header.status-never {
+    background: #f8f9fa;
+    border-left: 4px solid #e0e0e0;
+}
+
+.accordion-button {
+    width: 100%;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.accordion-button:hover {
+    background: rgba(0,0,0,0.02);
+}
+
+.accordion-button .account-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.accordion-button .account-email-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    color: #2c3e50;
+}
+
+.accordion-button .account-email-header i.material-icons {
+    font-size: 18px;
+    color: #e60023;
+}
+
+.accordion-button .account-email-header .text-success {
+    font-size: 16px;
+    margin-left: 4px;
+}
+
+.accordion-button .account-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.accordion-button .stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+}
+
+.accordion-button .stat-badge i.material-icons {
+    font-size: 16px;
+}
+
+.accordion-button .stat-badge.exported {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.accordion-button .stat-badge.exported i.material-icons {
+    color: #28a745;
+}
+
+.accordion-button .stat-badge.not-exported {
+    background: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+}
+
+.accordion-button .expand-icon {
+    font-size: 24px;
+    color: #666;
+    transition: transform 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) .expand-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-collapse {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.accordion-collapse.show {
+    max-height: 2000px;
+}
+
+.accordion-body {
+    padding: 0;
+}
+
+.boards-table {
+    margin: 0;
+    font-size: 13px;
+}
+
+.boards-table thead {
+    background: #f1f3f5;
+}
+
+.boards-table thead th {
+    padding: 10px 12px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.boards-table tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: background 0.2s ease;
+}
+
+.boards-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.boards-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.boards-table tbody td {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.boards-table tbody td strong {
+    color: #2c3e50;
+    font-size: 13px;
+}
+
+.boards-table .btn-group {
+    display: flex;
+    gap: 4px;
+}
+
+.boards-table .btn {
+    padding: 4px 8px;
+}
+
+.boards-table .btn i.material-icons {
+    font-size: 16px;
+}
+
+/* Expand/Collapse All Buttons */
+#expandAllAccounts, #collapseAllAccounts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+#expandAllAccounts i, #collapseAllAccounts i {
+    font-size: 18px;
+}
+
+/* Weekly Calendar Styles */
+.weekly-calendar {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+}
+
+.calendar-container {
+    overflow-x: auto;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    background: #f8f9fa;
+    border-bottom: 2px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.time-column-header {
+    padding: 12px 8px;
+    font-weight: 600;
+    text-align: center;
+    border-right: 1px solid #e0e0e0;
+    background: #f1f1f1;
+}
+
+.day-header {
+    padding: 12px 8px;
+    font-weight: 600;
+    text-align: center;
+    border-right: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.day-header:last-child {
+    border-right: none;
+}
+
+.calendar-body {
+    display: block;
+}
+
+.time-row {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    min-height: 60px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.time-slot {
+    padding: 8px 4px;
+    font-weight: 500;
+    color: #666;
+    background: #f9f9f9;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85em;
+}
+
+.day-slot {
+    padding: 4px;
+    border-right: 1px solid #e0e0e0;
+    background: white;
+    position: relative;
+    min-height: 60px;
+}
+
+.day-slot:last-child {
+    border-right: none;
+}
+
+.day-slot:hover {
+    background: #f8f9ff;
+}
+
+/* Post cards within time slots */
+.post-card {
+    background: #e60023;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 6px;
+    margin: 1px;
+    font-size: 0.75em;
+    line-height: 1.2;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.post-card:hover {
+    background: #c41e3a;
+    transform: scale(1.02);
+    z-index: 5;
+    white-space: normal;
+    position: absolute;
+    min-width: 150px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.post-card.multiple-posts {
+    margin-bottom: 2px;
+}
+
+.time-row:nth-child(even) .time-slot {
+    background: #f5f5f5;
+}
+
+.time-row:nth-child(even) .day-slot {
+    background: #fafafa;
+}
+
+/* Week Navigation */
+.week-navigation {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.current-week-info {
+    text-align: center;
+}
+
+.calendar-controls {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.time-range-controls {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+/* Today highlighting */
+.day-slot.today {
+    background: #fff3e0 !important;
+}
+
+.day-slot.today:hover {
+    background: #ffe0b3 !important;
+}
+
+.day-header.today {
+    background: #ff9800;
+    color: white;
+}
+
+/* Empty state for calendar */
+.calendar-empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.calendar-empty-state i {
+    font-size: 48px;
+    opacity: 0.5;
+    margin-bottom: 15px;
+}
+</style>
+
+<script src="assets/js/pages/pinterest-accounts.js"></script>

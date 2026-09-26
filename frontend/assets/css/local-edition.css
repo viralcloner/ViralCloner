@@ -1,0 +1,6 @@
+.community-posts-card, .messages-card { display: none !important; }
+
+.local-service-notice { padding: 24px; color: var(--text-primary); }
+#localWorkspaceLabel { cursor: default; }
+#localWorkspaceLabel .user-name { white-space: normal; }
+.local-update-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }

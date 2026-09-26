@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        #message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 40px);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="custom-titlebar">
+        <span class="title"></span>
+        <div class="window-controls">
+            <button onclick="window.close()">×</button>
+        </div>
+    </div>
+
+    <div id="message"></div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        ipcRenderer.on('alert-message', (event, msg) => {
+            document.getElementById('message').innerText = msg;
+        });
+        ipcRenderer.on('auto-hide', (event, autoHide) => {
+            if (autoHide > 0) {
+                let remaining = autoHide;
+                const titleEl = document.querySelector('#custom-titlebar .title');
+
+                const timer = setInterval(() => {
+                    remaining--;
+                    if (remaining <= 0) {
+                        clearInterval(timer);
+                        window.close();
+                    } else {
+                        titleEl.textContent = `Alert will close after ${remaining}s`;
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

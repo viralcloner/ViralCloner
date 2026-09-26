@@ -1,0 +1,1072 @@
+﻿/* Dark theme: Automation page */
+html[data-theme="dark"] #returnBack {
+  background: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] #returnBack:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="dark"] .bulk-actions-bar {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+html[data-theme="dark"] .custom-checkbox .checkmark {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .custom-checkbox:hover .checkmark {
+  border-color: #3b82f6;
+}
+
+html[data-theme="dark"] .automation-table tbody tr.selected {
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+html[data-theme="dark"] .automation-table tbody tr.selected:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+html[data-theme="dark"] .automation-table-container {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .automation-table thead {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .automation-table thead th {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .automation-table tbody tr {
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .automation-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .automation-table tbody td {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .preview-thumbnail {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .preview-hover-popup-inner {
+  background: var(--bg-secondary);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+              0 8px 16px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .preview-hover-popup img {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+html[data-theme="dark"] .preview-hover-popup-label {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] #emptyAutomations {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] #emptyAutomations .material-icons {
+  color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark theme: Workflow table */
+html[data-theme="dark"] .workflow-table-container {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .workflow-table thead {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .workflow-table thead th {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .workflow-table tbody tr {
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .workflow-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .workflow-table tbody td {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .workflow-id code {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .workflow-automation {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .workflow-date {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .progress-container {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .progress-container .progress-text {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .post-count.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .post-count.failed {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .post-count.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .status-badge.status-active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .status-badge.status-inactive {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .status-badge.status-pending {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .status-badge.status-queued {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .exported-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .btn-action {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .btn-action:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .btn-action.btn-edit {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .btn-action.btn-edit:hover {
+  background: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+html[data-theme="dark"] .btn-action.btn-view {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .btn-action.btn-view:hover {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .btn-action.btn-export {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .btn-action.btn-export:hover {
+  background: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+html[data-theme="dark"] .btn-action.btn-delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .btn-action.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.25);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+html[data-theme="dark"] #emptyWorkflows {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] #emptyWorkflows .material-icons {
+  color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark theme: Action dropdown (workflows table) */
+html[data-theme="dark"] .action-dropdown-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .action-dropdown-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .action-dropdown-menu {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .action-dropdown-item {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .action-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-primary {
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-primary:hover {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-success {
+  color: #34d399;
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-success:hover {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-warning {
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-warning:hover {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-info {
+  color: #22d3ee;
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-info:hover {
+  background: rgba(8, 145, 178, 0.15);
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-danger {
+  color: #f87171;
+}
+
+html[data-theme="dark"] .action-dropdown-item.item-danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+html[data-theme="dark"] .action-dropdown-divider {
+  background: var(--border-color);
+}
+
+/* Dark theme: Automation sidebar */
+html[data-theme="dark"] #automation-container .automation-sidebar {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  border-left-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .automation-sidebar .sidebar-actions {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .automation-sidebar .sidebar-search {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .automation-sidebar .sidebar-search i {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .automation-sidebar .sidebar-search input {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .automation-sidebar .sidebar-search input::placeholder {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .automation-sidebar .elements {
+  background: var(--bg-primary);
+}
+
+html[data-theme="dark"] .automation-sidebar .elements::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+html[data-theme="dark"] .automation-sidebar .elements::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark theme: Node groups */
+html[data-theme="dark"] .node-group {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .node-group:hover {
+  border-color: rgba(196, 181, 253, 0.4);
+}
+
+html[data-theme="dark"] .node-group-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .node-group-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="dark"] .node-group-header .group-title {
+  color: #a78bfa;
+}
+
+html[data-theme="dark"] .node-group-header .group-title i {
+  color: #c4b5fd;
+}
+
+html[data-theme="dark"] .node-group-header .group-toggle {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .node-group-items {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .node-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .node-item img {
+  filter: brightness(0) invert(1);
+}
+
+html[data-theme="dark"] .node-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+/* Dark theme: Sidebar inputs panel */
+html[data-theme="dark"] .automation-sidebar .inputs {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .automation-sidebar .inputs #inputsBack {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .automation-sidebar .inputs #inputsBack:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .automation-sidebar .inputs hr {
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .automation-sidebar .inputs-container .input label {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .automation-sidebar .inputs-container .input input,
+html[data-theme="dark"] .automation-sidebar .inputs-container .input textarea,
+html[data-theme="dark"] .automation-sidebar .inputs-container .input select {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .automation-sidebar .inputs-container .input input:focus,
+html[data-theme="dark"] .automation-sidebar .inputs-container .input textarea:focus,
+html[data-theme="dark"] .automation-sidebar .inputs-container .input select:focus {
+  border-color: rgba(167, 139, 250, 0.55);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+}
+
+/* Dark theme: Spy page - Settings container */
+html[data-theme="dark"] .settings-container {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar {
+  background: var(--bg-secondary);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-group {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-group-header {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element.active {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+  color: #c4b5fd;
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element.active span {
+  color: #c4b5fd;
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element:hover span {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element > div:first-child .material-icons {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element:hover > div:first-child .material-icons,
+html[data-theme="dark"] .settings-container .settings-sidebar .menu .menu-element.active > div:first-child .material-icons {
+  color: #c4b5fd;
+}
+
+html[data-theme="dark"] .settings-container .section-header {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .settings-container .section-header-icon {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+html[data-theme="dark"] .settings-container .section-header-text h2 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .settings-container .section-header-text p {
+  color: var(--text-secondary);
+}
+
+/* Dark theme: Spy posts */
+html[data-theme="dark"] .post-element {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .posts-container .post-element .head {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .posts-container .post-element .head .name {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .posts-container .post-element .head .name .page-meta {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .posts-container .post-element .head .name .page-followers {
+  color: #6b9fff;
+}
+
+html[data-theme="dark"] .posts-container .post-element .head .name .page-followers i {
+  color: #6b9fff;
+}
+
+/* Dark theme: Mini Canvas page */
+html[data-theme="dark"] #mini-canvas-container {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+html[data-theme="dark"] #canvas-container .minicanvas-header {
+  background: linear-gradient(135deg, #352f68 0%, #281540 100%);
+}
+
+html[data-theme="dark"] #canvas-container .action-btn.primary {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="dark"] #canvas-container .action-btn.primary:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .empty-state {
+  background: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .empty-state-title {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .empty-state-text {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .template-content {
+  background: var(--bg-tertiary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .template-content img {
+  background: var(--bg-tertiary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .template-content span {
+  color: var(--text-primary) !important;
+  background: var(--bg-secondary) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .buttons {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .buttons .btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .buttons .btn:hover {
+  background: #5b4fb8 !important;
+  color: #fff !important;
+  border-color: #5b4fb8 !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .buttons .btn.btn-success {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .buttons .btn.btn-success:hover {
+  background: #10b981 !important;
+  color: #fff !important;
+  border-color: #10b981 !important;
+}
+
+html[data-theme="dark"] #mini-canvas-container .templates .template .buttons .btn:last-child:hover {
+  background: #ef4444 !important;
+  color: #fff !important;
+  border-color: #ef4444 !important;
+}
+
+/* Dark theme: Mini Canvas editor */
+html[data-theme="dark"] #mini-canvas-editor {
+  background-color: var(--bg-primary);
+}
+
+html[data-theme="dark"] #mini-canvas-editor header {
+  background-color: var(--bg-secondary);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] #mini-canvas-editor .sidebar {
+  background-color: var(--bg-secondary);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] #mini-canvas-editor .editor-container .editor-header .btn {
+  color: var(--text-secondary);
+}
+
+/* Dark theme: Structures page */
+html[data-theme="dark"] #structures-container {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+html[data-theme="dark"] .structures-list-container {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+html[data-theme="dark"] .structures-header {
+  background: linear-gradient(135deg, #352f68 0%, #281540 100%);
+}
+
+html[data-theme="dark"] .structure-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .structure-card:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  border-color: #7c6fd6;
+}
+
+html[data-theme="dark"] .structure-card-header {
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .structure-card-title h3 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .structure-stat {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .structure-stat strong {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .structure-btn-delete {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+html[data-theme="dark"] .structure-btn-delete:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+html[data-theme="dark"] .structure-area {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+html[data-theme="dark"] .structure-edit-header {
+  background: var(--bg-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .btn-back {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .btn-back:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Toggle Switch Dark Theme */
+html[data-theme="dark"] .toggle-switch .slider {
+  background-color: #374151;
+}
+
+html[data-theme="dark"] .toggle-switch .slider::before {
+  background-color: #e5e7eb;
+}
+
+html[data-theme="dark"] .settings-toggle .toggle-slider {
+  background-color: #374151;
+}
+
+html[data-theme="dark"] .settings-toggle .toggle-slider::before {
+  background-color: #e5e7eb;
+}
+
+/* ---- Pinterest Collection (Settings) Dark Theme ---- */
+html[data-theme="dark"] .pinterest-toggle-slider {
+  background-color: #374151;
+}
+
+html[data-theme="dark"] .pinterest-toggle-slider::before {
+  background-color: #e5e7eb;
+}
+
+html[data-theme="dark"] .pinterest-status-idle {
+  background: rgba(22, 163, 106, 0.15);
+  border-color: rgba(22, 163, 106, 0.3);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .pinterest-status-collecting {
+  background: rgba(217, 119, 6, 0.15);
+  border-color: rgba(217, 119, 6, 0.3);
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] #pinterestIntervalSelect {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterestClearLogsBtn {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] #pinterestClearLogsBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ---- Pinterest Collection Account Selector & Result Cards Dark Theme ---- */
+html[data-theme="dark"] .pc-toolbar-btn {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--text-primary);
+}
+html[data-theme="dark"] .pc-toolbar-btn:hover {
+  background: rgba(230,0,35,0.1);
+  border-color: #e60023;
+  color: #ff4757;
+}
+html[data-theme="dark"] .pc-account-table-wrap {
+  border-color: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .pc-account-table thead th {
+  background: rgba(255,255,255,0.04);
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .pc-account-table tbody tr {
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+html[data-theme="dark"] .pc-account-table tbody tr:hover {
+  background: rgba(255,255,255,0.04);
+}
+html[data-theme="dark"] .pc-account-card {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.1);
+}
+html[data-theme="dark"] .pc-state-processing { background: rgba(59,130,246,0.08); border-color: #3b82f6; }
+html[data-theme="dark"] .pc-state-success    { background: rgba(16,185,129,0.08); border-color: #10b981; }
+html[data-theme="dark"] .pc-state-skipped    { background: rgba(245,158,11,0.08); border-color: #f59e0b; }
+html[data-theme="dark"] .pc-state-error      { background: rgba(239,68,68,0.08);  border-color: #ef4444; }
+html[data-theme="dark"] .pc-retry-btn {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+html[data-theme="dark"] .pc-retry-btn:hover:not(:disabled) {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* ---- Pinterest Analytics Page Dark Theme ---- */
+html[data-theme="dark"] .pa-title {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pa-subtitle {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pa-select {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-date-range {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .pa-range-btn {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pa-range-btn.active {
+  background: var(--bg-primary);
+  color: #e60023;
+}
+
+html[data-theme="dark"] .pa-icon-btn {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pa-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-card-value {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pa-card-label {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pa-chart-box {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-chart-header h3 {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pa-metric-tabs {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .pa-metric-tab {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .pa-metric-tab.active {
+  background: var(--bg-primary);
+  color: #e60023;
+}
+
+html[data-theme="dark"] .pa-pin-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-pin-title {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pa-pin-thumb {
+  background: var(--bg-primary);
+}
+
+html[data-theme="dark"] .pa-empty-main {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-empty-main h3 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pa-top-pins-header h2,
+html[data-theme="dark"] .pa-fetch-history h2 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pa-fetch-log-table {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-fetch-log-table thead tr {
+  background: var(--bg-primary);
+}
+
+html[data-theme="dark"] .pa-fetch-log-table thead th {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .pa-fetch-log-table tbody td {
+  color: var(--text-secondary);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="dark"] .pa-fetch-log-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .pa-status-success {
+  background: rgba(22, 163, 106, 0.15);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .pa-status-error {
+  background: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .pa-status-partial {
+  background: rgba(217, 119, 6, 0.15);
+  color: #fbbf24;
+}
+
+/* ============================================
+   Workflows Containers - Dark Mode
+   ============================================ */
+html[data-theme="dark"] #workflows-container .workflow-preview {
+  background-color: rgba(11, 18, 32, 0.95);
+}
+
+html[data-theme="dark"] #workflows-container .workflow-preview .nodes {
+  background: var(--bg-primary);
+}
+
+html[data-theme="dark"] #workflows-container .workflow-preview .posts {
+  background: var(--bg-primary);
+}
+
+/* ============================================
+   Execution Pipeline - Dark Mode
+   ============================================ */
+html[data-theme="dark"] .nodes-pipeline {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+}
+
+html[data-theme="dark"] .nodes-pipeline-header {
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .nodes-pipeline-title {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .pipeline-stat {
+  background: var(--bg-secondary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .pipeline-stat.completed {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+html[data-theme="dark"] .pipeline-stat.processing {
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+html[data-theme="dark"] .pipeline-stat.pending {
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .node-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .node-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .node-id {
+  color: var(--text-secondary);
+  background: var(--bg-tertiary, rgba(255, 255, 255, 0.06));
+}
+
+html[data-theme="dark"] .node-name {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .node-message {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .node-card.processing .node-message {
+  color: #818cf8;
+}
+
+html[data-theme="dark"] .node-card.completed .node-message {
+  color: #34d399;
+}
+
+html[data-theme="dark"] .node-card.failed .node-message {
+  color: #f87171;
+}
+
+html[data-theme="dark"] .node-card.completed .node-status-badge {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .node-card.processing .node-status-badge {
+  background: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+}
+
+html[data-theme="dark"] .node-card.started .node-status-badge {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .node-card.failed .node-status-badge {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .node-card.pending .node-status-badge {
+  background: var(--bg-tertiary, rgba(255, 255, 255, 0.06));
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .node-card.pending .node-status-indicator {
+  background: var(--bg-tertiary, rgba(255, 255, 255, 0.06));
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .node-card.pending .node-status-indicator .material-icons {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .node-connector {
+  background: linear-gradient(180deg, var(--border-color) 0%, var(--border-color) 100%);
+}
+
+html[data-theme="dark"] .node-connector::before {
+  background: var(--border-color);
+}
+
+html[data-theme="dark"] .nodes-empty-state .empty-icon {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary, rgba(255, 255, 255, 0.06)) 100%);
+}
+
+html[data-theme="dark"] .nodes-empty-state h3 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .nodes-empty-state p {
+  color: var(--text-secondary);
+}
