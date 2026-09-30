@@ -255,17 +255,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="menu-element" for="halal-mode-settings">
-                        <div>
-                            <i class="material-icons menu-item-icon">verified</i>
-                            <span data-i18n="settings.halal_mode_label">Halal Mode</span>
-                        </div>
-                        <div class="menu-element-badge" data-tooltip="Replace haram keywords with halal alternatives" data-i18n-tooltip="settings.tooltips.halal_mode">
-                            <i class="material-icons">info</i>
-                        </div>
-                    </a>
-
-                    <a href="#" class="menu-element" for="image-processing-settings">
+<a href="#" class="menu-element" for="image-processing-settings">
                         <div>
                             <i class="material-icons menu-item-icon">image</i>
                             <span data-i18n="settings.image_processing_label">Image Processing</span>
@@ -275,6 +265,12 @@
                         </div>
                     </a>
 
+                    <a href="#" class="menu-element" for="recipe-detection-settings">
+                        <div>
+                            <i class="material-icons menu-item-icon">restaurant</i>
+                            <span data-i18n="settings.recipe_detection.title">Halal Mode</span>
+                        </div>
+                    </a>
                     <a href="#" class="menu-element" for="ai-detection-settings">
                         <div>
                             <i class="material-icons menu-item-icon">fact_check</i>
@@ -378,7 +374,7 @@
     <div class="settings-content">
         <div class="section setting-card-big" id="local-app-updates">
             <h2 data-i18n="local.app_updates">Application updates</h2>
-            <p data-i18n="local.update_source">Updates come from the Windows-ViralCloner releases on GitHub.</p>
+            <p data-i18n="local.update_source">Updates come from the ViralCloner releases on GitHub.</p>
             <div class="local-update-actions">
                 <button class="btn-one" id="localCheckUpdates" data-i18n="local.check_updates">Check for updates</button>
                 <button class="btn-one success" id="localInstallUpdate" style="display:none;" data-i18n="local.install_update">Download and install</button>
@@ -1441,84 +1437,6 @@
             </div>
         </div>
 
-        <!-- Halal Mode Section -->
-        <div class="section" id="halal-mode-settings" style="display:none;">
-            <div class="section-header">
-                <div class="section-header-icon">
-                    <i class="material-icons">verified</i>
-                </div>
-                <div class="section-header-text">
-                    <h2 data-i18n="settings.halal_mode.title">Halal Mode</h2>
-                    <p data-i18n="settings.halal_mode.description">Replace haram keywords with halal alternatives in all automation text inputs</p>
-                </div>
-            </div>
-
-            <div class="automation-settings-content">
-                <div class="settings-cards">
-                    <div class="setting-card">
-                        <div class="setting-card-header">
-                            <div class="setting-icon">
-                                <i class="material-icons">toggle_on</i>
-                            </div>
-                            <div class="setting-info">
-                                <h5 data-i18n="settings.halal_mode.enable_title">Enable Halal Mode</h5>
-                                <p data-i18n="settings.halal_mode.enable_desc">When enabled, all text flowing through automation nodes will have haram keywords replaced with halal alternatives</p>
-                            </div>
-                            <label class="settings-toggle">
-                                <input type="checkbox" id="halalModeEnabled">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="setting-card">
-                        <div class="setting-card-header">
-                            <div class="setting-icon">
-                                <i class="material-icons">swap_horiz</i>
-                            </div>
-                            <div class="setting-info">
-                                <h5 data-i18n="settings.halal_mode.replacements_title">Keyword Replacements</h5>
-                                <p data-i18n="settings.halal_mode.replacements_desc">Add haram keywords and their halal alternatives. Supports any language — Arabic, French, English, and more.</p>
-                            </div>
-                        </div>
-                        <div class="setting-card-body" style="padding: 16px;">
-                            <div class="halal-table-wrap">
-                                <table class="halal-replacements-table" id="halalReplacementsTable">
-                                    <thead>
-                                        <tr>
-                                            <th data-i18n="settings.halal_mode.col_haram">Haram Keyword</th>
-                                            <th data-i18n="settings.halal_mode.col_halal">Halal Alternative</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="halalReplacementsBody">
-                                    </tbody>
-                                </table>
-                                <p class="halal-no-rows" id="halalNoRows" style="display:none;" data-i18n="settings.halal_mode.no_rows">No replacements added. Click "Add Row" or "Load Defaults".</p>
-                            </div>
-                            <div class="halal-table-actions" style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
-                                <button id="halalAddRow" class="btn-one">
-                                    <i class="material-icons">add</i>
-                                    <span data-i18n="settings.halal_mode.add_row">Add Row</span>
-                                </button>
-                                <button id="halalLoadDefaults" class="btn-one" style="background-color: #6c757d;">
-                                    <i class="material-icons">restore</i>
-                                    <span data-i18n="settings.halal_mode.load_defaults">Load Defaults</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="settings-actions">
-                    <button id="saveHalalModeSettings" class="btn-one success">
-                        <i class="material-icons">save</i>
-                        <span data-i18n="settings.halal_mode.save_btn">Save Settings</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <!-- Image Processing Section -->
         <div class="section" id="image-processing-settings" style="display:none;">
             <div class="section-header">
@@ -1803,6 +1721,38 @@
         </div>
 
         <!-- AI Detection Settings Section -->
+        <div class="section" id="recipe-detection-settings" style="display:none;">
+            <div class="section-header">
+                <div class="section-header-icon"><i class="material-icons">restaurant</i></div>
+                <div class="section-header-text">
+                    <h2 data-i18n="settings.recipe_detection.title">Halal Mode</h2>
+                    <p data-i18n="settings.recipe_detection.description">Flag recognized pork and alcohol ingredients in workflows and Spy Manager posts. Recipe text stays unchanged.</p>
+                </div>
+            </div>
+            <div class="automation-settings-content">
+                <div class="settings-cards">
+                    <div class="setting-card">
+                        <div class="setting-card-body">
+                            <div class="toggle-switch-container">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="recipeDetectionEnabled" aria-labelledby="recipeDetectionLabel" disabled>
+                                    <span class="slider"></span>
+                                </label>
+                                <span id="recipeDetectionLabel" class="toggle-label" data-i18n="settings.recipe_detection.enable">Enable Halal Mode</span>
+                            </div>
+                            <small class="form-help" data-i18n="settings.recipe_detection.help">Off by default. Detects English, French, Arabic, Romanian, Italian, and Spanish text locally. A missing badge does not confirm halal status.</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-actions">
+                    <button id="saveRecipeDetectionSettings" class="btn-one success" disabled>
+                        <i class="material-icons">save</i>
+                        <span data-i18n="settings.recipe_detection.save">Save Settings</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="section" id="ai-detection-settings" style="display:none;">
             <div class="section-header">
                 <div class="section-header-icon">
@@ -3152,5 +3102,7 @@
     </div>
 </div>
 
+<script src="assets/js/recipe-detector.js"></script>
+<script src="assets/js/recipe-screening.js"></script>
 <script src="assets/js/pages/settings.js"></script>
 <script src="assets/js/pages/local-settings.js"></script>

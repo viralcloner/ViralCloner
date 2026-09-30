@@ -1,3 +1,5 @@
+const { attachChatGPTReferenceImage } = require('../lib/chatgptReferenceUpload');
+const { collectGeneratedImages } = require('../lib/chatgptGeneratedImages');
 /**
  * ChatGPT Image Generation Module
  * Uses browser automation to interact with ChatGPT's image generation
@@ -16,6 +18,7 @@ const { getConsistentFingerprintForProfile, getVCBrowserVersion } = require('../
 const MAX_CONCURRENT = 1;                    // Max concurrent requests per ChatGPT profile
 const REQUEST_DELAY_MS = 1500;               // Delay between requests (1.5s - reduced from 3s for perf)
 const BROWSER_CLOSE_COOLDOWN_MS = 3000;      // Wait 3s after browser close before launching new one (prevents EBUSY)
+const IMAGE_REFRESH_INTERVAL_MS = 60 * 1000; // Recover a stalled ChatGPT UI while waiting
 const IMAGE_TIMEOUT_MS = 5 * 60 * 1000;      // 5 minutes timeout for image generation (complex prompts need more time)
 const CONVERSATION_REDIRECT_TIMEOUT_MS = 35000; // 35s for redirect to conversation
 const MIN_IMAGE_SIZE_BYTES = 500 * 1024;     // Minimum 500KB - valid ChatGPT images are usually 1.5MB+
@@ -1160,105 +1163,15 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
         const inputSelector = inputResult.selector;
         console.log('[ChatGPT Image] Found input with selector:', inputSelector, 'on attempt:', inputResult.attempt);
         
-        // Step 2: Upload reference image if provided
-        if (imagePath && fs.existsSync(imagePath)) {
-            console.log('[ChatGPT Image] Uploading reference image...');
-            
-            // Enable DOM domain for file input handling
-            const { DOM } = client;
-            await DOM.enable();
-            
-            // Click the plus button to open file picker
-            const clickPlusResult = await Runtime.evaluate({
-                expression: `
-(async function() {
-    const plusBtn = document.querySelector('#composer-plus-btn');
-    if (!plusBtn) return { success: false, error: 'Plus button not found' };
-    plusBtn.click();
-    await new Promise(r => setTimeout(r, 500));
-    return { success: true };
-})()`,
-                awaitPromise: true,
-                returnByValue: true,
-                timeout: 5000
-            });
-            
-            if (!clickPlusResult.result?.value?.success) {
-                console.log('[ChatGPT Image] Warning: Could not click plus button, continuing without image');
-            } else {
-                // Wait for menu to appear and click upload option
-                await new Promise(r => setTimeout(r, 500));
-                
-                // Look for file input that should appear
-                const fileInputResult = await Runtime.evaluate({
-                    expression: `
-(async function() {
-    // Wait for file input to be available
-    for (let i = 0; i < 20; i++) {
-        const fileInput = document.querySelector('input[type="file"]');
-        if (fileInput) {
-            return { success: true, found: true };
+        // Step 2: Attach the requested reference image before entering the prompt.
+        if (imagePath) {
+            if (!fs.existsSync(imagePath)) throw new Error('Reference image file not found');
+            console.log('[ChatGPT Image] Attaching reference image...');
+            await attachChatGPTReferenceImage(client, imagePath);
+            // The send-button wait below also waits for upload processing.
+            await new Promise(resolve => setTimeout(resolve, 3000));
         }
-        await new Promise(r => setTimeout(r, 200));
-    }
-    return { success: false, error: 'File input not found' };
-})()`,
-                    awaitPromise: true,
-                    returnByValue: true,
-                    timeout: 10000
-                });
-                
-                if (fileInputResult.result?.value?.success) {
-                    // Get the file input node
-                    const doc = await DOM.getDocument();
-                    const fileInputNode = await DOM.querySelector({
-                        nodeId: doc.root.nodeId,
-                        selector: 'input[type="file"]'
-                    });
-                    
-                    if (fileInputNode.nodeId) {
-                        // Set the file using CDP
-                        await DOM.setFileInputFiles({
-                            nodeId: fileInputNode.nodeId,
-                            files: [imagePath]
-                        });
-                        
-                        console.log('[ChatGPT Image] Image file set, waiting for upload...');
-                        
-                        // Wait for upload to complete (look for image preview)
-                        await Runtime.evaluate({
-                            expression: `
-(async function() {
-    for (let i = 0; i < 30; i++) {
-        // Check for uploaded image indicator
-        const uploadedImages = document.querySelectorAll('[data-testid="uploaded-image"], .uploaded-file, img[src*="blob:"], [class*="attachment"]');
-        if (uploadedImages.length > 0) {
-            return { success: true };
-        }
-        await new Promise(r => setTimeout(r, 500));
-    }
-    return { success: false };
-})()`,
-                            awaitPromise: true,
-                            returnByValue: true,
-                            timeout: 20000
-                        });
-                        
-                        console.log('[ChatGPT Image] Image uploaded successfully');
-                        await new Promise(r => setTimeout(r, 1000));
-                    }
-                } else {
-                    console.log('[ChatGPT Image] Warning: File input not found, continuing without image');
-                    // Click somewhere to close the menu
-                    await Runtime.evaluate({
-                        expression: `document.body.click()`,
-                        returnByValue: true
-                    });
-                    await new Promise(r => setTimeout(r, 300));
-                }
-            }
-        }
-        
+
         // Step 3: Fill the prompt (with retry for "Promise was collected" errors)
         const escapedPrompt = prompt.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
         const escapedSelector = inputSelector.replace(/'/g, "\\'");
@@ -1347,21 +1260,43 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
 (async function() {
     const maxAttempts = 120; // Wait up to 60 seconds for button to be enabled
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        const button = document.querySelector('#composer-submit-button');
+        // ChatGPT rolls out different composers per account. Prefer the active
+        // prompt's form and semantic send controls, not changing CSS classes.
+        const prompt = document.querySelector('#prompt-textarea');
+        const composerForm = prompt && prompt.closest('form');
+        const scope = composerForm || document;
+        const sendSelectors = [
+            '#composer-submit-button',
+            'button[data-testid="send-button"]',
+            'button[type="submit"][aria-label="Send" i]',
+            'button[aria-label="Send prompt" i]',
+            'button[aria-label="Send message" i]',
+            'button[type="submit"][aria-label="Envoyer" i]'
+        ];
+        // Submit semantics work across composer languages. Only use this broad
+        // fallback inside the prompt's form, never on unrelated page forms.
+        if (composerForm) sendSelectors.push('button[type="submit"]');
+        const candidates = Array.from(scope.querySelectorAll(sendSelectors.join(','))).filter(function(candidate) {
+            const style = window.getComputedStyle(candidate);
+            const label = candidate.getAttribute('aria-label') || '';
+            return candidate.getClientRects().length > 0 &&
+                style.visibility !== 'hidden' && style.display !== 'none' &&
+                candidate.getAttribute('data-testid') !== 'stop-button' &&
+                !/^(?:stop|arrêter|arreter|interrompre)(?:\\s|$)/i.test(label);
+        });
+        const isEnabled = function(candidate) {
+            return !candidate.matches(':disabled') &&
+                candidate.getAttribute('aria-disabled') !== 'true';
+        };
+        const button = candidates.find(isEnabled) || candidates[0];
         if (!button) {
             if (attempt === maxAttempts - 1) return { success: false, error: 'Submit button not found' };
             await new Promise(r => setTimeout(r, 500));
             continue;
         }
-        if (!button.disabled) {
+        if (isEnabled(button)) {
             const assistantCount = document.querySelectorAll('[data-message-author-role="assistant"]').length;
-            const existingImages = Array.from(document.querySelectorAll('div[id^="image-"]')).map(function(container) {
-                const image = container.querySelector('img[src*="estuary/content"]');
-                return {
-                    id: container.id || '',
-                    src: image ? (image.currentSrc || image.src || image.getAttribute('src') || '') : ''
-                };
-            });
+            const existingImages = (${collectGeneratedImages.toString()})().images;
             button.click();
             return { success: true, attempts: attempt, assistantCount, imageCount: existingImages.length, existingImages };
         }
@@ -1411,7 +1346,7 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
 (function() {
     const url = window.location.href;
     const assistantCount = document.querySelectorAll('[data-message-author-role="assistant"]').length;
-    const imageCount = document.querySelectorAll('div[id^="image-"]').length;
+    const imageCount = (${collectGeneratedImages.toString()})().count;
     const stopButton = document.querySelector('button[data-testid="stop-button"], button[aria-label*="Stop"], button[aria-label*="stop"]');
     return {
         url,
@@ -1476,58 +1411,12 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
         
         console.log('[ChatGPT Image] Network listener active for auth and cleanup tracking');
         
-        // Helper: scrape generated image cards from the conversation DOM.
-        // Generated images render as div[id^="image-"] cards whose <img> src points to
-        // https://chatgpt.com/backend-api/estuary/content?id=file_...&sig=...
-        // Each card contains the same image multiple times (main, fade-in, blurred
-        // background), so we take the first matching <img> per card.
+        // Read both legacy cards and the new generated-image gallery. The same
+        // reader captured the pre-submit baseline so older gallery images are excluded.
         async function scrapeGeneratedImages() {
             try {
-                const excludedImageIds = JSON.stringify(preSubmitImageIds);
-                const excludedImageUrls = JSON.stringify(preSubmitImageUrls);
                 const result = await Runtime.evaluate({
-                    expression: `
-(function() {
-    try {
-        var excludedIds = new Set(${excludedImageIds});
-        var excludedUrls = new Set(${excludedImageUrls});
-        var containers = document.querySelectorAll('div[id^="image-"]');
-        var images = [];
-        var seenSrc = {};
-        for (var c = 0; c < containers.length; c++) {
-            var container = containers[c];
-            if (excludedIds.has(container.id)) continue;
-            var imgs = container.querySelectorAll('img[src*="estuary/content"]');
-            for (var i = 0; i < imgs.length; i++) {
-                var img = imgs[i];
-                var src = img.currentSrc || img.src || img.getAttribute('src') || '';
-                if (!src || src.indexOf('estuary/content') === -1) continue;
-                if (excludedUrls.has(src)) continue;
-                if (seenSrc[src]) continue;
-                seenSrc[src] = true;
-                images.push({
-                    src: src,
-                    complete: !!(img.complete && img.naturalWidth > 0),
-                    hasOverlay: !!container.querySelector('[data-testid="image-gen-overlay-actions"]'),
-                    id: container.id
-                });
-                break;
-            }
-        }
-
-        // A visible stop button in the composer means generation is still streaming
-        var generating = false;
-        var stopSelectors = ['button[data-testid="stop-button"]', 'button[aria-label*="Stop"]', 'button[aria-label*="stop"]', 'button[aria-label*="Arr"]'];
-        for (var s = 0; s < stopSelectors.length; s++) {
-            var btn = document.querySelector(stopSelectors[s]);
-            if (btn && btn.offsetParent !== null) { generating = true; break; }
-        }
-
-        return { found: images.length > 0, count: images.length, images: images, generating: generating };
-    } catch (e) {
-        return { found: false, error: e.message };
-    }
-})()`,
+                    expression: `(${collectGeneratedImages.toString()})(${JSON.stringify(preSubmitImageIds)}, ${JSON.stringify(preSubmitImageUrls)})`,
                     returnByValue: true,
                     timeout: 10000
                 });
@@ -1536,7 +1425,7 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
                 return { found: false, error: e.message };
             }
         }
-        
+
         // Check for rate limit by fetching the conversation API
         async function checkForRateLimitViaAPI() {
             if (!ourConversationId) return { rateLimited: false };
@@ -1731,7 +1620,9 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
             let resolved = false;
             let pollCount = 0;
             let pollTimer = null;
+            let lastImageSet = '';
             let lastImageCount = 0;
+            let lastPageRefreshAt = Date.now();
             let stablePolls = 0; // consecutive polls where the ready image set stayed unchanged
             const shortKey = requestKey.substring(0, 20);
             
@@ -1767,6 +1658,7 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
                 // Check for rate limit every N polls (or on first poll after some time has passed)
                 if (pollCount === 3 || (pollCount > 3 && pollCount % RATE_LIMIT_CHECK_INTERVAL === 0)) {
                     const rateLimitCheck = await checkForRateLimitViaAPI();
+                    if (resolved) return;
                     if (rateLimitCheck.rateLimited) {
                         diagLog(`POLL_RATE_LIMITED - requestKey: ${shortKey}, pollCount: ${pollCount}, waitMinutes: ${rateLimitCheck.waitMinutes}, message: ${rateLimitCheck.message?.substring(0, 100)}`);
                         console.log('[ChatGPT Image] Rate limit detected via API:', rateLimitCheck.message);
@@ -1781,18 +1673,29 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
                 
                 // Scrape generated image cards from the DOM
                 const domResult = await scrapeGeneratedImages();
+                if (resolved) return;
+                if (isCancelled()) {
+                    resolved = true;
+                    clearTimeout(totalTimeout);
+                    rejectImage(new Error('Request was cancelled'));
+                    return;
+                }
+                let imageReady = false;
 
                 if (domResult?.found && domResult.images.length > 0) {
                     const allLoaded = domResult.images.every(img => img.complete);
                     const allOverlay = domResult.images.every(img => img.hasOverlay);
                     // Ready when generation stopped AND (all <img> fully loaded OR overlay actions rendered)
                     const ready = !domResult.generating && (allLoaded || allOverlay);
+                    imageReady = ready;
                     
-                    if (ready && domResult.count === lastImageCount) {
+                    const imageSet = JSON.stringify(domResult.images.map(img => [img.id, img.src]));
+                    if (ready && imageSet === lastImageSet) {
                         stablePolls++;
                     } else {
                         stablePolls = 0;
                     }
+                    lastImageSet = imageSet;
                     lastImageCount = domResult.count;
 
                     // Accept once the image set stayed stable across 2 consecutive polls
@@ -1813,15 +1716,39 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
                 } else {
                     // No image cards rendered yet
                     stablePolls = 0;
+                    lastImageSet = '';
                     lastImageCount = 0;
                     if (pollCount % 5 === 1) {
                         console.log('[ChatGPT Image] Waiting for generated image to appear in DOM... (poll #' + pollCount + ')');
                     }
                 }
                 
-                // Schedule next poll (every 2 seconds)
+                // Refresh only while pending, before choosing a blob URL for download.
+                // Do not resubmit the prompt or reset the overall generation timeout.
+                let nextPollDelay = 2000;
+                if (!resolved && !isCancelled() && !imageReady &&
+                    Date.now() - lastPageRefreshAt >= IMAGE_REFRESH_INTERVAL_MS) {
+                    lastPageRefreshAt = Date.now();
+                    lastImageSet = '';
+                    lastImageCount = 0;
+                    stablePolls = 0;
+                    try {
+                        console.log('[ChatGPT Image] Refreshing pending generation after 60 seconds...');
+                        // /images may not restore an in-flight conversation on reload.
+                        // Reopen its conversation when the response supplied an ID.
+                        if (ourConversationId && /^[a-f0-9-]{36}$/i.test(ourConversationId)) {
+                            await Page.navigate({ url: 'https://chatgpt.com/c/' + ourConversationId });
+                        } else {
+                            await Page.reload({ ignoreCache: true });
+                        }
+                        nextPollDelay = 5000; // Allow the refreshed page to hydrate.
+                    } catch (refreshError) {
+                        console.warn('[ChatGPT Image] Page refresh failed; continuing image checks:', refreshError.message);
+                    }
+                }
+
                 if (!resolved) {
-                    pollTimer = setTimeout(pollForImage, 2000);
+                    pollTimer = setTimeout(pollForImage, nextPollDelay);
                 }
             };
             
@@ -1893,7 +1820,8 @@ async function executeImageRequest(requestKey, profileId, prompt, imagePath, wor
                 expression: `
 (async function() {
     try {
-        const response = await fetch('${imageUrl.replace(/'/g, "\\'")}', { credentials: 'include' });
+        // Blob URLs must be fetched here, in the page that created them.
+        const response = await fetch(${JSON.stringify(imageUrl)}, { credentials: 'include' });
         if (!response.ok) {
             return { success: false, error: 'HTTP ' + response.status };
         }

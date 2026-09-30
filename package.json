@@ -1,6 +1,6 @@
 {
   "name": "viralcloner",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -76,7 +76,7 @@
     "publish": {
       "provider": "github",
       "owner": "viralcloner",
-      "repo": "Windows-ViralCloner",
+      "repo": "ViralCloner",
       "releaseType": "release"
     }
   },
@@ -119,10 +119,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/viralcloner/Windows-ViralCloner.git"
+    "url": "https://github.com/viralcloner/ViralCloner.git"
   },
-  "homepage": "https://github.com/viralcloner/Windows-ViralCloner",
+  "homepage": "https://github.com/viralcloner/ViralCloner",
   "bugs": {
-    "url": "https://github.com/viralcloner/Windows-ViralCloner/issues"
+    "url": "https://github.com/viralcloner/ViralCloner/issues"
   }
 }

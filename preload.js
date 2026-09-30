@@ -151,6 +151,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.invoke("download-ise-images", imageUrls),
 
   // Pinterest Feed Spy functions
+  pinterestFeedSpyTrends: (query, requestId) =>
+    ipcRenderer.invoke("pinterest-feedspy-trends", { query, requestId }),
+  pinterestFeedSpyCancelTrends: (requestId) =>
+    ipcRenderer.invoke("pinterest-feedspy-cancel-trends", requestId),
   pinterestFeedSpyInit: (query) =>
     ipcRenderer.invoke("pinterest-feedspy-init", query),
   pinterestFeedSpyInitAccount: (accountId) =>
@@ -212,6 +216,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getUserDataPath: () => ipcRenderer.invoke("get-userdata-path"),
   getShapes: () => ipcRenderer.invoke("get-shapes"),
   getFonts: () => ipcRenderer.invoke("get-fonts"),
+  generateTTSAudio: (input) => ipcRenderer.invoke("tts-tool-generate", input),
+  saveTTSAudio: () => ipcRenderer.invoke("tts-tool-save"),
   getTTSVoices: () => ipcRenderer.invoke("get-tts-voices"),
   previewTTSVoice: (voice, text) => ipcRenderer.invoke("preview-tts-voice", voice, text),
   getPhotos: (page, query) => ipcRenderer.invoke("get-photos", page, query),
@@ -368,6 +374,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
       workflowId,
       automationId,
     ),
+  changeWorkflowAutomation: (workflowId, automationId) =>
+    ipcRenderer.invoke("change-workflow-automation", workflowId, automationId),
   onAutoResolvePendingSelections: (callback) =>
     ipcRenderer.on("auto-resolve-pending-selections", (e, payload) =>
       callback(payload),

@@ -1296,8 +1296,8 @@
               </div>
               <div class="pfeedspy-config-row">
                 <div class="pfeedspy-field pfeedspy-field-query">
-                  <label data-i18n="workflows.pfeedspy.query_label">Search Query</label>
-                  <input type="text" id="pfeedspyQuery" placeholder="e.g. Healthy soup recipes..." data-i18n-placeholder="workflows.pfeedspy.query_placeholder" />
+                  <label data-i18n="workflows.pfeedspy.query_label">Seed Keyword</label>
+                  <input type="text" id="pfeedspyQuery" maxlength="200" placeholder="e.g. Healthy soup recipes..." data-i18n-placeholder="workflows.pfeedspy.query_placeholder" />
                 </div>
                 <div class="pfeedspy-field pfeedspy-field-filter">
                   <label data-i18n="workflows.pfeedspy.min_reactions_label">Min Reactions</label>
@@ -1318,6 +1318,7 @@
                   </button>
                 </div>
               </div>
+              <div id="pfeedspyTrendingKeywords" class="pfeedspy-trending-keywords" style="display:none" aria-live="polite"></div>
               <!-- Live stats bar -->
               <div class="pfeedspy-live-bar" id="pfeedspyLiveBar" style="display:none">
                 <div class="pfeedspy-live-dot" id="pfeedspyLiveDot"></div>
@@ -1994,4 +1995,6 @@
   </div>
 </div>
 
+<script src="assets/js/recipe-detector.js"></script>
+<script src="assets/js/recipe-screening.js"></script>
 <script src="assets/js/pages/workflows.js"></script>

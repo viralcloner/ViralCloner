@@ -29,6 +29,6 @@
         } finally { unsubscribe(); $(this).prop('disabled', false); }
     });
     $('#localViewReleases').off('.localUpdates').on('click.localUpdates', () => {
-        window.electronAPI.openExternal('https://github.com/viralcloner/Windows-ViralCloner/releases');
+        window.electronAPI.openExternal('https://github.com/viralcloner/ViralCloner/releases');
     });
 })();

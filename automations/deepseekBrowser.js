@@ -20,7 +20,12 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { solveDeepSeekPow: solveDeepSeekPowVM } = require('../lib/deepseek-pow');
-const { readKey, updateData } = require('../lib/utils');
+const { readKey } = require('../lib/utils');
+const profileState = require('../lib/deepseekProfileState');
+const { retryRateLimited } = require('../lib/deepseekRetry');
+const { AsyncLocalStorage } = require('async_hooks');
+const requestContext = new AsyncLocalStorage();
+const lastFinished = new Map();
 
 // ─── Per-profile concurrency control ────────────────────────────────────────
 // Each connected profile can only handle one request at a time.
@@ -105,15 +110,30 @@ function generateUUID() {
 /**
  * Simple HTTPS request helper (returns Buffer body + statusCode).
  */
+function assertAccountAvailable() {
+  const id = requestContext.getStore();
+  if (id && !profileState.available((readKey('deepseekBrowserProfiles') || {})[id])) {
+    throw new Error('DeepSeek account is restricted or logged out. Check Settings.');
+  }
+}
+
 function httpsRequest(options, body) {
+  assertAccountAvailable();
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
       const chunks = [];
       res.on('data', (chunk) => chunks.push(chunk));
-      res.on('end', () =>
-        resolve({ status: res.statusCode, body: Buffer.concat(chunks) })
-      );
+      res.on('end', () => {
+        const body = Buffer.concat(chunks);
+        try {
+          const id = requestContext.getStore();
+          if (id) profileState.observe(id, res.statusCode, body, res.headers, options.path === '/api/v0/users/current');
+          resolve({ status: res.statusCode, body, headers: res.headers });
+        } catch (err) { reject(err); }
+      });
+      res.on('error', reject);
     });
+    req.setTimeout(30000, () => req.destroy(new Error('DeepSeek request timed out.')));
     req.on('error', reject);
     if (body) req.write(body);
     req.end();
@@ -124,8 +144,10 @@ function httpsRequest(options, body) {
  * HTTPS streaming request: resolves with Node.js IncomingMessage stream.
  */
 function httpsStream(options, body) {
+  assertAccountAvailable();
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => resolve(res));
+    req.setTimeout(30000, () => req.destroy(new Error('DeepSeek request timed out.')));
     req.on('error', reject);
     if (body) req.write(body);
     req.end();
@@ -343,7 +365,7 @@ async function uploadImage(profile, imagePath) {
  */
 async function waitForImageProcessing(profile, fileId) {
   const deadline = Date.now() + 60_000;
-  let pollDelay = 150;
+  let pollDelay = 500;
 
   while (Date.now() < deadline) {
     const res = await httpsRequest({
@@ -382,7 +404,7 @@ async function waitForImageProcessing(profile, fileId) {
     }
 
     await new Promise((resolve) => setTimeout(resolve, pollDelay));
-    pollDelay = Math.min(Math.round(pollDelay * 1.4), 600);
+    pollDelay = Math.min(Math.round(pollDelay * 1.5), 2000);
   }
 
   throw new Error('DeepSeek image processing timed out after 60 seconds.');
@@ -665,6 +687,7 @@ async function callDeepSeekAPI(profile, prompt, thinkingEnabled, searchEnabled, 
     await new Promise((res) => stream.on('end', res));
     const errBody = Buffer.concat(errChunks).toString('utf8').slice(0, 2000);
     console.error('[DeepSeek Browser] Non-200 body:', errBody);
+    profileState.observe(requestContext.getStore(), stream.statusCode, errBody, stream.headers);
     const expired = isSessionExpiredResponse(stream.statusCode, errBody);
     return {
       success: false,
@@ -740,6 +763,7 @@ async function callDeepSeekAPI(profile, prompt, thinkingEnabled, searchEnabled, 
     return {
       success: false,
       value: `DeepSeek error: ${state.error}${reason}`,
+      rateLimited: state.finishReason === 'rate_limit_reached' || /messages too frequent|too many requests/i.test(String(state.error)),
       sessionId,
     };
   }
@@ -782,27 +806,6 @@ async function deleteConversation(profile, sessionId) {
 
 // ─── Mark Profile Expired ─────────────────────────────────────────────────────
 
-async function markProfileExpired(profileId) {
-  try {
-    const profiles = (await readKey('deepseekBrowserProfiles')) || {};
-    if (profiles[profileId]) {
-      profiles[profileId].status = 'expired';
-      await updateData('deepseekBrowserProfiles', profiles);
-    }
-  } catch (_) {}
-}
-
-async function markProfileConnected(profileId) {
-  try {
-    const profiles = (await readKey('deepseekBrowserProfiles')) || {};
-    if (profiles[profileId] && profiles[profileId].status !== 'connected') {
-      profiles[profileId].status = 'connected';
-      profiles[profileId].updatedAt = new Date().toISOString();
-      await updateData('deepseekBrowserProfiles', profiles);
-    }
-  } catch (_) {}
-}
-
 // ─── Public Entry Point ───────────────────────────────────────────────────────
 
 /**
@@ -819,84 +822,71 @@ async function deepseekBrowser(
   thinkingEnabled = false,
   searchEnabled = false,
   pinnedProfileId = null,
-  imagePath = null
+  imagePath = null,
+  abortSignal = null
 ) {
   if ((!prompt || !prompt.trim()) && !imagePath) {
     return { success: false, value: 'Prompt is required' };
   }
 
-  const profiles = (await readKey('deepseekBrowserProfiles')) || {};
-  const connected = Object.keys(profiles).filter(
-    (id) => profiles[id].status === 'connected'
-  );
-
-  // Older versions incorrectly marked temporary account limits as an expired
-  // login. If no connected profile is available, retry one of those saved
-  // profiles so it can recover automatically once the limit is lifted.
-  const recoverable = Object.keys(profiles).filter(
-    (id) =>
-      profiles[id].status === 'expired' &&
-      profiles[id].token &&
-      profiles[id].cookies
-  );
-  const pinnedIsUsable = !!(
-    pinnedProfileId &&
-    profiles[pinnedProfileId]?.token &&
-    profiles[pinnedProfileId]?.cookies
-  );
-
-  if (connected.length === 0 && recoverable.length === 0 && !pinnedIsUsable) {
-    return {
-      success: false,
-      value:
-        'No DeepSeek Browser profile connected. Please connect an account in Settings.',
-    };
+  const profiles = readKey('deepseekBrowserProfiles') || {};
+  const pool = (pinnedProfileId ? [pinnedProfileId] : Object.keys(profiles))
+    .filter(id => profileState.available({ ...profiles[id], retryAfter: 0 }));
+  if (!pool.length) {
+    return { success: false, value: 'No DeepSeek account is available. Check restrictions or reconnect in Settings.' };
   }
 
-  // If a specific profile is pinned, use only that one (for test calls)
-  const pool = pinnedIsUsable
-    ? [pinnedProfileId]
-    : (connected.length > 0 ? connected : recoverable);
-
-  // Acquire a free profile (waits if all are busy)
   const profileId = await acquireProfile(pool);
-  const profile = profiles[profileId];
-
   let apiResult;
   try {
-    apiResult = await callDeepSeekAPI(
-      profile,
-      prompt || '',
-      thinkingEnabled,
-      searchEnabled,
-      imagePath
-    );
+    apiResult = await requestContext.run(profileId, () => retryRateLimited({
+      getProfile: () => (readKey('deepseekBrowserProfiles') || {})[profileId],
+      defer: until => profileState.defer(profileId, until),
+      signal: abortSignal,
+      attempt: async () => {
+      // A queued job must use fresh state and credentials, never its old snapshot.
+      let profile = (readKey('deepseekBrowserProfiles') || {})[profileId];
+      if (!profileState.available(profile)) {
+        return { success: false, value: 'DeepSeek account is restricted or logged out. Check Settings.' };
+      }
+      const delay = Math.max(0, (lastFinished.get(profileId) || 0) + 1000 - Date.now());
+      if (delay) await new Promise(resolve => setTimeout(resolve, delay));
+      const res = await httpsRequest({
+        hostname: DS_HOST, path: '/api/v0/users/current', method: 'GET',
+        headers: { ...SHARED_HEADERS, authorization: profile.token, cookie: profile.cookies || '' },
+      });
+      let parsed;
+      try { parsed = JSON.parse(res.body.toString()); } catch (_) {}
+      profile = (readKey('deepseekBrowserProfiles') || {})[profileId];
+      if (!profileState.available(profile)) {
+        return { success: false, value: 'DeepSeek account is restricted or logged out. Check Settings.' };
+      }
+      if (res.status !== 200 || parsed?.code !== 0 || parsed?.data?.biz_code !== 0 || !parsed?.data?.biz_data?.chat) {
+        return { success: false, value: 'Could not verify DeepSeek account status. Please try again later.' };
+      }
+      if (parsed.data.biz_data.chat.is_muted === 1 || parsed.data.biz_data.chat.is_muted === true) {
+        return { success: false, value: 'DeepSeek still reports this account as restricted. Please try again later.' };
+      }
+      const result = await callDeepSeekAPI(profile, prompt || '', thinkingEnabled, searchEnabled, imagePath);
+      if (result.expired) profileState.observe(profileId, 401, {});
+      if (!result.success && !result.expired) {
+        // Restrictions can arrive in an HTTP-200 SSE error after the preflight.
+        await httpsRequest({
+          hostname: DS_HOST, path: '/api/v0/users/current', method: 'GET',
+          headers: { ...SHARED_HEADERS, authorization: profile.token, cookie: profile.cookies || '' },
+        }).catch(() => {});
+      }
+      if (result.sessionId && profileState.available((readKey('deepseekBrowserProfiles') || {})[profileId])) {
+        await deleteConversation(profile, result.sessionId);
+      }
+      return result;
+      },
+    }));
   } catch (err) {
+    return { success: false, value: `DeepSeek Browser request failed: ${err.message}` };
+  } finally {
+    lastFinished.set(profileId, Date.now());
     releaseProfile(profileId);
-    return {
-      success: false,
-      value: `DeepSeek Browser request failed: ${err.message}`,
-    };
-  }
-
-  // Release the profile slot now that the API call is done
-  releaseProfile(profileId);
-
-  // Mark expired if session rejected
-  if (apiResult.expired) {
-    await markProfileExpired(profileId);
-    return { success: false, value: apiResult.value };
-  }
-
-  // Creating a chat session proves the saved login is valid, even when the
-  // completion itself is rejected by a temporary usage limit.
-  if (profile.status !== 'connected' && apiResult.sessionId) {
-    await markProfileConnected(profileId);
-  }
-
-  // Delete the conversation (fire-and-forget style)
-  if (apiResult.sessionId) {
-    deleteConversation(profile, apiResult.sessionId).catch(() => {});
   }
 
   if (!apiResult.success) {

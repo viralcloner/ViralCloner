@@ -2051,6 +2051,7 @@
   };
 
   const renderTempPosts = throttle(async () => {
+    await window.RecipeScreening.ready;
     // live temp posts (storage.spyPosts)
     const $container = $(".library-manager .posts-container");
     if (!$container.length) {
@@ -2078,7 +2079,7 @@
     // quick hash of original posts + filters to determine if we need to re-render
     // Note: seen post filtering is done in backend, so we don't need to track seenPostIds here
     const filtersHash = hash(getTempFilters());
-    const originalIdsHash = hash(originalPosts.map((p) => p.postId));
+    const originalIdsHash = hash(originalPosts.map((p) => [p.postId, p.postMessage]));
     const followedPagesHash = hash([...followedPageUrls].sort());
     const combinedHash = `${originalIdsHash}_${filtersHash}_${openProfile?.id || 'none'}_${followedPagesHash}`;
 
@@ -2224,6 +2225,7 @@
   }, RENDER_THROTTLE_MS);
 
   const renderLibraryPosts = throttle(async () => {
+    await window.RecipeScreening.ready;
     const $wrap = $("#library-show");
     if (!$wrap.length) return;
 
@@ -2246,7 +2248,8 @@
     const totalPages = Math.max(1, Math.ceil(posts.length / LIBRARY_PAGE_SIZE));
     if (currentLibraryPage > totalPages) currentLibraryPage = totalPages;
 
-    const pageSig = `p:${currentLibraryPage}:t:${totalPages}:c:${posts.length}:f:${filters.filter}:s:${filters.sortBy}:q:${filters.search}:u:${filters.hideUsed}:cat:${filters.category}`;
+    const contentHash = hash(posts.map(p => [p.postId, p.postMessage]));
+    const pageSig = `p:${currentLibraryPage}:t:${totalPages}:c:${posts.length}:f:${filters.filter}:s:${filters.sortBy}:q:${filters.search}:u:${filters.hideUsed}:cat:${filters.category}:content:${contentHash}`;
     if (pageSig === lastLibraryPageSig) return;
     lastLibraryPageSig = pageSig;
 
@@ -2549,6 +2552,7 @@
       ${usedBadge}
       ${duplicateBadge}
       ${viralGrowthBadge}
+      <div class="spy-recipe-screening">${window.RecipeScreening.render(data)}</div>
       <div class="head">
         <div class="left">${pageHtml}</div>
         <img src="assets/images/icons/${data.type}-colored.png" class="sm" loading="lazy" decoding="async">

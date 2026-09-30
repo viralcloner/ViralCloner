@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="assets/css/pages/text-to-speech.css">
+<div class="tts-tool">
+  <header class="tts-header">
+    <span class="material-icons tts-icon" aria-hidden="true">record_voice_over</span>
+    <div><h1 data-i18n="tts_tool.title">Text to Speech</h1><p data-i18n="tts_tool.subtitle">Turn your script into a natural voiceover, ready to download.</p></div>
+  </header>
+  <main class="tts-layout">
+    <section class="tts-card tts-script">
+      <label for="tts-text" data-i18n="tts_tool.script">Your script</label>
+      <textarea id="tts-text" maxlength="10000" data-i18n-placeholder="tts_tool.placeholder" placeholder="Type or paste the text you want to hear..."></textarea>
+      <div class="tts-footer"><span id="tts-count">0 / 10,000</span><button id="tts-clear" type="button" data-i18n="tts_tool.clear">Clear text</button></div>
+    </section>
+    <section class="tts-card tts-settings">
+      <h2 data-i18n="tts_tool.voice_settings">Choose your voice</h2>
+      <label for="tts-language" data-i18n="tts_tool.language">Language</label><select id="tts-language" disabled></select>
+      <label for="tts-search" data-i18n="tts_tool.search">Find a voice</label><input id="tts-search" type="search" disabled>
+      <label for="tts-voice" data-i18n="tts_tool.voice">Voice</label><select id="tts-voice" size="6" disabled></select>
+      <button id="tts-preview" type="button" disabled data-i18n="tts_tool.preview">Preview voice</button>
+      <audio id="tts-sample" controls hidden></audio>
+      <p class="tts-note" data-i18n="tts_tool.service">Microsoft Edge voices. An internet connection is required.</p>
+      <button id="tts-generate" class="tts-primary" type="button" disabled data-i18n="tts_tool.generate">Generate speech</button>
+      <button id="tts-retry" type="button" hidden data-i18n="tts_tool.retry">Reload voices</button>
+    </section>
+    <section class="tts-card tts-result" id="tts-result" hidden>
+      <div><h2 data-i18n="tts_tool.result">Your voiceover</h2><p id="tts-result-voice"></p></div>
+      <audio id="tts-audio" controls preload="metadata"></audio>
+      <button id="tts-save" class="tts-primary" type="button" data-i18n="tts_tool.save">Save MP3</button>
+    </section>
+    <p id="tts-status" role="status" aria-live="polite"></p>
+  </main>
+</div>
+<script src="assets/js/pages/text-to-speech.js"></script>

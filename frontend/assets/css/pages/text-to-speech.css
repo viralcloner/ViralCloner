@@ -1,0 +1,28 @@
+.tts-tool { height:100%; overflow:auto; background:var(--bg-primary); color:var(--text-primary); }
+.tts-tool * { box-sizing:border-box; }
+.tts-tool [hidden] { display:none !important; }
+.tts-header { display:flex; gap:16px; align-items:center; padding:24px 30px; background:var(--bg-secondary); border-bottom:1px solid var(--border-color); }
+.tts-icon { padding:14px; border-radius:14px; background:var(--vc-brand-primary-bg); color:var(--vc-brand-primary); }
+.tts-tool h1 { margin:0 0 6px; font-size:22px; }
+.tts-tool h2 { font-size:16px; margin:0 0 12px; }
+.tts-tool p { color:var(--text-secondary); margin:0; line-height:1.6; }
+.tts-layout { display:grid; grid-template-columns:minmax(0, 1fr) 320px; gap:20px; max-width:1280px; padding:28px; margin:auto; }
+.tts-card { border:1px solid var(--border-color); border-radius:16px; padding:22px; background:var(--bg-secondary); min-width:0; }
+.tts-tool label { display:block; font-weight:600; font-size:13px; margin-bottom:9px; }
+.tts-script { display:flex; flex-direction:column; }
+.tts-tool textarea,.tts-tool input,.tts-tool select { background:var(--bg-primary); color:var(--text-primary); border:1px solid var(--border-color); border-radius:8px; font:inherit; padding:11px; width:100%; }
+.tts-tool textarea { resize:vertical; flex:1; min-height:300px; line-height:1.8; }
+.tts-tool select,.tts-tool input { margin-bottom:16px; }
+.tts-tool option { padding:8px; }
+.tts-tool button { border:1px solid var(--border-color); border-radius:8px; padding:10px 16px; background:var(--bg-primary); color:var(--text-primary); cursor:pointer; font-weight:600; }
+.tts-tool button:disabled { opacity:.5; cursor:default; }
+.tts-tool .tts-primary { background:var(--vc-brand-primary); color:white; border-color:var(--vc-brand-primary); }
+.tts-tool :is(button,input,select,textarea):focus-visible { outline:2px solid var(--vc-brand-primary); outline-offset:3px; }
+.tts-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:14px; font-size:12px; color:var(--text-secondary); }
+.tts-settings > button { width:100%; margin-top:10px; }
+.tts-tool .tts-note { font-size:12px; margin-top:16px; }
+.tts-result { grid-column:1 / -1; display:flex; gap:24px; align-items:center; flex-wrap:wrap; }
+.tts-result audio { flex:1; min-width:240px; }
+.tts-settings audio { width:100%; margin-top:12px; }
+#tts-status { grid-column:1 / -1; min-height:24px; }
+@media(max-width:850px) { .tts-layout { grid-template-columns:1fr; padding:16px; } .tts-header { padding:20px; } }

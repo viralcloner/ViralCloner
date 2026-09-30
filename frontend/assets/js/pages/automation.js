@@ -963,32 +963,10 @@ $(document).ready(function () {
             },
             {
                 type: "soraimage",
-                label: "Sora Image (Browser)",
+                label: "Sora Image (ChatGPT)",
                 icon: "openai.svg",
                 inputs: [
-                    { type: "textarea", title: "Prompt", value: "", placeholder: "Describe the image to generate with Sora..." },
-                    {
-                        type: "select",
-                        title: "Variants",
-                        value: "1",
-                        options: [
-                            { value: "1", text: "1 Image" },
-                            { value: "2", text: "2 Images" },
-                            { value: "3", text: "3 Images" },
-                            { value: "4", text: "4 Images" }
-                        ]
-                    },
-                    {
-                        type: "select",
-                        title: "Size",
-                        value: "480x720",
-                        options: [
-                            { value: "480x720", text: "480x720 (Portrait)" },
-                            { value: "720x480", text: "720x480 (Landscape)" },
-                            { value: "720x720", text: "720x720 (Square)" },
-                            { value: "1024x1024", text: "1024x1024 (Large Square)" }
-                        ]
-                    }
+                    { type: "textarea", title: "Prompt", value: "", placeholder: "Describe the image to generate..." }
                 ],
                 inputTypes: ["text", "image"],
                 inputsHtml: ["Text", "Image"],
@@ -3928,7 +3906,7 @@ $(document).ready(function () {
         
         googleaiimage: `<b>Google Imagen (API)</b><br>Generates images using Google's Imagen model.<br><br><b>Inputs:</b><br>• Image URL (Input 1) - Optional reference image<br>• Text (Input 2) - Image description<br><br><b>Output:</b><br>• Image - Generated image as a local file path`,
         
-        soraimage: `<b>Sora Image (Browser)</b><br>Generates images using OpenAI's Sora model via browser automation.<br><br><b>Inputs:</b><br>• Text (Input 1) - Image description prompt<br><br><b>Output:</b><br>• Image - Generated image as a local file path`,
+        soraimage: `<b>Sora Image (ChatGPT)</b><br>Generates one image with ChatGPT and continues automatically without image selection.<br><br><b>Inputs:</b><br>• Text (Input 1) - Image description prompt<br>• Image (Input 2) - Optional reference image<br><br><b>Output:</b><br>• Images - One generated local image in an array`,
         
         geminiimage: `<b>Gemini Image (Browser)</b><br>Generates images using Google Gemini via browser automation. Uses connected Google profiles with automatic load balancing.<br><br><b>Inputs:</b><br>• Image (Input 1) - Reference image for generating similar content<br>• Text (Input 2) - Dynamic text to include in prompt<br><br><b>Config:</b><br>• Prompt - Use <code>{INPUT_1}</code> for image, <code>{INPUT_2}</code> for text<br><br><b>Output:</b><br>• Image - Generated image as a local file path`,
         

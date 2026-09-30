@@ -46,6 +46,7 @@
   let pfeedspyStopRequested = false; // Flag to request graceful stop
   let pfeedspyCookies = null; // Pinterest session cookies
   let pfeedspyBookmark = null; // Current pagination bookmark
+  let pfeedspyRunId = null;
   let pfeedspyQuery = ""; // Current search query
   let pfeedspyPagesFetched = 0; // Pages fetched so far
   let pfeedspySelectedIds = new Set(); // IDs of user-selected pins
@@ -2083,6 +2084,13 @@
                     `;
         }
 
+        if (["paused", "stopped", "failed"].includes(actualStatus) || vl.status === "failed") {
+          dropdownItems = `<button class="action-dropdown-item item-info" data-role="changeWorkflowAutomation" data-id="${workflowId}">
+            <i class="material-icons">swap_horiz</i>
+            <span>${window.I18n?.t("workflows.change_automation.title") || "Change automation"}</span>
+          </button><div class="action-dropdown-divider"></div>${dropdownItems}`;
+        }
+
         const actionButtons = `
                     <div class="action-dropdown">
                         <button class="action-dropdown-toggle" title="Actions">
@@ -2182,7 +2190,10 @@
     });
   }, RENDER_THROTTLE_MS);
 
-  const renderPosts = throttle((workflowId) => {
+  const recipeBadge = (post) => window.RecipeScreening.render(post);
+
+  const renderPosts = throttle(async (workflowId) => {
+    await window.RecipeScreening.ready;
     raf(() => {
       const $tbody = $("#posts-progression tbody");
       if (!$tbody.length) return;
@@ -2213,7 +2224,9 @@
             : typeof post.progress === "number"
               ? post.progress
               : 0;
+        const haramBadge = recipeBadge(post);
         const keyObj = {
+          haramBadge,
           id: post.postId,
           progressValue,
           status: post.status,
@@ -2243,7 +2256,7 @@
         const logsBtn = hasNodes
           ? `<button data-role="showlogs" data-workflow="${workflowId}" data-id="${post.postId}" class="btn btn-primary"><i class="material-icons">browse_activity</i><span>${window.I18n?.t("workflows.dropdown.show_logs") || "Show logs"}</span></button>`
           : `<span class="text-muted">—</span>`;
-        const row = `<tr data-id="${post.postId}"><td>${imgHtml}</td><td>${msg}</td><td>${logsBtn}</td><td>${progressBar(progressValue)}${statusHTML}</td></tr>`;
+        const row = `<tr data-id="${post.postId}"><td>${imgHtml}</td><td>${escapeHtml(msg)} ${haramBadge}</td><td>${logsBtn}</td><td>${progressBar(progressValue)}${statusHTML}</td></tr>`;
         if ($existing.length) $existing.replaceWith(row);
         else $tbody.append(row);
         postRowCache.set(post.postId, h);
@@ -4735,6 +4748,9 @@
     pfeedspyStopRequested = false;
     pfeedspyCookies = null;
     pfeedspyBookmark = null;
+    if (pfeedspyRunId) window.electronAPI.pinterestFeedSpyCancelTrends(pfeedspyRunId).catch(() => {});
+    pfeedspyRunId = null;
+    $("#pfeedspyTrendingKeywords").empty().hide();
     pfeedspyQuery = "";
     pfeedspyPagesFetched = 0;
     pfeedspySelectedIds = new Set();
@@ -4971,43 +4987,6 @@
     models.forEach((m) => $modelSelect.append(`<option value="${m.value}">${m.label}</option>`));
   }
 
-  function pfeedspyExpandQueries(query) {
-    // Always start with the exact query, then add up to 5 variations
-    const base = query.trim();
-    const seen = new Set();
-    const variants = [];
-    const add = (q) => { const t = q.trim(); if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); variants.push(t); } };
-
-    add(base);
-
-    const words = base.split(/\s+/);
-    const prefixes = ["easy", "best", "quick", "simple", "homemade"];
-    const suffixes = ["recipe", "ideas", "tutorial", "tips", "DIY"];
-
-    // Add prefix variants (skip if base already starts with that word)
-    for (const p of prefixes) {
-      if (!base.toLowerCase().startsWith(p)) {
-        add(`${p} ${base}`);
-        if (variants.length >= 6) break;
-      }
-    }
-
-    // Add suffix variants (skip if base already ends with that word)
-    for (const s of suffixes) {
-      if (!base.toLowerCase().endsWith(s)) {
-        add(`${base} ${s}`);
-        if (variants.length >= 6) break;
-      }
-    }
-
-    // If multi-word, try reversing word order as a final variant
-    if (words.length >= 2 && variants.length < 6) {
-      add([...words].reverse().join(" "));
-    }
-
-    return variants.slice(0, 6);
-  }
-
   function pfeedspyTrendScore(pin) {
     const reactions = pin.reactions || 0;
     const createdAt = pin.created_at ? new Date(pin.created_at).getTime() : 0;
@@ -5098,6 +5077,11 @@
       return;
     }
 
+    const runId = `${Date.now()}-${Math.random()}`;
+    pfeedspyRunId = runId;
+    const isCurrentRun = () => pfeedspyRunId === runId;
+    const cancelled = () => !isCurrentRun() || pfeedspyStopRequested || !pfeedspyIsRunning;
+    $("#pfeedspyTrendingKeywords").empty().hide();
     pfeedspyAllPins = [];
     pfeedspySelectedIds = new Set();
     pfeedspyIsRunning = true;
@@ -5121,6 +5105,35 @@
     pfeedspyUpdatePreviewCount(0);
 
     try {
+      $("#pfeedspyStatusText").text(window.I18n?.t("workflows.pfeedspy.finding_trends") || "Finding rising keywords from Pinterest Trends...");
+      const trends = await window.electronAPI.pinterestFeedSpyTrends(query, runId);
+      if (cancelled()) return;
+      if (!trends?.success) throw new Error(window.I18n?.t("workflows.pfeedspy.trends_failed") || "Could not load Pinterest Trends. Try again.");
+      const queryVariants = trends.keywords.map(item => item.term);
+      if (!queryVariants.length) throw new Error(window.I18n?.t("workflows.pfeedspy.no_trends") || "Pinterest returned no related keywords with usable recent activity. Try another seed keyword.");
+      const $trends = $("#pfeedspyTrendingKeywords").empty().show();
+      const trendText = (key, fallback) => window.I18n?.t(`workflows.pfeedspy.${key}`) || fallback;
+      const $header = $("<div>").addClass("pfeedspy-trends-header").appendTo($trends);
+      const $heading = $("<div>").addClass("pfeedspy-trends-heading").appendTo($header);
+      $("<strong>").text(trendText("keywords_heading", "Search keywords")).appendTo($heading);
+      $("<span>").addClass("pfeedspy-trends-source").text("Pinterest Trends · US").appendTo($header);
+      $("<p>").addClass("pfeedspy-trends-caption").text(trends.selectionMode === "active"
+        ? trendText("keywords_active", "Selected by current interest")
+        : trends.selectionMode === "mixed"
+          ? trendText("keywords_mixed", "Selected by growth and current interest")
+          : trendText("keywords_rising", "Selected by recent growth")).appendTo($trends);
+      const $grid = $("<div>").addClass("pfeedspy-trends-grid").appendTo($trends);
+      for (const [index, keyword] of trends.keywords.entries()) {
+        const change = `${keyword.growthPercent > 0 ? "+" : ""}${keyword.growthPercent}%`;
+        const $keyword = $("<div>").addClass("pfeedspy-trend-keyword").appendTo($grid);
+        $("<span>").addClass("pfeedspy-trend-rank").text(String(index + 1).padStart(2, "0")).appendTo($keyword);
+        $("<span>").addClass("pfeedspy-trend-term").text(keyword.term).appendTo($keyword);
+        $("<span>").addClass(`pfeedspy-trend-change ${keyword.growthPercent > 0 ? "is-up" : "is-neutral"}`)
+          .text(change).appendTo($keyword);
+      }
+      $("<small>").addClass("pfeedspy-trends-footnote").text(trendText("keywords_comparison", "Change over the last 4 weeks compared with the previous 4.")).appendTo($trends);
+      if (trends.partial) $("<small>").text(window.I18n?.t("workflows.pfeedspy.trends_partial") || "Some related-term requests failed; using the available trend charts.").appendTo($trends);
+
       // Step 1: Init session — public or via connected account
       const spySource = $("input[name='pfeedspySource']:checked").val() || "public";
       let initResult;
@@ -5134,15 +5147,14 @@
         );
         initResult = await window.electronAPI.pinterestFeedSpyInitAccount(accountId);
       } else {
-        initResult = await window.electronAPI.pinterestFeedSpyInit(query);
+        initResult = await window.electronAPI.pinterestFeedSpyInit(queryVariants[0]);
       }
+      if (cancelled()) return;
       if (!initResult.success) {
         throw new Error(initResult.error || "Failed to initialize Pinterest session");
       }
       pfeedspyCookies = initResult.cookies;
 
-      // Generate query variants
-      const queryVariants = pfeedspyExpandQueries(pfeedspyQuery);
 
       // Debounced live UI updater — called from concurrent workers, throttled to ~4/s
       let liveRenderTimer = null;
@@ -5150,6 +5162,7 @@
         if (liveRenderTimer) return;
         liveRenderTimer = setTimeout(() => {
           liveRenderTimer = null;
+          if (cancelled()) return;
           $("#pfeedspyScrapedCount").text(pfeedspyAllPins.length);
           $("#pfeedspyPageCount").text(pfeedspyPagesFetched);
           const liveFiltered = pfeedspyGetFilteredPins(pfeedspyAllPins);
@@ -5178,21 +5191,13 @@
 
       const runQuery = async (currentQuery, qIdx) => {
         let variantBookmark = null;
-        while (!pfeedspyStopRequested) {
-          const pageResult = await Promise.race([
-            window.electronAPI.pinterestFeedSpyPage({
-              query: currentQuery,
-              cookies: pfeedspyCookies,
-              bookmark: variantBookmark,
-            }),
-            new Promise((resolve) => {
-              const check = setInterval(() => {
-                if (pfeedspyStopRequested) { clearInterval(check); resolve({ success: false, _stopped: true }); }
-              }, 200);
-            }),
-          ]);
-
-          if (pageResult._stopped || pfeedspyStopRequested) break;
+        while (!cancelled()) {
+          const pageResult = await window.electronAPI.pinterestFeedSpyPage({
+            query: currentQuery,
+            cookies: pfeedspyCookies,
+            bookmark: variantBookmark,
+          });
+          if (cancelled()) break;
           if (!pageResult.success) {
             console.warn(`[PFeedSpy] Query "${currentQuery}" failed:`, pageResult.error);
             break;
@@ -5213,17 +5218,14 @@
         }
       };
 
-      // Show how many queries are running and the mode
-      const activeCount = queryVariants.length;
-      if (isAccountSource) {
-        $("#pfeedspyStatusText").text(`Scraping ${activeCount} query variants (sequential, safe mode)...`);
-      } else {
-        $("#pfeedspyStatusText").text(`Scraping ${activeCount} query variants in parallel...`);
-      }
+      $("#pfeedspyStatusText").text(
+        window.I18n?.t("workflows.pfeedspy.searching_trends", { count: queryVariants.length }) ||
+        `Searching ${queryVariants.length} chart-ranked related keywords...`,
+      );
 
       if (isAccountSource) {
         // Sequential: run one variant at a time to avoid flooding the account session
-        for (let i = 0; i < queryVariants.length && !pfeedspyStopRequested; i++) {
+        for (let i = 0; i < queryVariants.length && !cancelled(); i++) {
           await runQuery(queryVariants[i], i);
         }
       } else {
@@ -5231,8 +5233,10 @@
         await Promise.all(queryVariants.map((q, i) => runQuery(q, i)));
       }
 
+      if (cancelled()) return;
       pfeedspyFinalizeScraping();
     } catch (error) {
+      if (!isCurrentRun()) return;
       console.error("[PFeedSpy] Scraping error:", error);
       pfeedspyIsRunning = false;
       pfeedspyStopRequested = false;
@@ -6243,6 +6247,7 @@
   }
 
   $(document).ready(async function () {
+    await window.RecipeScreening.ready;
     $(document).off(WF_NAMESPACE);
     $("#workflows-container").off(WF_NAMESPACE);
     $("body").off(WF_NAMESPACE);
@@ -9358,12 +9363,15 @@
       "#pfeedspyStopBtn",
       function () {
         if (pfeedspyIsRunning) {
+          const stoppedRunId = pfeedspyRunId;
+          pfeedspyRunId = null;
           pfeedspyStopRequested = true;
+          window.electronAPI.pinterestFeedSpyCancelTrends(stoppedRunId).catch(() => {});
           $(this).prop("disabled", true);
           $(this).find("span").text(window.I18n?.t("workflows.pfeedspy.stopping") || "Stopping...");
           // Force-finalize after 3s in case the fetch is still blocking
           setTimeout(() => {
-            if (pfeedspyIsRunning) {
+            if (pfeedspyIsRunning && pfeedspyRunId === null) {
               pfeedspyFinalizeScraping();
             }
           }, 3000);
@@ -10259,6 +10267,7 @@
                 </div>
                 ${mediaLabel}
                 ${similarityBadge || noComparisonBadge || videoBadge || textOnlyBadge}
+                ${recipeBadge(np)}
               </div>
               <div class="head-right">
                 ${hasImage ? `
@@ -11484,9 +11493,16 @@
         const pinterestPosts = (wf.posts || []).filter(
           (p) => p.pinterestOutput != null,
         );
+        const recipeWarnings = (wf.posts || []).map((post, index) => {
+          const badge = window.RecipeScreening.badge(post);
+          if (!badge) return "";
+          const title = post.pinterestOutput?.title || post.facebookOutput?.title || post.postMessage || `#${index + 1}`;
+          return `<li>${badge} <span>${escapeHtml(title.slice(0, 120))}</span></li>`;
+        }).filter(Boolean).join("");
         showDynamicModal(
           window.I18n?.t("workflows.output_modal.type_title", { id: workflowId }) || `Output type (#${workflowId})`,
           `
+        ${recipeWarnings ? `<ul class="recipe-warning-list">${recipeWarnings}</ul>` : ""}
         <div class="output-type-options">
           <button data-role="startCopyPasteMode" data-id="${workflowId}" class="output-type-card">
             <div class="output-type-icon output-type-icon--copy">
@@ -11906,6 +11922,55 @@
       },
     );
 
+    $("#workflows-container").on("click" + WF_NAMESPACE, '[data-role="changeWorkflowAutomation"]', async function () {
+      const workflowId = $(this).attr("data-id");
+      const t = (key, fallback) => window.I18n?.t(`workflows.change_automation.${key}`) || fallback;
+      try {
+        const workflow = await loadWorkflowDetail(workflowId);
+        const posts = Array.isArray(workflow?.posts) ? workflow.posts : [];
+        const completedWithFailedResults = workflow?.status === "completed" &&
+          posts.some(post => post.status === "failed") && !posts.some(post => post.status === "completed");
+        if (!workflow || (!completedWithFailedResults && !["paused", "stopped", "failed"].includes(workflow.status))) {
+          showAlert("warning", t("not_editable", "Only paused, stopped, or failed workflows can change automation."));
+          return;
+        }
+        const saved = (await window.electronAPI.readKey("automations")) || {};
+        const automations = Object.values(saved).filter(automation => automation?.id != null);
+        if (!automations.length) {
+          showAlert("info", t("empty", "Create an automation first."));
+          return;
+        }
+        const name = t("title", "Change automation");
+        const result = await newPrompt([
+          { type: "html", content: `<p>${escapeHtml(t("help", "Choose the automation for the next run. Existing outputs are kept; the workflow will not start automatically."))}</p>` },
+          { type: "select", name, required: true, options: automations.map((automation, index) => ({
+            value: String(index), label: escapeHtml(String(automation.label || automation.name || automation.id)),
+            selected: String(automation.id) === String(workflow.automationId),
+          })) },
+        ]);
+        if (!result) return;
+        const selected = automations[Number(result[name])];
+        if (!selected || String(selected.id) === String(workflow.automationId)) return;
+        const response = await window.electronAPI.changeWorkflowAutomation(workflowId, selected.id);
+        if (!response?.success) {
+          showAlert("error", response?.code === "not_editable"
+            ? t("not_editable", "Only paused, stopped, or failed workflows can change automation.")
+            : t("save_failed", "Could not change automation. Refresh and try again."));
+          return;
+        }
+        if (allWorkflows[workflowId]) allWorkflows[workflowId].automationId = response.automationId;
+        const summary = allWorkflowsSummary.find(item => String(item.workflowId || item.id) === String(workflowId));
+        if (summary) summary.automationId = response.automationId;
+        if (storageCache) storageCache.automations = saved;
+        lastWorkflowsHash = null;
+        renderWorkflows();
+        showAlert("success", t("saved", "Automation changed. The workflow has not been started."));
+      } catch (error) {
+        console.error("[Workflows] Failed to change automation:", error);
+        showAlert("error", t("save_failed", "Could not change automation. Refresh and try again."));
+      }
+    });
+
     $("#workflows-container").on(
       "click" + WF_NAMESPACE,
       '[data-role="stopWorkflow"]',
@@ -11922,7 +11987,7 @@
         // The workflow-stopped event handler will update the UI
         // But also do immediate visual feedback
         if (allWorkflows[workflowId]) {
-          allWorkflows[workflowId].status = "failed";
+          allWorkflows[workflowId].status = "stopped";
         }
         renderWorkflows();
       },
@@ -12603,6 +12668,10 @@
 
         if (!rerunResult.proceed) return;
 
+        // The batch uses its captured IDs; clear the live selection immediately
+        // so the action bar does not linger during rerun preparation or refresh.
+        clearWorkflowSelection();
+
         // Determine if user wants to switch automation for all workflows
         const batchNewAutomationId = rerunResult.newAutomationId || null;
         const batchCreateNewWorkflow = rerunResult.createNewWorkflow || false;
@@ -12851,11 +12920,6 @@
 
         // Remove loading overlay
         $(".modern-loading-overlay").remove();
-
-        // Clear selection
-        selectedWorkflowIds.clear();
-        lastCheckedWorkflowIndex = null;
-        $("#selectAllWorkflows").prop("checked", false);
 
         // Refresh
         await loadWorkflowsSummary(true);

@@ -213,6 +213,7 @@
       if (!this.tracksEl) return;
 
       const totalWidth = this.duration * this.pixelsPerSecond;
+      const ending = window.VEPreviewEngine?.getEndingImage(this.tracks);
       let html = "";
 
       for (const track of this.tracks) {
@@ -250,6 +251,10 @@
           }
 
           html += "</div>";
+          if (ending?.id === clip.id && clip.endingBuffer) {
+            const bufferLabel = window.I18n?.t("videoeditor.ending_buffer") || "Add ending buffer";
+            html += '<div class="ve-ending-buffer-marker" style="left:' + (left + width) + 'px;width:' + (5 * this.pixelsPerSecond) + 'px;">' + this._escapeHtml(bufferLabel) + ' (+5s)</div>';
+          }
         }
 
         html += "</div>";

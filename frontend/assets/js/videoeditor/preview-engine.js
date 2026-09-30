@@ -7,6 +7,31 @@
   "use strict";
 
   class PreviewEngine {
+    // Eligibility uses visible visual clips; background music does not disqualify an ending.
+    static getEndingImage(tracks) {
+      const visual = (tracks || []).filter(track => track.visible !== false)
+        .flatMap(track => track.clips || []).filter(clip => clip.type !== 'audio');
+      const end = clip => (Number(clip.startTime) || 0) + (Number(clip.duration) || 0);
+      const lastEnd = Math.max(0, ...visual.map(end));
+      const media = visual.filter(clip => clip.type === 'image' || clip.type === 'video');
+      media.sort((a, b) => end(b) - end(a) || (b.startTime || 0) - (a.startTime || 0));
+      const last = media[0];
+      return last?.type === 'image' && Math.abs(end(last) - lastEnd) < 0.001 ? last : null;
+    }
+
+    static prepareEndingBuffer(tracks) {
+      const ending = PreviewEngine.getEndingImage(tracks);
+      if (!ending?.endingBuffer || ending._endingBufferApplied) return tracks;
+      return tracks.map(track => ({ ...track, clips: (track.clips || []).map(clip =>
+        clip.id === ending.id ? { ...clip, duration: (Number(clip.duration) || 0) + 5, _endingBufferApplied: true } : clip
+      ) }));
+    }
+
+    _effectiveClipDuration(clip) {
+      return (Number(clip.duration) || 0) +
+        (clip.id === this._endingClipId && !clip._endingBufferApplied ? 5 : 0);
+    }
+
     constructor() {
       this.canvas = null;
       this.isPlaying = false;
@@ -181,10 +206,12 @@
     }
 
     _calculateDuration() {
+      const ending = PreviewEngine.getEndingImage(this.tracks);
+      this._endingClipId = ending?.endingBuffer ? ending.id : null;
       let maxEnd = 0;
       for (const track of this.tracks) {
         for (const clip of track.clips) {
-          const end = clip.startTime + clip.duration;
+          const end = clip.startTime + this._effectiveClipDuration(clip);
           if (end > maxEnd) maxEnd = end;
         }
       }
@@ -510,7 +537,7 @@
           if (!meta) continue;
 
           const clipStart = clip.startTime;
-          const clipEnd = clip.startTime + clip.duration;
+          const clipEnd = clip.startTime + this._effectiveClipDuration(clip);
           const isActive = timeSec >= clipStart && timeSec < clipEnd;
           const localTime = timeSec - clipStart;
 
@@ -549,7 +576,7 @@
               }
 
               // Apply animations
-              this._applyAnimation(meta.fabricObj, clip, localTime, clip.duration);
+              this._applyAnimation(meta.fabricObj, clip, localTime, this._effectiveClipDuration(clip));
 
               // Apply filters
               if (clip.filter && meta.fabricObj.filters !== undefined) {
@@ -618,7 +645,7 @@
         for (const clip of track.clips) {
           if (clip.type !== "video" && clip.type !== "image") continue;
           const clipStart = clip.startTime;
-          const clipEnd = clip.startTime + clip.duration;
+          const clipEnd = clip.startTime + this._effectiveClipDuration(clip);
           if (timeSec < clipStart || timeSec >= clipEnd) continue;
 
           const meta = this.clipObjects.get(clip.id);
@@ -742,6 +769,16 @@
      * Apply animation to a fabric object
      */
     _applyAnimation(obj, clip, localTime, duration) {
+      if (clip.id === this._endingClipId && clip.type === 'image') {
+        // Keep motion throughout the still and buffer, independent of in/out transitions.
+        const zoom = 1 + 0.03 * Math.max(0, Math.min(1, localTime / Math.max(duration, 0.001)));
+        const width = (obj.width || 0) * (obj.scaleX || 1);
+        const height = (obj.height || 0) * (obj.scaleY || 1);
+        obj.scaleX *= zoom;
+        obj.scaleY *= zoom;
+        obj.left -= width * (zoom - 1) / 2;
+        obj.top -= height * (zoom - 1) / 2;
+      }
       const hasIn = clip.animation && clip.animation !== "none";
       const hasOut = clip.animationOut && clip.animationOut !== "none";
       if (!hasIn && !hasOut) return;
@@ -941,7 +978,7 @@
         if (!track.visible) continue;
         for (const clip of track.clips) {
           if (clip.type !== "subtitle") continue;
-          const clipEnd = clip.startTime + clip.duration;
+          const clipEnd = clip.startTime + this._effectiveClipDuration(clip);
           if (timeSec >= clip.startTime && timeSec < clipEnd) {
             ST.renderSubtitleFrame(ctx, clip, timeSec, this.scaleRatio, cw, ch);
           }
@@ -1388,7 +1425,7 @@
           if (!meta) continue;
 
           const clipStart = clip.startTime;
-          const clipEnd = clip.startTime + clip.duration;
+          const clipEnd = clip.startTime + this._effectiveClipDuration(clip);
           if (timeSec >= clipStart && timeSec < clipEnd) {
             const localTime = timeSec - clipStart;
             if (meta.useExtractedFrames) {

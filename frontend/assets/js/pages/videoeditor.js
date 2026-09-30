@@ -635,6 +635,7 @@
   function syncTracksToPreview() {
     if (timeline && previewEngine) {
       previewEngine.loadTracks(timeline.tracks);
+      if (timeline.selectedClipId) showClipProperties(timeline.selectedClipId);
     }
   }
 
@@ -2267,6 +2268,14 @@
       html += "</div>";
     }
 
+    if (window.VEPreviewEngine.getEndingImage(timeline.tracks)?.id === clip.id) {
+      html += '<div class="ve-prop-group">';
+      html += '<label class="ve-prop-row"><input type="checkbox" class="ve-clip-prop" data-prop="endingBuffer"' + (clip.endingBuffer ? ' checked' : '') + '> ';
+      html += (window.I18n?.t("videoeditor.ending_buffer") || "Add ending buffer") + '</label>';
+      html += '<p style="font-size:12px;color:var(--text-secondary);">' +
+        (window.I18n?.t("videoeditor.ending_buffer_hint") || "Adds 5 seconds and a gentle continuous zoom to the final image in preview and export. May help with early playback skipping; Facebook playback is not guaranteed. Only applies while this image is last.") + '</p></div>';
+    }
+
     // Animation (for image and video clips)
     if (clip.type === "image" || clip.type === "video") {
       html += '<div class="ve-prop-group">';
@@ -2310,7 +2319,7 @@
     $(document).off("change" + NS, ".ve-clip-prop");
     $(document).on("change" + NS, ".ve-clip-prop", function () {
       const prop = $(this).data("prop");
-      let val = $(this).val();
+      let val = this.type === "checkbox" ? this.checked : $(this).val();
 
       // Type coercion
       const numProps = ["position.x", "position.y", "size.width", "size.height", "opacity", "startTime", "duration", "fontSize", "volume", "animDurationIn", "animDurationOut", "wordsPerGroup", "strokeWidth"];

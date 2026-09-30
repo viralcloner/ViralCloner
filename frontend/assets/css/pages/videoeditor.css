@@ -2357,3 +2357,18 @@ html[data-theme="dark"] .ve-sidebar-btn:hover {
     color: var(--text-secondary);
     line-height: 1.4;
 }
+/* Virtual ending buffer is previewed/exported without changing the source clip trim. */
+.ve-ending-buffer-marker {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  border: 1px dashed var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 11px;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}

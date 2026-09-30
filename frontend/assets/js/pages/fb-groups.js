@@ -1959,8 +1959,28 @@ $(document).ready(function () {
 
     // Show/hide "Initial comment" field: hidden when URL-as-comment is used
     // (the URL comment IS the initial comment) or when action isn't edit_comment.
+    function buildPostContentSettings(prefix, wf = {}) {
+        return `<div class="fbg-wf-settings-group">
+            <div class="fbg-wf-settings-section-title">${t("fb_groups.post_content_options", "Post content")}</div>
+            <div class="fbg-form-group">
+                <label class="fbg-form-label" for="${prefix}PostKeepLines">${t("fb_groups.post_keep_lines", "Number of lines to include (0 = all lines)")}</label>
+                <input type="number" class="fbg-input" id="${prefix}PostKeepLines" min="0" max="10000" step="1" value="${Number(wf.postKeepLines) || 0}">
+                <p class="fbg-form-hint">${t("fb_groups.post_lines_hint", "Counts line breaks, including blank lines. Screen wrapping does not count.")}</p>
+            </div>
+            <div class="fbg-form-group">
+                <label class="fbg-form-label" for="${prefix}PostSuffix">${t("fb_groups.post_suffix", "Text to add after the post content")}</label>
+                <textarea class="fbg-input fbg-textarea" id="${prefix}PostSuffix" rows="3">${escapeHtml(wf.postSuffix || "")}</textarea>
+            </div>
+            <label class="fbg-form-label" for="${prefix}PostContentAsComment">
+                <input type="checkbox" id="${prefix}PostContentAsComment" ${wf.postContentAsComment ? 'checked' : ''}>
+                ${t("fb_groups.post_content_as_comment", "Write the full post content in the first comment")}
+            </label>
+            <p class="fbg-form-hint">${t("fb_groups.post_content_comment_hint", "Uses the full content before shortening or adding text. If First Comment is enabled, its text is appended to the same comment. This comment is used by viral comment editing.")}</p>
+        </div>`;
+    }
+
     function syncWfInitialComment() {
-        const urlCommentOn = $("#fbgWfUrlComment").is(":checked");
+        const urlCommentOn = $("#fbgWfUrlComment").is(":checked") || $("#fbgWfPostContentAsComment").is(":checked");
         const action       = $("#fbgWfViralAction").val();
         $("#fbgWfInitialCommentGroup").toggle(!urlCommentOn && action === "edit_comment");
     }
@@ -1979,13 +1999,14 @@ $(document).ready(function () {
         const groupsHtml = groups.map(g => {
             const tgt = targets.find(t => t.groupId === g.groupId);
             const sel = tgt ? "checked" : "";
-            const profileId = tgt?.profileId || "";
+            const profileIds = tgt?.profileIds || (tgt?.profileId ? [tgt.profileId] : []);
             const profiles  = [];
             return `<div class="fbg-group-target-row ${tgt ? "selected" : ""}">
                 <input type="checkbox" class="fbg-group-target-cb" data-group-id="${escapeHtml(g.groupId)}" ${sel}>
                 <span class="fbg-group-target-name">${escapeHtml(g.name)}</span>
-                <select class="fbg-input fbg-group-target-profile" data-group-id="${escapeHtml(g.groupId)}" style="width:150px;" ${!tgt ? "disabled" : ""}>
-                    <option value="" ${!profileId ? "selected" : ""}>${t("fb_groups.auto_profile","Auto")}</option>
+                <select multiple size="4" aria-label="${t("fb_groups.workflow_accounts", "Posting accounts")}" class="fbg-input fbg-group-target-profile" data-group-id="${escapeHtml(g.groupId)}" title="${t("fb_groups.workflow_accounts_hint", "Hold Ctrl (Command on Mac) to select multiple accounts. Auto uses all linked accounts.")}" style="width:190px;height:auto;" ${!tgt ? "disabled" : ""}>
+                    <option value="" ${!profileIds.length ? "selected" : ""}>${t("fb_groups.auto_profile","Auto")}</option>
+                    ${profileIds.map(id => `<option value="${escapeHtml(id)}" selected>${escapeHtml(id)}</option>`).join("")}
                 </select>
             </div>`;
         }).join("") || `<p style="color:var(--text-secondary);font-size:13px;">${t("fb_groups.no_groups_yet","No groups yet")}</p>`;
@@ -2002,6 +2023,7 @@ $(document).ready(function () {
                 <div class="fbg-wf-settings-group">
                     <div class="fbg-wf-settings-section-title">${t("fb_groups.target_groups","Target Groups")}</div>
                     <div style="display:flex;flex-direction:column;gap:6px;" id="fbgWfSettingsGroups">${groupsHtml}</div>
+                    <p class="fbg-form-hint">${t("fb_groups.workflow_accounts_hint", "Hold Ctrl (Command on Mac) to select multiple accounts. Auto uses all linked accounts.")}</p>
                 </div>
                 <div class="fbg-wf-settings-group">
                     <div class="fbg-wf-settings-section-title">${t("fb_groups.scheduling","Scheduling")}</div>
@@ -2025,6 +2047,7 @@ $(document).ready(function () {
                         <p class="fbg-form-hint">${t("fb_groups.human_mode_wf_hint","On: post through a real browser that browses and uses the composer (safer, slower). Off: post silently in the background (faster).")}</p>
                     </div>
                 </div>
+                ${buildPostContentSettings("fbgWf", wf)}
                 <div class="fbg-wf-settings-group">
                     <div class="fbg-wf-settings-section-title">${t("fb_groups.url_as_comment","First Comment")}</div>
                     <div class="fbg-form-group">
@@ -2074,7 +2097,7 @@ $(document).ready(function () {
                             </select>
                         </div>
                     </div>
-                    <div class="fbg-form-group" id="fbgWfInitialCommentGroup" style="margin-top:8px;${(wf.postUrlAsComment || (wf.viralAction !== 'edit_comment' && wf.viralAction)) ? 'display:none;' : ''}">
+                    <div class="fbg-form-group" id="fbgWfInitialCommentGroup" style="margin-top:8px;${(wf.postUrlAsComment || wf.postContentAsComment || (wf.viralAction !== 'edit_comment' && wf.viralAction)) ? 'display:none;' : ''}">
                         <label class="fbg-form-label">${t("fb_groups.initial_comment","Initial Comment")}</label>
                         <textarea class="fbg-input fbg-textarea" id="fbgWfInitialComment" rows="2">${escapeHtml(wf.viralInitialCommentText || "")}</textarea>
                     </div>
@@ -2187,15 +2210,21 @@ $(document).ready(function () {
         // Load group profiles for each target selector
         for (const g of groups) {
             const tgt = targets.find(tt => tt.groupId === g.groupId);
-            if (!tgt) continue;
             try {
                 const pRes = await window.electronAPI.fbGroupsGetProfiles(g.groupId);
                 if (pRes.success && Array.isArray(pRes.data)) {
                     const $sel = $(`[data-group-id="${g.groupId}"].fbg-group-target-profile`);
+                    $sel.find('option').filter(function () { return this.value !== ""; }).remove();
                     pRes.data.forEach(p => {
-                        const sel = p.profileId === tgt.profileId ? "selected" : "";
+                        const selectedIds = tgt?.profileIds || (tgt?.profileId ? [tgt.profileId] : []);
+                        const sel = selectedIds.includes(p.profileId) ? "selected" : "";
                         $sel.append(`<option value="${escapeHtml(p.profileId)}" ${sel}>${escapeHtml(p.profileLabel || p.profileId)}</option>`);
                     });
+                    const savedIds = tgt?.profileIds || (tgt?.profileId ? [tgt.profileId] : []);
+                    savedIds.filter(id => !pRes.data.some(p => p.profileId === id)).forEach(id => {
+                        $sel.append(`<option value="${escapeHtml(id)}" selected>${escapeHtml(id)}</option>`);
+                    });
+
                 }
             } catch (_) {}
         }
@@ -2256,6 +2285,9 @@ $(document).ready(function () {
             scheduleConfig:            readSchedulingConfig("fbgWf"),
             loopWorkflow:              $("#fbgWfLoop").is(":checked"),
             humanMode:                 (() => { const v = $("#fbgWfHumanMode").val(); return v === "on" ? true : (v === "off" ? false : null); })(),
+            postKeepLines:            Math.max(0, Math.min(10000, Math.floor(Number($("#fbgWfPostKeepLines").val()) || 0))),
+            postSuffix:               $("#fbgWfPostSuffix").val().trim(),
+            postContentAsComment:     $("#fbgWfPostContentAsComment").is(":checked"),
             postUrlAsComment:          $("#fbgWfUrlComment").is(":checked"),
             urlCommentPrefix:          $("#fbgWfUrlPrefix").val().trim(),
             viralMonitorEnabled:       $("#fbgWfViralEnabled").is(":checked"),
@@ -2275,8 +2307,8 @@ $(document).ready(function () {
         const targets = [];
         $(".fbg-group-target-cb:checked").each(function () {
             const groupId   = $(this).data("group-id");
-            const profileId = $(`[data-group-id="${groupId}"].fbg-group-target-profile`).val() || null;
-            targets.push({ groupId, profileId });
+            const profileIds = ($(`[data-group-id="${groupId}"].fbg-group-target-profile`).val() || []).filter(Boolean);
+            targets.push({ groupId, profileIds });
         });
         await window.electronAPI.fbGroupsUpdateWorkflowSettings(currentWfId, settings).catch(() => {});
         await window.electronAPI.fbGroupsUpdateWorkflowTargets(currentWfId, targets).catch(() => {});
@@ -2344,7 +2376,7 @@ $(document).ready(function () {
     }
 
     function syncNWInitialComment() {
-        const firstCommentOn = $("#fbgNWUrlComment").is(":checked");
+        const firstCommentOn = $("#fbgNWUrlComment").is(":checked") || $("#fbgNWPostContentAsComment").is(":checked");
         const action = $("#fbgNWViralAction").val();
         $("#fbgNWEditCommentGroup").toggle(firstCommentOn && action === "edit_comment");
         $("#fbgNWInitialCommentGroup").toggle(!firstCommentOn && action === "edit_comment");
@@ -2510,6 +2542,8 @@ $(document).ready(function () {
         type = type || "automation";
         _newWfType = type;
 
+        $("#fbgNWPostContentSettings").html(buildPostContentSettings("fbgNW"));
+
         // Reset shared fields
         $("#fbgNWLoop").prop("checked", false);
         $("#fbgNWUrlComment").prop("checked", false);
@@ -2572,8 +2606,8 @@ $(document).ready(function () {
                 `<div class="fbg-group-target-row">
                     <input type="checkbox" class="fbg-nw-group-cb" data-group-id="${escapeHtml(g.groupId)}">
                     <span class="fbg-group-target-name">${escapeHtml(g.name)}</span>
-                    <select class="fbg-input fbg-nw-group-profile" data-group-id="${escapeHtml(g.groupId)}" style="width:140px;" disabled>
-                        <option value="">${t("fb_groups.auto_profile","Auto")}</option>
+                    <select multiple size="4" aria-label="${t("fb_groups.workflow_accounts", "Posting accounts")}" class="fbg-input fbg-nw-group-profile" data-group-id="${escapeHtml(g.groupId)}" title="${t("fb_groups.workflow_accounts_hint", "Hold Ctrl (Command on Mac) to select multiple accounts. Auto uses all linked accounts.")}" style="width:190px;height:auto;" disabled>
+                        <option value="" selected>${t("fb_groups.auto_profile","Auto")}</option>
                     </select>
                 </div>`
             ).join(""));
@@ -2782,6 +2816,9 @@ $(document).ready(function () {
             delayMinutes:            delayMin,
             scheduleConfig:          readSchedulingConfig("fbgNW"),
             loopWorkflow:            $("#fbgNWLoop").is(":checked"),
+            postKeepLines:            Math.max(0, Math.min(10000, Math.floor(Number($("#fbgNWPostKeepLines").val()) || 0))),
+            postSuffix:               $("#fbgNWPostSuffix").val().trim(),
+            postContentAsComment:     $("#fbgNWPostContentAsComment").is(":checked"),
             postUrlAsComment:        $("#fbgNWUrlComment").is(":checked"),
             urlCommentPrefix:        $("#fbgNWUrlPrefix").val().trim(),
             viralMonitorEnabled:     $("#fbgNWViralEnabled").is(":checked"),
@@ -2802,8 +2839,8 @@ $(document).ready(function () {
         const targets = [];
         $(".fbg-nw-group-cb:checked").each(function() {
             const groupId   = $(this).data("group-id");
-            const profileId = $(`.fbg-nw-group-profile[data-group-id="${groupId}"]`).val() || null;
-            targets.push({ groupId, profileId });
+            const profileIds = ($(`.fbg-nw-group-profile[data-group-id="${groupId}"]`).val() || []).filter(Boolean);
+            targets.push({ groupId, profileIds });
         });
 
         const $btn = $("#fbgNewWfConfirmBtn").prop("disabled", true);
@@ -4347,6 +4384,16 @@ $(document).ready(function () {
             setNewWfType($(this).data("type"));
         });
         $(document).on("input" + NS, "#fbgNWName", function () { _nwNameDirty = true; updateNewWfConfirmBtn(); });
+        $(document).on("focus" + NS, ".fbg-group-target-profile, .fbg-nw-group-profile", function () {
+            $(this).data("accountSelection", $(this).val() || [""]);
+        });
+        $(document).on("change" + NS, ".fbg-group-target-profile, .fbg-nw-group-profile", function () {
+            const values = $(this).val() || [];
+            const previous = $(this).data("accountSelection") || [""];
+            const autoAdded = values.includes("") && !previous.includes("");
+            const next = autoAdded || !values.length ? [""] : values.filter(Boolean);
+            $(this).val(next.length ? next : [""]).data("accountSelection", next);
+        });
         $(document).on("change" + NS, ".fbg-nw-group-cb", function () {
             const groupId = $(this).data("group-id");
             $(`.fbg-nw-group-profile[data-group-id="${groupId}"]`).prop("disabled", !$(this).is(":checked"));
@@ -4368,6 +4415,7 @@ $(document).ready(function () {
             const $cb = $("#fbgNWViralEnabled");
             $cb.prop("checked", !$cb.is(":checked")).trigger("change");
         });
+        $(document).on("change" + NS, "#fbgNWPostContentAsComment", syncNWInitialComment);
         $(document).on("change" + NS, "#fbgNWUrlComment", function () {
             const on = $(this).is(":checked");
             if (on) $("#fbgNWUrlCommentSection").slideDown(200); else $("#fbgNWUrlCommentSection").slideUp(150);
@@ -4846,7 +4894,7 @@ $(document).ready(function () {
         });
 
         // Sync initial comment when First Comment toggle changes in settings panel
-        $(document).on("change" + NS, "#fbgWfUrlComment", syncWfInitialComment);
+        $(document).on("change" + NS, "#fbgWfUrlComment, #fbgWfPostContentAsComment", syncWfInitialComment);
 
         // Show/hide AI Rewrite section based on action selection
         $(document).on("change" + NS, "#fbgImportViralAction", function () {

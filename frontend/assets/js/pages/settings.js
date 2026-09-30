@@ -2454,10 +2454,17 @@ function refreshOpenAIImageBlockCountdowns() {
 }
 
 function profileRow(profileID, vl, profileType = 'google') {
+    const deepseekUntil = Math.max(Number(vl.muteUntil) || 0, Number(vl.retryAfter) || 0);
+    const deepseekBlocked = profileType === 'deepseekbrowser' && (vl.muteUnknown || deepseekUntil > Date.now());
+    const deepseekStatus = deepseekBlocked
+        ? (vl.muteUnknown
+            ? window.I18n?.t('settings.deepseek_restricted_unknown') || 'Restricted. Reopen the profile to check status.'
+            : (window.I18n?.t('settings.deepseek_restricted_until') || 'Unavailable until') + ' ' + new Date(deepseekUntil).toLocaleString())
+        : '';
     // Only show duplicate button for OpenAI profiles that are connected
     const showDuplicate = profileType === 'openai' && vl.status === 'connected';
     // Show test button for deepseek/qwen browser profiles that are connected
-    const showTest = (profileType === 'deepseekbrowser' || profileType === 'qwenbrowser' || profileType === 'tiktokads') && vl.status === 'connected';
+    const showTest = (profileType === 'deepseekbrowser' || profileType === 'qwenbrowser' || profileType === 'tiktokads') && vl.status === 'connected' && !deepseekBlocked;
     const imageBlockedUntil = profileType === 'openai' && vl.imageBlockedUntil
         ? new Date(vl.imageBlockedUntil)
         : null;
@@ -2493,6 +2500,7 @@ function profileRow(profileID, vl, profileType = 'google') {
                 <span class="status ${vl.status === "connected" ? "success" : vl.status === "expired" ? "warning" : "danger"}"></span>
                 ${vl.status === "expired" ? (window.I18n?.t('settings.metaai_profiles.status_expired') || translateStatus('expired')) : translateStatus(vl.status)}
             </div>
+            ${deepseekBlocked ? `<div>${$('<span>').text(deepseekStatus).html()}</div>` : ''}
             ${isImageBlocked ? `<div class="profile-image-blocked" data-blocked-until="${vl.imageBlockedUntil}"><i class="material-icons">schedule</i><span>${imageBlockedText}</span></div>` : ''}
         </td>
         ${capabilitiesHtml}
@@ -2585,120 +2593,6 @@ $(".menu-element[for='automation-settings']").click(function () {
     loadAutomationSettings();
 });
 
-// ==================== Halal Mode Settings ====================
-$(".menu-element[for='halal-mode-settings']").click(function () {
-    loadHalalModeSettings();
-});
-
-var HALAL_DEFAULT_REPLACEMENTS = [
-    // English
-    { haram: "pork", halal: "beef" },
-    { haram: "pig", halal: "cow" },
-    { haram: "bacon", halal: "turkey strips" },
-    { haram: "ham", halal: "turkey" },
-    { haram: "lard", halal: "butter" },
-    { haram: "alcohol", halal: "juice" },
-    { haram: "wine", halal: "grape juice" },
-    { haram: "beer", halal: "malt beverage" },
-    { haram: "gelatin", halal: "agar" },
-    // French
-    { haram: "porc", halal: "bœuf" },
-    { haram: "cochon", halal: "vache" },
-    { haram: "jambon", halal: "dinde" },
-    { haram: "alcool", halal: "jus" },
-    { haram: "vin", halal: "jus de raisin" },
-    { haram: "bière", halal: "boisson maltée" },
-    { haram: "gélatine", halal: "agar" },
-    // Arabic
-    { haram: "خنزير", halal: "بقر" },
-    { haram: "لحم خنزير", halal: "لحم بقر" },
-    { haram: "خمر", halal: "عصير عنب" },
-    { haram: "بيرة", halal: "مشروب شعير" },
-    { haram: "كحول", halal: "عصير" },
-    { haram: "حرام", halal: "حلال" },
-];
-
-function _halalEscape(str) {
-    return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-function _renderHalalRows(replacements) {
-    const $body = $("#halalReplacementsBody");
-    $body.empty();
-    if (!replacements || replacements.length === 0) {
-        $("#halalNoRows").show();
-        return;
-    }
-    $("#halalNoRows").hide();
-    replacements.forEach(function (item) {
-        $body.append(
-            `<tr class="halal-row">
-                <td><input type="text" class="halal-input halal-haram" value="${_halalEscape(item.haram)}" placeholder="e.g. pork / خنزير"></td>
-                <td><input type="text" class="halal-input halal-halal" value="${_halalEscape(item.halal)}" placeholder="e.g. beef / بقر"></td>
-                <td><button class="halal-delete-row btn-icon" title="Remove"><i class="material-icons">delete_outline</i></button></td>
-            </tr>`
-        );
-    });
-}
-
-async function loadHalalModeSettings() {
-    try {
-        const saved = (await window.electronAPI.readKey("halalModeSettings")) || {};
-        const enabled = saved.enabled === true;
-        const replacements = Array.isArray(saved.replacements) ? saved.replacements : HALAL_DEFAULT_REPLACEMENTS.slice();
-        $("#halalModeEnabled").prop("checked", enabled);
-        _renderHalalRows(replacements);
-        if (window.I18n) window.I18n.translatePage();
-    } catch (err) {
-        console.error("[HalalMode] Failed to load settings:", err);
-        $("#halalModeEnabled").prop("checked", false);
-        _renderHalalRows(HALAL_DEFAULT_REPLACEMENTS.slice());
-    }
-}
-
-async function saveHalalModeSettings() {
-    const enabled = $("#halalModeEnabled").is(":checked");
-    const replacements = [];
-    $("#halalReplacementsBody .halal-row").each(function () {
-        const haram = $(this).find(".halal-haram").val().trim();
-        const halal = $(this).find(".halal-halal").val().trim();
-        if (haram) replacements.push({ haram, halal });
-    });
-    try {
-        await window.electronAPI.updateData("halalModeSettings", { enabled, replacements });
-        showAlert("success", window.I18n?.t("settings.halal_mode.saved") || "Halal Mode settings saved");
-    } catch (err) {
-        showAlert("error", window.I18n?.t("settings.halal_mode.save_failed") || "Failed to save Halal Mode settings");
-        console.error("[HalalMode] Failed to save settings:", err);
-    }
-}
-
-$("#saveHalalModeSettings").click(function () {
-    saveHalalModeSettings();
-});
-
-$("#halalAddRow").click(function () {
-    $("#halalNoRows").hide();
-    $("#halalReplacementsBody").append(
-        `<tr class="halal-row">
-            <td><input type="text" class="halal-input halal-haram" placeholder="e.g. pork / خنزير"></td>
-            <td><input type="text" class="halal-input halal-halal" placeholder="e.g. beef / بقر"></td>
-            <td><button class="halal-delete-row btn-icon" title="Remove"><i class="material-icons">delete_outline</i></button></td>
-        </tr>`
-    );
-});
-
-$("#halalLoadDefaults").click(function () {
-    _renderHalalRows(HALAL_DEFAULT_REPLACEMENTS.slice());
-});
-
-$(document).on("click", ".halal-delete-row", function () {
-    $(this).closest("tr").remove();
-    if ($("#halalReplacementsBody .halal-row").length === 0) {
-        $("#halalNoRows").show();
-    }
-});
-// ==================== End Halal Mode Settings ====================
 
 // Load image processing settings when the section is shown
 $(".menu-element[for='image-processing-settings']").click(function () {
@@ -2711,6 +2605,25 @@ async function loadImageProcessingSettings() {
 }
 
 // ==================== AI Detection Settings ====================
+$(".menu-element[for='recipe-detection-settings']").on("click.recipeSettings", async function () {
+    await window.RecipeScreening.ready;
+    $("#recipeDetectionEnabled").prop("checked", window.RecipeScreening.enabled).prop("disabled", false);
+    $("#saveRecipeDetectionSettings").prop("disabled", false);
+});
+
+$("#saveRecipeDetectionSettings").on("click.recipeSettings", async function () {
+    $(this).prop("disabled", true);
+    try {
+        await window.RecipeScreening.save($("#recipeDetectionEnabled").is(":checked"));
+        showAlert("success", window.I18n?.t("settings.recipe_detection.saved") || "Halal Mode settings saved");
+    } catch (error) {
+        console.error("[Settings] Failed to save recipe detection settings:", error);
+        showAlert("error", window.I18n?.t("settings.recipe_detection.save_failed") || "Failed to save Halal Mode settings");
+    } finally {
+        $(this).prop("disabled", false);
+    }
+});
+
 $(".menu-element[for='ai-detection-settings']").click(function () {
     loadAiDetectionSettings();
 });

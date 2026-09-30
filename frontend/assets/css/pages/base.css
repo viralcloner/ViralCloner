@@ -120,3 +120,31 @@ html[data-theme="dark"] .table {
 html[data-theme="dark"] .table > :not(caption) > * > * {
   border-color: var(--border-color);
 }
+
+.recipe-haram-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border: 1px solid var(--danger-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  background: var(--vc-danger-bg);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: help;
+}
+
+.recipe-haram-badge .material-icons {
+  color: var(--danger-color);
+  font-size: 16px;
+}
+
+.recipe-haram-badge:focus-visible {
+  outline: 2px solid var(--danger-color);
+  outline-offset: 2px;
+}
+
+
+.recipe-screening:empty { display: none; }
+.spy-recipe-screening:has(.recipe-haram-badge) { padding: 8px 12px; }

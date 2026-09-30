@@ -352,8 +352,8 @@
       ]
     },
     "soraimage": {
-      "label": "Sora Image (Browser)",
-      "description": "Generate images using OpenAI's Sora model via browser automation. Supports multiple variants per prompt with user selection. Uses your connected OpenAI browser profiles.",
+      "label": "Sora Image (ChatGPT)",
+      "description": "Generate one image using ChatGPT through your connected OpenAI browser profiles. The workflow continues automatically without image selection.",
       "category": "processing",
       "configInputs": [
         {
@@ -363,32 +363,6 @@
           "description": "The image generation prompt. Use {INPUT_1} for dynamic text",
           "required": true,
           "placeholder": "A Pinterest pin for a hamburger recipe, professional food photography"
-        },
-        {
-          "id": "n_variants",
-          "type": "select",
-          "title": "Variants",
-          "description": "Number of image variants to generate per prompt (1-4)",
-          "default": "1",
-          "options": [
-            "1",
-            "2",
-            "3",
-            "4"
-          ]
-        },
-        {
-          "id": "size",
-          "type": "select",
-          "title": "Size",
-          "description": "Image dimensions (width x height)",
-          "default": "480x720",
-          "options": [
-            "480x720",
-            "720x480",
-            "720x720",
-            "1024x1024"
-          ]
         }
       ],
       "connectionInputs": [
@@ -410,14 +384,13 @@
           "id": "output_1",
           "type": "images",
           "label": "Generated Images",
-          "description": "Array of generated images (user selects which to keep)"
+          "description": "Array containing the single generated image"
         }
       ],
       "useCases": [
         "Generate Pinterest pins",
-        "Create multiple image variants for A/B testing",
         "Generate social media visuals",
-        "Create marketing images with Sora AI"
+        "Create marketing images with ChatGPT"
       ]
     },
     "openrouter": {

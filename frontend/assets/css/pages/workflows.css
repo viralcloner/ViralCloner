@@ -4711,3 +4711,22 @@ html[data-theme="dark"] .generate-mode-warning {
 }
 
 /* Workflows End */
+.recipe-warning-list {
+  list-style: none;
+  padding: 12px;
+  margin: 0 0 16px;
+  max-height: 220px;
+  overflow: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.recipe-warning-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block: 6px;
+  overflow-wrap: anywhere;
+}

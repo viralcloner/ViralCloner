@@ -139,6 +139,7 @@
      * Start the export process
      */
     async startExport(project) {
+      project = { ...project, tracks: window.VEPreviewEngine.prepareEndingBuffer(project.tracks || []) };
       if (!this.ffmpegReady) {
         await this.checkFFmpeg();
         if (!this.ffmpegReady) return;

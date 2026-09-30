@@ -1,4 +1,37 @@
 {
+  "tts_tool": {
+    "title": "Synthèse vocale",
+    "subtitle": "Transformez votre texte en voix off naturelle, prête à télécharger.",
+    "script": "Votre texte",
+    "placeholder": "Saisissez ou collez le texte à lire…",
+    "clear": "Effacer le texte",
+    "voice_settings": "Choisissez votre voix",
+    "language": "Langue",
+    "search": "Rechercher une voix",
+    "voice": "Voix",
+    "preview": "Écouter la voix",
+    "service": "Voix Microsoft Edge. Une connexion Internet est nécessaire.",
+    "generate": "Générer la voix off",
+    "retry": "Recharger les voix",
+    "result": "Votre voix off",
+    "save": "Enregistrer le MP3",
+    "working": "Veuillez patienter…",
+    "female": "Féminine",
+    "male": "Masculine",
+    "no_voices": "Aucune voix ne correspond à votre recherche.",
+    "loading": "Chargement des voix…",
+    "voices_failed": "Impossible de charger les voix. Vérifiez votre connexion et rechargez les voix.",
+    "sample": "Bonjour ! Voici un aperçu de la voix pour votre prochaine vidéo.",
+    "preview_loading": "Préparation de l’aperçu…",
+    "generating": "Génération de votre voix off. Cela peut prendre jusqu’à deux minutes…",
+    "generation_failed": "Impossible de générer l’audio. Vérifiez votre connexion et réessayez.",
+    "ready": "Votre voix off est prête. Écoutez-la ou enregistrez le MP3.",
+    "saved": "MP3 enregistré.",
+    "save_failed": "Impossible d’enregistrer le MP3. Essayez un autre emplacement.",
+    "busy": "Une génération est déjà en cours. Veuillez patienter.",
+    "invalid_input": "Saisissez entre 1 et 10 000 caractères et choisissez une voix.",
+    "no_recording": "Générez une voix off avant de l’enregistrer."
+  },
   "exit_warning": {
     "title": "Êtes-vous sûr de vouloir fermer ?",
     "subtitle": "Les processus suivants sont encore actifs :",
@@ -9,6 +42,7 @@
     "close_anyway": "Fermer quand même"
   },
   "nav": {
+    "text_to_speech": "Synthèse vocale",
     "home": "Accueil",
     "automation": "Automatisation",
     "workflows": "Workflows",
@@ -148,6 +182,16 @@
     "reset_success": "Les données analytiques ont été réinitialisées avec succès."
   },
   "fb_groups": {
+    "workflow_accounts": "Comptes de publication",
+    "workflow_accounts_hint": "Maintenez Ctrl (Commande sur Mac) pour sélectionner plusieurs comptes. Auto utilise tous les comptes associés.",
+
+    "post_content_options": "Contenu de la publication",
+    "post_keep_lines": "Nombre de lignes à inclure (0 = toutes les lignes)",
+    "post_lines_hint": "Compte les sauts de ligne, y compris les lignes vides. Le retour automatique à la ligne ne compte pas.",
+    "post_suffix": "Texte à ajouter après le contenu",
+    "post_content_as_comment": "Écrire le contenu complet dans le premier commentaire",
+    "post_content_comment_hint": "Utilise le contenu complet avant de le raccourcir ou d’ajouter du texte. Si Premier commentaire est activé, son texte est ajouté au même commentaire. Ce commentaire est utilisé pour la modification virale.",
+
     "title": "Groupes Facebook",
     "subtitle": "Gérez les groupes et liez des profils pour la publication automatisée",
     "groups": "Groupes",
@@ -774,6 +818,21 @@
     "load_recipes_on_request": "Actualisez pour charger des recettes depuis TheMealDB."
   },
   "workflows": {
+    "change_automation": {
+      "title": "Changer l’automatisation",
+      "help": "Choisissez l’automatisation pour la prochaine exécution. Les résultats existants sont conservés ; le workflow ne démarrera pas automatiquement.",
+      "empty": "Créez d’abord une automatisation.",
+      "not_editable": "Seuls les workflows en pause, arrêtés ou en échec peuvent changer d’automatisation.",
+      "save_failed": "Impossible de changer l’automatisation. Actualisez et réessayez.",
+      "saved": "Automatisation modifiée. Le workflow n’a pas été démarré."
+    },
+    "recipe_detection": {
+      "badge": "Haram",
+        "detected": "Ingrédients signalés",
+        "pork": "Ingrédient à base de porc",
+        "alcohol": "Ingrédient alcoolisé",
+        "hint": "Détection automatique des ingrédients. Vérifiez la recette ; l’absence de badge ne confirme pas son statut halal."
+    },
     "title": "Workflows",
     "new_workflow": "Nouveau workflow",
     "bulk_launch": "Lancement Pinterest en masse",
@@ -968,8 +1027,20 @@
       "suggested": "sujets suggérés"
     },
     "pfeedspy": {
-      "title": "Pinterest Feed Spy",
-      "query_label": "Requête de recherche",
+      "keywords_heading": "Mots-clés de recherche",
+      "keywords_active": "Sélectionnés selon l’intérêt actuel",
+      "keywords_rising": "Sélectionnés selon la croissance récente",
+      "keywords_mixed": "Sélectionnés selon la croissance et l’intérêt actuel",
+      "keywords_comparison": "Évolution des 4 dernières semaines par rapport aux 4 précédentes.",
+      "finding_trends": "Recherche de mots-clés en hausse sur Pinterest Trends...",
+      "trends_failed": "Impossible de charger Pinterest Trends. Réessayez.",
+      "no_trends": "Pinterest n’a renvoyé aucun mot-clé associé avec une activité récente exploitable. Essayez un autre mot-clé de départ.",
+      "trends_active": "Aucun terme en hausse ; recherche des mots-clés associés avec la plus forte activité actuelle (États-Unis). Les pourcentages comparent les 4 dernières semaines aux 4 précédentes :",
+      "trends_selected": "Recherches en hausse (États-Unis ; 4 dernières semaines comparées aux 4 précédentes) :",
+      "trends_partial": "Certaines requêtes ont échoué ; les courbes disponibles sont utilisées.",
+      "searching_trends": "Recherche de {{count}} mots-clés associés classés selon leurs courbes...",
+        "title": "Pinterest Feed Spy",
+        "query_label": "Mot-clé de départ",
       "source_label": "Source",
       "source_public": "Public (Anonyme)",
       "source_account": "Compte connecté",
@@ -1368,6 +1439,7 @@
       "error_output_not_connected": "Le nœud Sub-Output doit avoir au moins une entrée connectée."
     },
     "videoeditor": {
+
       "music_none": "Pas de musique",
       "music_random": "Musique aléatoire",
       "music_label": "Musique",
@@ -1444,7 +1516,7 @@
       "chatgptimage": "ChatGPT Image (Navigateur)",
       "gptimage": "GPT Image (API)",
       "googleaiimage": "Google Imagen (API)",
-      "soraimage": "Sora Image (Navigateur)",
+      "soraimage": "Sora Image (ChatGPT)",
       "geminiimage": "Gemini Image (Navigateur)",
       "metaaiimage": "Meta AI Image",
       "tiktokadsimage": "TikTok Ads Image (Navigateur)",
@@ -1748,6 +1820,17 @@
     "failed_process_image": "Échec du traitement de l'image"
   },
   "settings": {
+    "recipe_detection": {
+      "title": "Mode Halal",
+      "description": "Signaler les ingrédients à base de porc et d’alcool reconnus dans les workflows et les publications du gestionnaire Spy. Le texte des recettes reste inchangé.",
+      "enable": "Activer le Mode Halal",
+      "help": "Désactivé par défaut. Détecte localement les textes en anglais, français, arabe, roumain, italien et espagnol. L’absence de badge ne confirme pas le statut halal.",
+      "save": "Enregistrer les paramètres",
+      "saved": "Paramètres du Mode Halal enregistrés",
+      "save_failed": "Échec de l’enregistrement des paramètres du Mode Halal"
+    },
+    "deepseek_restricted_until": "Indisponible jusqu’au",
+    "deepseek_restricted_unknown": "Compte restreint. Rouvrez le profil pour vérifier son état.",
     "title": "Paramètres",
     "accounts_profiles": "Comptes & Profils",
     "google_label": "Google",
@@ -1776,7 +1859,6 @@
     "ipregistry_label": "IPRegistry",
     "automation_group": "Automatisation",
     "performance": "Performance",
-    "halal_mode_label": "Mode Halal",
     "image_processing_label": "Traitement d'images",
     "ai_detection_label": "Détection IA",
     "vcbrowser_label": "VCBrowser",
@@ -1820,7 +1902,6 @@
       "twocaptcha_connect": "Résolution automatique de captcha",
       "ipregistry_connect": "Géolocalisation IP pour les proxies",
       "performance_connect": "Concurrence, réessais et délais",
-      "halal_mode": "Remplacer les mots-clés haram par des alternatives halal",
       "image_processing": "Métadonnées factices et optimisation SEO",
       "ai_detection": "Contrôler les scores de détection IA dans la sortie du workflow",
       "vcbrowser_connect": "Navigateur furtif avec usurpation d'empreinte",
@@ -2152,22 +2233,6 @@
       "enable_help": "Activer pour utiliser IPRegistry pour la correspondance des fuseaux horaires",
       "test_btn": "Tester la clé API",
       "save_btn": "Enregistrer les paramètres"
-    },
-    "halal_mode": {
-      "title": "Mode Halal",
-      "description": "Remplacer les mots-clés haram par des alternatives halal dans tous les textes d'automatisation",
-      "enable_title": "Activer le Mode Halal",
-      "enable_desc": "Lorsqu'il est activé, tous les textes passant par les nœuds d'automatisation auront les mots-clés haram remplacés par des alternatives halal",
-      "replacements_title": "Remplacements de mots-clés",
-      "replacements_desc": "Ajoutez des mots-clés haram et leurs alternatives halal. Prend en charge toutes les langues — arabe, français, anglais, etc.",
-      "col_haram": "Mot-clé haram",
-      "col_halal": "Alternative halal",
-      "no_rows": "Aucun remplacement ajouté. Cliquez sur \"Ajouter\" ou \"Par défaut\".",
-      "add_row": "Ajouter",
-      "load_defaults": "Par défaut",
-      "save_btn": "Enregistrer",
-      "saved": "Paramètres du Mode Halal enregistrés",
-      "save_failed": "Échec de l'enregistrement des paramètres du Mode Halal"
     },
     "automation_performance": {
       "title": "Performance d'Automatisation",
@@ -3462,6 +3527,8 @@
     "ive_reconnected": "Je me suis reconnecté"
   },
   "videoeditor": {
+    "ending_buffer": "Ajouter une marge de fin",
+    "ending_buffer_hint": "Ajoute 5 secondes et un zoom continu léger à la dernière image dans l’aperçu et l’export. Peut aider en cas de lecture interrompue, sans garantie sur Facebook. S’applique uniquement si cette image est la dernière.",
     "page_title": "Éditeur Vidéo",
     "title": "Éditeur Vidéo",
     "subtitle": "Créez des vidéos captivantes avec montage, effets et outils IA",
@@ -4089,7 +4156,7 @@
     "unavailable": "Cette fonctionnalité utilisait le service hébergé supprimé. Utilisez des fichiers locaux ou un fournisseur configuré dans les paramètres.",
     "browser_source": "VCBrowser est téléchargé depuis GitHub si nécessaire. Les profils restent sur cet ordinateur.",
     "app_updates": "Mises à jour",
-    "update_source": "Les mises à jour proviennent des versions Windows-ViralCloner sur GitHub.",
+    "update_source": "Les mises à jour proviennent des versions ViralCloner sur GitHub.",
     "check_updates": "Rechercher une mise à jour",
     "install_update": "Télécharger et installer",
     "view_releases": "Voir les versions",

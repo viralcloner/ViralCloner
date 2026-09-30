@@ -3771,12 +3771,15 @@ window.hasUnsavedAutomation = false;
 // ============================================
 if (window.electronAPI?.onAutoExportVideo) {
   window.electronAPI.onAutoExportVideo(async (data) => {
-    const { project, exportSettings } = data;
+    const { exportSettings } = data;
+    let project = data.project;
     let exportEngine = null;
     try {
       if (!window.VEPreviewEngine) {
         throw new Error("VEPreviewEngine not loaded");
       }
+
+      project = { ...project, tracks: window.VEPreviewEngine.prepareEndingBuffer(project.tracks || []) };
 
       const w = (exportSettings.width || project.settings?.width || 1080) & ~1;
       const h = (exportSettings.height || project.settings?.height || 1920) & ~1;
